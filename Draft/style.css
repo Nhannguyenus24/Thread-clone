@@ -1,0 +1,155 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Montserrat, sans-serif;
+}
+
+body {
+  width: 100%;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  transition: text-decoration 0.1s ease;
+
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.footer_links a:hover {
+  text-decoration: underline;
+}
+
+.login_page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  background-color: black;
+  color: white;
+  background-image: url("eIJhnL1FtGH.webp");
+  background-size: 140% auto;
+  background-repeat: no-repeat;
+  background-position: -480px -57px;
+}
+
+.login_form {
+  background-color: rgba(0, 0, 0, 0);
+  width: 350px;
+  border-radius: 10px;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+}
+
+.login_title {
+  font-size: 16px;
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bolder;
+}
+
+#input-format {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#input-format input {
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  font-size: 15px;
+  border-radius: 12px;
+  line-height: 140%;
+  padding: 16px;
+  border: 1px solid transparent;
+  margin: 5px 0px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+
+.login_button {
+  width: 100%;
+  padding: 20px;
+  background-color: white;
+  height: 100%;
+  color: rgba(16, 16, 16, 0.4);
+  border: none;
+  border-radius: 12px;
+  font-weight: bold;
+  margin: 5px 0px;
+}
+
+.forgot_password {
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.3);
+  margin: 20px 0;
+}
+
+.separator hr {
+  width: 100%;
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.separator span {
+  font-size: 14px;
+  margin: 0 10px;
+}
+
+.instagram_login {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 16px;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.instagram_login img {
+  margin: 5px;
+}
+.instagram_login p {
+  margin: 10px;
+  font-weight: bolder;
+  font-size: 16px;
+}
+.instagram_login span {
+  font-size: 14px;
+  color: white;
+}
+
+.arrow {
+  font-size: 18px;
+}
+
+.footer_links {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 40px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.forgot_password {
+  font-size: 16px;
+}
