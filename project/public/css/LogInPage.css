@@ -1,4 +1,10 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Montserrat, sans-serif;
+}
 .login-page {
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -7,7 +13,7 @@
   height: 100vh;
   background-color: black;
   color: white;
-  background-image: url("background_thread.webp");
+  background-image: url("../image/background_thread.webp");
   background-size: 140% auto;
   background-repeat: no-repeat;
   background-position: -480px -57px;
@@ -20,7 +26,7 @@
   margin-top: 50px;
   display: flex;
   flex-direction: column;
-  scroll-snap-align: center; 
+  scroll-snap-align: center;
 }
 
 .login-page__title {
@@ -40,7 +46,6 @@
 #input-format input {
   width: 100%;
   height: auto;
-  padding: 10px;
   font-size: 15px;
   border-radius: 12px;
   line-height: 140%;
@@ -49,7 +54,6 @@
   margin: 5px 0px;
   background-color: rgba(255, 255, 255, 0.1);
   color: white;
-  box-sizing: border-box;
 }
 #input-format span {
   position: absolute;
@@ -74,7 +78,7 @@
 }
 
 .login-page__button:disabled {
-  cursor: not-allowed; /* Con trỏ chuột thành nút cấm khi nút bị vô hiệu hóa */
+  cursor: not-allowed;
   color: rgba(16, 16, 16, 0.4);
 }
 
@@ -171,7 +175,6 @@
   opacity: 1; /* Start fully visible */
 }
 
-/* Animation for sliding up */
 @keyframes slideUp {
   0% {
     transform: translate(-50%, 20px); /* Start slightly below */
@@ -193,7 +196,6 @@
   }
 }
 
-/* Animation for sliding down */
 @keyframes slideDown {
   0% {
     transform: translate(-50%, 0); /* Start at original position */
@@ -214,9 +216,10 @@
   }
 
   .login-page__form {
-    width: 80%;
-    padding: 10px;
+    width: 100%;
+    max-width: 350px;
     margin-top: 20px;
+
     display: flex;
     flex-direction: column;
   }
@@ -232,7 +235,6 @@
     height: 50px;
     display: block;
     margin: 0 auto;
-
     margin-bottom: 10px;
   }
 
