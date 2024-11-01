@@ -1,0 +1,52 @@
+.main {
+  background-color: #181919;
+}
+/* .profile {
+  padding: 16px 24px 10px 24px;
+} */
+.profile__intro {
+  display: flex;
+  justify-content: space-between; /* Pushes name to the left and avatar to the right */
+  /* align-items: center; */
+  padding: 16px 24px 10px 24px;
+}
+
+.name {
+  display: flex;
+  flex-direction: column;
+}
+
+.name .realname {
+  color: rgb(243, 245, 247);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 30px;
+  font-family: sans-serif;
+  cursor: pointer;
+}
+
+.name .nickname {
+  color: rgb(243, 245, 247);
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 21px;
+  font-family: sans-serif;
+}
+
+.avatar img {
+  cursor: pointer;
+  max-width: 50px; /* Adjust size as needed */
+  height: auto;
+  border-radius: 50%; /* Makes the image circular */
+  object-fit: cover; /* Ensures the image fills the circular shape */
+}
+
+.quote {
+  padding: 16px 24px 0px 24px;
+} 
+
+.follower-panel {
+  display: flex;
+  justify-content: space-between;
+  padding: 16px 24px 0px 24px;
+}
