@@ -11,7 +11,7 @@
   padding: 16px 24px 10px 24px;
 }
 
-.name {
+.profile__intro .name {
   display: flex;
   flex-direction: column;
 }
@@ -50,3 +50,89 @@
   justify-content: space-between;
   padding: 16px 24px 0px 24px;
 }
+
+.follower-panel .number-follower >span{
+  font-size: 15px;
+  font-weight: 400;
+  color: rgb(119, 119, 119);
+  line-height: 21px;
+}
+
+.follower-panel .more-views .insta-icon {
+  margin-left: 10px;
+}
+
+.config-profile-btn {
+  padding: 12px 24px;
+  position: relative;
+}
+
+.config-profile-btn .box{
+  border: 0.8px solid rgba(243, 245, 247, 0.15);
+  padding: 0px 16px 0px 16px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.config-profile-btn .form {
+  display: block;
+  background-color: rgb(16, 16, 16);
+  border: 0.8px solid rgba(243, 245, 247, 0.15);
+  border-radius: 10px;
+
+
+  /* Căn chỉnh vị trí*/
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  /* Kích thước */
+  width: 40vw;
+  height: 50vh;
+}
+
+.config-profile-btn .box > span {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 32.4px;
+  font-family: sans-serif;
+}
+
+.form .personal-info {
+  margin-top: 10px;
+  margin-left: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.form .personal-info .all-about-name > span {
+  color: rgb(243, 245, 247);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 21px;
+  min-width: 100%;
+  min-width: 0px;
+}
+.form .personal-info .name-panel {
+  display: flex;
+  flex-direction: row;
+}
+
+.form .personal-info .nickname {
+  margin-left: 10px;
+}
+
+.form .personal-info > img {
+  cursor: pointer;
+  max-width: 50px; /* Adjust size as needed */
+  height: auto;
+  border-radius: 50%; /* Makes the image circular */
+  object-fit: cover; /* Ensures the image fills the circular shape */
+  margin-right: 10px;
+}
+
+
+
