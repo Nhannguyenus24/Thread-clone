@@ -1,10 +1,194 @@
-.red{
-    background-color: red;
-    width: 100%;
-    height: 200px;
+.create_feed{
+    display: flex;
+    padding:24px;
+    gap: 10px;
+    flex-direction: row;
+    align-items: center;
+    line-height: 21px;
+    border-bottom: 1px solid #333333; 
 }
-.yellow{
-    background-color: yellow;
-    width: 100%;
-    height: 200px;
+.create_feed img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
 }
+.create_feed span{
+    font-size: 15px;
+    margin-right: auto;
+    color: rgb(119, 119, 119);
+}
+.create_feed button {
+    background-color: transparent;
+    font-weight: 600;
+    font-size: 15px;
+    color: rgb(243,245,247);
+    border: 1px solid #333333; 
+    padding: 0;
+    height: 36px;
+    width: 70px;
+    border-radius: 10px;
+}
+.feed {
+    display: flex;
+    padding: 12px 24px;
+    flex-direction: row;
+    gap: 10px;
+    font-size: 15px;
+    border-bottom: 1px solid #333333; 
+}
+.feed #avatar{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+}
+.feed-content{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.feed-content #content{
+    line-height: 1.5;
+}
+.user_info span:last-child{
+    color: rgb(119, 119, 119);
+}
+.interaction svg {
+    fill: transparent;
+    stroke: #cccccc; 
+}
+.interaction {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+.like_area, .comment_area {
+    border-radius: 20px;
+    padding: 10px;
+    margin-left: -10px;
+    display: flex;
+    align-items: center;
+    height: 18px;  
+    gap: 5px; 
+    transition: background-color 0.3s ease;
+}
+.like_area:hover, .comment_area:hover {
+    background-color: rgba(51,51, 51, 0.3);    
+}
+.like_area svg, .comment_area svg {
+    width: 18px;
+    height: 18px;   
+}
+.like_area span, .comment_area span {
+    display: flex;  
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 400;  
+    color: #cccccc; 
+    cursor: pointer; 
+}
+.image-container {
+    width: 100%; 
+    max-width: 100%; 
+    overflow: hidden; 
+  }
+  
+  .image-container img {
+    border-radius: 8px;
+    max-height: 400px;
+    max-width: 100%; 
+    height: auto; 
+  }
+  .like_area svg.active {
+    fill: red; 
+    stroke: red;
+  }
+  
+  .comment__section {
+    display: none;
+    min-height: 90vh;
+    border-radius: 16px;
+    position: fixed; 
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    z-index: 10; 
+    background-color: rgb(24, 24, 24);
+    border: 1px solid white; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Đổ bóng */
+  }
+  .comment__title {
+    display: flex;
+    position: relative; 
+    height: 50px; 
+    align-items: center;
+  }
+  .comment__title .cancel {
+    cursor: pointer;
+    margin-left: 20px; 
+  }
+  
+  .comment__title .thread__comment {
+    font-weight: bold;
+
+    position: absolute; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    text-align: center; 
+  }
+  .user_comment{
+    max-height: calc(90vh - 130px);
+    overflow-y: auto;
+  }
+  .user_comment::-webkit-scrollbar {
+    display: none; 
+  }
+
+
+
+  .self_comment {
+    border-radius: 16px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    background-color: rgb(24, 24, 24);
+    width: 100%;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 20px;
+    margin-right: 10px; 
+  } 
+  
+  .comment_input_container {
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    border-radius: 20px;
+    padding: 5px 10px;
+    margin-right: 20px;
+    flex: 1;
+  }
+  
+  .comment_input {
+    flex: 1;
+    background: none;
+    border: none;
+    color: #ddd;
+    outline: none;
+    padding: 5px 10px;
+    font-size: 16px;
+  }
+  .send_button {
+    background: none;
+    border: none;
+    color: #777;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 18px;
+  }
+  
