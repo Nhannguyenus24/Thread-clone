@@ -1,84 +1,42 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Arial, sans-serif;
-}
-
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: start; /* Đẩy nội dung lên trên */
-    background-color: #000;
-    width: 100%;
-    height: 100vh;
-    overflow-y: auto; /* Cho phép cuộn ở container */
-    padding-top: 1rem; /* Tạo khoảng trống phía trên */
-}
-
 .notification-container {
-    background-color: #000;
-    width: 50%;
-    padding: 1.5rem;
-    border-radius: 0.75rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border: 1px solid white;
+    background-color: transparent;
+    overflow-y: auto;
 }
-
 .notification-card {
     display: flex;
-    align-items: start;
-    background-color: #555;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 0.5rem;
-    border-left: 5px solid transparent;
-    transition: background-color 0.3s, border-color 0.3s;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #333333; 
 }
-
-.notification-card.unread {
-    background-color: #f1f1f1;
-    /* border-left-color: #1890ff; */
-}
-
-.icon img {
-    width: 40px;
-    height: 40px;
+.notification-icon img {
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    margin-right: 1rem;
+    margin-right: 0.75rem;
 }
-
-.right {
+.notification-right {
     display: flex;
     flex-direction: column;
     flex: 1;
 }
-
-.header {
+.notification-header {
     display: flex;
     align-items: center;
     margin-bottom: 0.25rem;
 }
-
-.user-name {
+.notification-user-name {
     font-weight: bold;
-    color: #333;
+    color: rgb(243, 245, 247);;
     font-size: 1rem;
 }
-
-.time {
+.notification-time {
     margin-left: 0.5rem;
-    font-size: 0.875rem;
-    color: #888;
+    color: rgb(119, 119, 119);
 }
-
-.message {
+.notification-message {
     font-size: 0.95rem;
-    color: #555;
-    line-height: 1.4;
+    line-height: 1.5;
 }
-
-.unread-mark {
+.notification-unread-mark {
     background-color: rgb(99, 188, 218);
     width: 10px;
     height: 10px;
