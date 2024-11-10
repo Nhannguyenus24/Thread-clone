@@ -80,6 +80,7 @@
   font-weight: 600;
   line-height: 2rem;
 }
+
 .profile-form .personal-info {
   margin: 1.5rem 1.5rem 0;
   display: flex;
@@ -243,4 +244,296 @@
   color: rgb(243, 245, 247);
   font-weight: 600;
   cursor: pointer;
+}
+
+
+.post {
+  display: flex;
+  padding: 12px 24px;
+  flex-direction: row;
+  gap: 10px;
+  font-size: 15px;
+  border-bottom: 1px solid #333333; 
+}
+.post #avatar{
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+.post-content{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.post-content #content{
+  line-height: 1.5;
+}
+
+.user_info span:last-child{
+  color: rgb(119, 119, 119);
+}
+
+.interaction svg {
+  fill: transparent;
+  stroke: #cccccc; 
+}
+
+.interaction {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+}
+.like_area, .comment_area {
+  border-radius: 20px;
+  padding: 10px;
+  margin-left: -10px;
+  display: flex;
+  align-items: center;
+  height: 18px;  
+  gap: 5px; 
+  transition: background-color 0.3s ease;
+}
+.like_area:hover, .comment_area:hover {
+  background-color: rgba(51,51, 51, 0.3);    
+}
+.like_area svg, .comment_area svg {
+  width: 18px;
+  height: 18px;   
+}
+.like_area span, .comment_area span {
+  display: flex;  
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 400;  
+  color: #cccccc; 
+  cursor: pointer; 
+}
+
+.image-container {
+  width: 100%; 
+  max-width: 100%; 
+  overflow: hidden; 
+}
+
+.image-container img {
+  border-radius: 8px;
+  max-height: 400px;
+  max-width: 100%; 
+  height: auto; 
+}
+
+.like_area svg.active {
+  fill: red; 
+  stroke: red;
+}
+
+
+
+.overall-follow-panel {
+  position: absolute;
+  top: 20%;
+  left: 27.5%;
+  z-index: 1;
+  background-color: rgb(16, 16, 16);
+  border-radius: 10px;
+  margin: 0 auto;
+  display: block;
+  border: 1px solid rgb(119, 119, 119);
+  display: none;
+}
+
+.column-panel {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+}
+
+.column-panel .list-follower,
+.column-panel .list-following {
+  flex: 1;
+  cursor: pointer;
+}
+
+
+
+.column-panel .list-follower span:nth-of-type(1),
+.column-panel .list-following span:nth-of-type(1) {
+  color: rgb(119, 119, 119);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 21px;
+  font-family: sans-serif;
+}
+
+.column-panel .list-follower span:nth-of-type(2),
+.column-panel .list-following span:nth-of-type(2) {
+  color: rgb(119, 119, 119);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 16.8px;
+  font-family: sans-serif;
+}
+
+.overall-follow-panel .information-follow {
+  padding: 16px 0px 16px 16px;
+  display: flex;
+  flex-direction: row;
+}
+
+.information-follow .avatar-follow {
+  flex: 1;
+}
+
+.information-follow .avatar-follow>img {
+  cursor: pointer;
+  max-width: 60%;
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
+  outline: 0.5px solid rgba(243, 245, 247, 0.15);
+}
+
+.information-follow .follow-item {
+  flex: 5;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+
+.activated {
+  border-bottom: 1.5px solid rgb(243, 245, 247);
+}
+
+.activated span {
+  color: rgb(243, 245, 247) !important;
+}
+
+
+.information-follow .name-container>span:nth-of-type(1) {
+  color: rgb(243, 245, 247);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: sans-serif;
+  line-height: 21px;
+}
+
+.information-follow .name-container>span:nth-of-type(2) {
+  color: rgb(119, 119, 119);
+  font-size: 15px;
+  font-weight: 400;
+  font-family: sans-serif;
+  line-height: 21px;
+}
+
+.information-follow .follow-item .follow-back-btn {
+  color: rgb(119, 119, 119);
+  font-family: sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0px 16px;
+  border: 2px solid rgba(243, 245, 247, 0.15);
+  border-radius: 10px;
+  line-height: 32.4px;
+  height: 32.4px;
+  margin-right: 10px;
+}
+
+
+.overall-follow-panel .list-of-follow {
+  height: 200px; /* Chiều cao của nội dung */
+  overflow-y: auto; /* Hiển thị thanh cuộn dọc */
+}
+
+.overall-follow-panel .list-of-follow::-webkit-scrollbar {
+  width: 8px;
+}
+
+.overall-follow-panel .list-of-follow::-webkit-scrollbar-track {
+  background: #333;
+  border-radius: 8px;
+}
+
+.overall-follow-panel .list-of-follow::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 8px;
+  border: 2px solid #333;
+}
+
+.overall-follow-panel .list-of-follow::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+
+
+
+
+.overall-follow-panel .list-of-follow ul {
+  margin: 0; /* Loại bỏ margin mặc định */
+  padding: 0; /* Loại bỏ padding mặc định */
+  list-style-type: none; /* Loại bỏ dấu đầu dòng mặc định */  
+}
+
+
+/* Modal styling */
+.overall-follow-panel .list-of-follow .modal {
+  position: absolute;
+  width: 300px;
+  background-color: #1c1c1c;
+  border-radius: 10px;
+  text-align: center;
+  padding: 20px;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: none;
+}
+
+.lít-of-follow .modal .profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #333;
+  margin: 0 auto 15px;
+  background-image: url('https://i.pravatar.cc/80'); /* Example avatar image */
+  background-size: cover;
+  background-position: center;
+}
+
+.list-of-follow .modal .modal-text {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.list-of-follow .modal .modal-actions {
+  display: flex;
+  border-top: 1px solid #333;
+  margin-top: 20px;
+}
+
+.list-of-follow .modal .modal-button {
+  flex: 1;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.list-of-follow .modal .cancel {
+  color: #fff;
+  border-right: 1px solid #333;
+}
+
+.list-of-follow .modal .unfollow {
+  color: #ff4d4f;
+}
+
+.list-of-follow .modal .modal-button:hover {
+  background-color: #333;
+}
+
+.no-scroll {
+  overflow: hidden;
 }
