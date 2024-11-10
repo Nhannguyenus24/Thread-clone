@@ -124,7 +124,7 @@
   transform: translate(-50%, -50%);
   z-index: 10;
   background-color: rgb(24, 24, 24);
-  border: 1px solid white;
+  border: 0.5px solid white;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 .comment__title {
