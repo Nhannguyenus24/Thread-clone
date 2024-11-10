@@ -34,9 +34,6 @@
                     id="password"
                     oninput="clearError()"
                 />
-                <span id="togglePassword" onclick="toggleShowPassword()" style="cursor: pointer;">
-                    👁️
-                </span>
             </div>
 
             <button
@@ -105,23 +102,10 @@
             submitButton.disabled = !(usernameInput.value && passwordInput.value);
         }
 
-        // Hiển thị/ẩn mật khẩu
-        function toggleShowPassword() {
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
-                document.getElementById('togglePassword').innerText = '🙈'; // Đổi icon thành ẩn mắt
-            } else {
-                passwordInput.type = "password";
-                document.getElementById('togglePassword').innerText = '👁️'; // Đổi icon thành mở mắt
-            }
-        }
-
         function handleSubmit(event) {
             event.preventDefault();
             showError("Sai mật khẩu.");
         }
-
-        // Hiển thị thông báo lỗi
         function showError(message) {
             errorNotification.innerText = message;
             errorNotification.style.display = "block";
@@ -129,8 +113,6 @@
                 errorNotification.style.display = "none";
             }, 3000);
         }
-
-        // Xóa thông báo lỗi
         function clearError() {
             errorNotification.style.display = "none";
         }
