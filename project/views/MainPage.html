@@ -100,12 +100,11 @@
         .then(html => {
           document.getElementById('outlet').innerHTML = html;
 
-          // Lấy tất cả các thẻ script trong nội dung vừa tải
           const scripts = document.querySelectorAll('#outlet script');
           scripts.forEach(script => {
             const newScript = document.createElement('script');
-            newScript.textContent = script.textContent; // Thêm nội dung script vào
-            document.body.appendChild(newScript); // Thực thi script
+            newScript.textContent = script.textContent; 
+            document.body.appendChild(newScript); 
           });
         })
         .catch(error => console.error(error));
@@ -143,17 +142,6 @@
       commentSection.style.display = 'none';
     };
 
-    // const listFollower = document.querySelector('.column-panel .list-follower');
-    // const listFollowing = document.querySelector('.column-panel .list-following');
-
-    // function toggleActive(element) {
-    //   listFollower.classList.remove('activated');
-    //   listFollowing.classList.remove('activated');
-    //   element.classList.add('activated');
-    // }
-
-    // listFollower.addEventListener('click', () => toggleActive(listFollower));
-    // listFollowing.addEventListener('click', () => toggleActive(listFollowing));
 
   </script>
 
