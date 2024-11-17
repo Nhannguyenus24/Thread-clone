@@ -1,0 +1,86 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+  }
+  body {
+    background-color: black;
+    color: white;
+    box-sizing: border-box;
+  }
+  .thread-content {
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .mainpage__selected svg {
+    color: white;
+    fill: white;
+  }
+ svg.active {
+    fill: red;
+    stroke: red;
+  }
+  svg.nonactive{
+    stroke: #cccccc;
+    fill: transparent;
+  }
+  @media (min-width: 640px) {
+  .login-background{
+      background-image: url("../image/background_thread.webp");
+      background-size: 140% auto;
+      background-repeat: no-repeat;
+      background-position: -480px -57px;
+  }}
+  @keyframes slideUp {
+    0% {
+      transform: translate(-50%, 20px);
+      opacity: 0;
+    }
+    100% {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes stay {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideDown {
+    0% {
+      transform: translate(-50%, 0);
+      opacity: 1;
+    }
+    100% {
+      transform: translate(-50%, 20px);
+      opacity: 0;
+    }
+  }
+  
+  @layer utilities {
+    .animate-slideUp {
+      animation: slideUp 0.5s forwards;
+    }
+  
+    .animate-stay {
+      animation: stay 3s forwards 0.5s;
+    }
+  
+    .animate-slideDown {
+      animation: slideDown 0.5s forwards 3.5s;
+    }
+  }
+.visible {
+    display: block;
+}

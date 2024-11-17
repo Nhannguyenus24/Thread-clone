@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body>
+    <div class="flex p-6 gap-3 items-center">
+      <div class="h-[44px] bg-[#0a0a0a] flex items-center w-full rounded-[16px] border border-[#333333]">
+        <svg class="cursor-pointer p-2 ml-4" viewBox="0 0 26 26" width="32" height="32">
+          <path
+            clip-rule="evenodd"
+            fill="#4a4a4a"
+            d="M3.5 11.5C3.5 7.08172 7.08172 3.5 11.5 3.5C15.9183 3.5 19.5 7.08172 19.5 11.5C19.5 15.9183 15.9183 19.5 11.5 19.5C7.08172 19.5 3.5 15.9183 3.5 11.5ZM11.5 1C5.70101 1 1 5.70101 1 11.5C1 17.299 5.70101 22 11.5 22C13.949 22 16.2023 21.1615 17.9883 19.756L22.3661 24.1339C22.8543 24.622 23.6457 24.622 24.1339 24.1339C24.622 23.6457 24.622 22.8543 24.1339 22.3661L19.756 17.9883C21.1615 16.2023 22 13.949 22 11.5C22 5.70101 17.299 1 11.5 1Z"
+          ></path>
+        </svg>
+        <input
+          type="text"
+          placeholder="Tìm kiếm"
+          class="bg-transparent w-[calc(100%-32px)] border-none outline-none text-[#f3f5f7] text-[15px] leading-[1.5rem]"
+          id="searchInput"
+          oninput="toggleClearIcon()"
+        /> 
+        <svg class="cursor-pointer p-2 mr-4" viewBox="0 0 24 24" width="32" height="32" onclick="clearInput()" id="clearIcon">
+          <path
+          fill="#4a4a4a" 
+            d="M12 0a12 12 0 1 0 12 12A12 12 0 0 0 12 0Zm5.139 16.056a.766.766 0 1 1-1.083 1.083L12 13.083 7.944 17.14a.766.766 0 0 1-1.083-1.083L10.917 12 6.86 7.944a.766.766 0 0 1 1.083-1.083L12 10.917l4.056-4.056a.766.766 0 0 1 1.083 1.083L13.083 12Z"
+          ></path>
+        </svg>
+      </div>
+    </div>
+
+    <div class="flex bg-transparent py-4 pl-6 gap-3 cursor-pointer text-[#F3F5F7] ">
+      <img id="avatar" src="../public/image/anonymous-user.jpg" alt="Avatar" class="w-[36px] h-[36px] rounded-full"/>
+      <div class="flex flex-col justify-center w-full border-b border-[#333333]">
+        <div class="flex items-center h-[36px]">
+          <div class="flex flex-col mr-auto">
+            <span class="font-semibold">lemkcr</span>
+            <span class="text-[#777777] font-normal">Lèm</span>
+          </div>
+          <button class="bg-transparent font-semibold text-[#F3F5F7] border border-[#333333] h-[36px] min-w-[104px] rounded-[0.75rem] mr-6">Theo dõi</button>
+        </div>
+        <span class="py-3">9.352 người theo dõi</span>
+      </div>
+    </div>
+
+    <div class="flex bg-transparent py-4 pl-6 gap-3 cursor-pointer text-[#F3F5F7] ">
+      <img id="avatar" src="../public/image/anonymous-user.jpg" alt="Avatar" class="w-[36px] h-[36px] rounded-full"/>
+      <div class="flex flex-col justify-center w-full border-b border-[#333333]">
+        <div class="flex items-center h-[36px]">
+          <div class="flex flex-col mr-auto">
+            <span class="font-semibold">lemkcr</span>
+            <span class="text-[#777777] font-normal">Lèm</span>
+          </div>
+          <button class="bg-transparent font-semibold text-[#F3F5F7] border border-[#333333] h-[36px] min-w-[104px] rounded-[0.75rem] mr-6">Theo dõi</button>
+        </div>
+        <span class="py-3">9.352 người theo dõi</span>
+      </div>
+    </div>
+
+    <div class="flex bg-transparent py-4 pl-6 gap-3 cursor-pointer text-[#F3F5F7] ">
+      <img id="avatar" src="../public/image/anonymous-user.jpg" alt="Avatar" class="w-[36px] h-[36px] rounded-full"/>
+      <div class="flex flex-col justify-center w-full border-b border-[#333333]">
+        <div class="flex items-center h-[36px]">
+          <div class="flex flex-col mr-auto">
+            <span class="font-semibold">lemkcr</span>
+            <span class="text-[#777777] font-normal">Lèm</span>
+          </div>
+          <button class="bg-transparent font-semibold text-[#F3F5F7] border border-[#333333] h-[36px] min-w-[104px] rounded-[0.75rem] mr-6">Theo dõi</button>
+        </div>
+        <span class="py-3">9.352 người theo dõi</span>
+      </div>
+    </div>
+
+    <div class="flex bg-transparent py-4 pl-6 gap-3 cursor-pointer text-[#F3F5F7] ">
+      <img id="avatar" src="../public/image/anonymous-user.jpg" alt="Avatar" class="w-[36px] h-[36px] rounded-full"/>
+      <div class="flex flex-col justify-center w-full border-b border-[#333333]">
+        <div class="flex items-center h-[36px]">
+          <div class="flex flex-col mr-auto">
+            <span class="font-semibold">lemkcr</span>
+            <span class="text-[#777777] font-normal">Lèm</span>
+          </div>
+          <button class="bg-transparent font-semibold text-[#F3F5F7] border border-[#333333] h-[36px] min-w-[104px] rounded-[0.75rem] mr-6">Theo dõi</button>
+        </div>
+        <span class="py-3">9.352 người theo dõi</span>
+      </div>
+    </div>
+
+    <div class="flex bg-transparent py-4 pl-6 gap-3 cursor-pointer text-[#F3F5F7] ">
+      <img id="avatar" src="../public/image/anonymous-user.jpg" alt="Avatar" class="w-[36px] h-[36px] rounded-full"/>
+      <div class="flex flex-col justify-center w-full border-b border-[#333333]">
+        <div class="flex items-center h-[36px]">
+          <div class="flex flex-col mr-auto">
+            <span class="font-semibold">lemkcr</span>
+            <span class="text-[#777777] font-normal">Lèm</span>
+          </div>
+          <button class="bg-transparent font-semibold text-[#F3F5F7] border border-[#333333] h-[36px] min-w-[104px] rounded-[0.75rem] mr-6">Theo dõi</button>
+        </div>
+        <span class="py-3">9.352 người theo dõi</span>
+      </div>
+    </div>
+
+    <div class="flex bg-transparent py-4 pl-6 gap-3 cursor-pointer text-[#F3F5F7] ">
+      <img id="avatar" src="../public/image/anonymous-user.jpg" alt="Avatar" class="w-[36px] h-[36px] rounded-full"/>
+      <div class="flex flex-col justify-center w-full border-b border-[#333333]">
+        <div class="flex items-center h-[36px]">
+          <div class="flex flex-col mr-auto">
+            <span class="font-semibold">lemkcr</span>
+            <span class="text-[#777777] font-normal">Lèm</span>
+          </div>
+          <button class="bg-transparent font-semibold text-[#F3F5F7] border border-[#333333] h-[36px] min-w-[104px] rounded-[0.75rem] mr-6">Theo dõi</button>
+        </div>
+        <span class="py-3">9.352 người theo dõi</span>
+      </div>
+    </div>
+
+    <div class="flex bg-transparent py-4 pl-6 gap-3 cursor-pointer text-[#F3F5F7] ">
+      <img id="avatar" src="../public/image/anonymous-user.jpg" alt="Avatar" class="w-[36px] h-[36px] rounded-full"/>
+      <div class="flex flex-col justify-center w-full border-b border-[#333333]">
+        <div class="flex items-center h-[36px]">
+          <div class="flex flex-col mr-auto">
+            <span class="font-semibold">lemkcr</span>
+            <span class="text-[#777777] font-normal">Lèm</span>
+          </div>
+          <button class="bg-transparent font-semibold text-[#F3F5F7] border border-[#333333] h-[36px] min-w-[104px] rounded-[0.75rem] mr-6">Theo dõi</button>
+        </div>
+        <span class="py-3">9.352 người theo dõi</span>
+      </div>
+    </div>
+  </body>
+</html>

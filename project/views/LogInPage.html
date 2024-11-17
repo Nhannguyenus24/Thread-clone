@@ -5,18 +5,19 @@
     <link rel="icon" type="image/svg+xml" href="../public/image/thread.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Threads</title>
-    <link rel="stylesheet" href="../public/css/LogInPage.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../public/css/Custom.css">
 </head>
 <body>
-    <div class="login-page">
-        <form method="post" class="login-page__form" onsubmit="handleSubmit(event)">
-            <img src="../public/image/thread.ico" alt="Logo" class="login-page__logo" style="display: none;" id="logo" />
+    <div class="login-background flex flex-col justify-center items-center w-screen h-screen ">
+        <form method="post" class="w-full max-w-[350px] mt-5 flex flex-col sm:rounded-[10px] sm:mt-[50px] sm:snap-center" onsubmit="handleSubmit(event)">
+            <img src="../public/image/thread.ico" alt="Logo" class="w-[50px] h-[50px] block mx-auto mb-[10px]" style="display: none;" id="logo" />
             <span>
-                <p class="login-page__title">Đăng nhập bằng tài khoản Instagram</p>
+                <p class="text-[14px] mb-[10px] relative sm:text-[16px] text-center sm:mb-[20px] sm:font-extrabold">Đăng nhập bằng tài khoản Instagram</p>
             </span>
 
-            <div id="input-format">
-                <input
+            <div id="input-format" class="flex justify-center items-center">
+                <input class="w-full p-3 h-auto rounded-xl leading-[140%] sm:p-4 border border-transparent my-[5px] bg-[rgba(255,_255,_255,_0.1)] text-white"
                     required
                     type="text"
                     placeholder="Tên người dùng, số điện thoại hoặc email"
@@ -25,8 +26,8 @@
                 />
             </div>
 
-            <div id="input-format" style="position: relative;">
-                <input
+            <div id="input-format"  class="flex justify-center items-center">
+                <input class="w-full p-3 h-auto rounded-xl leading-[140%] sm:p-4 border border-transparent my-[5px] bg-[rgba(255,_255,_255,_0.1)] text-white"
                     required
                     type="password"
                     placeholder="Mật khẩu"
@@ -34,53 +35,49 @@
                     id="password"
                     oninput="clearError()"
                 />
-                <span id="togglePassword" onclick="toggleShowPassword()" style="cursor: pointer;">
-                    👁️
-                </span>
             </div>
 
             <button
                 type="submit"
-                class="login-page__button"
+                class="w-full sm:p-5 p-4 bg-white h-full text-[rgb(16,16,16)] border-none rounded-xl font-bold my-[5px] cursor-pointer disabled:cursor-not-allowed disabled:text-[rgba(16,16,16,0.4)]"
                 id="submitButton"
                 disabled
             >
                 Đăng nhập
             </button>
 
-            <a href="#" class="login-page__forgot-password">Bạn quên mật khẩu ư?</a>
+            <a href="#" class="block text-center mt-[10px] text-[rgba(255,255,255,0.3)]">Bạn quên mật khẩu ư?</a>
 
-            <div class="login-page__separator">
-                <hr />
-                <span>hoặc</span>
-                <hr />
+            <div class="flex items-center justify-center text-[rgba(255,255,255,0.3)] my-5">
+                <hr class="w-full border-t border-t-[rgba(255,255,255,0.3)]"/>
+                <span class="text-[14px] mx-[10px]">hoặc</span>
+                <hr class="w-full border-t border-t-[rgba(255,255,255,0.3)]"/>
             </div>
 
-            <div class="login-page__instagram-login">
-                <img src="../public/image/instagram.png" alt="Instagram" width="45" height="45" />
+            <div class="flex items-center sm:gap-[10px] gap-[5px] p-5 bg-[rgba(255,_255,_255,_0.1)] p-[20px] rounded-[16px] cursor-pointer border border-[rgba(255,_255,_255,_0.3)]">
+                <img src="../public/image/instagram.png" alt="Instagram" width="45" height="45" class="m-[5px]"/>
                 <span>
-                    <p>Tiếp tục bằng Instagram</p>
+                    <p class="m-[10px] text-[16px]">Tiếp tục bằng Instagram</p>
                 </span>
-                <span class="login-page__arrow">
-                    <svg aria-label="Đăng nhập" role="img" viewBox="0 0 24 24" width="24" height="24" stroke="currentColor">
-                        <title>Đăng nhập</title>
+                <span class="text-[18px]">
+                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" style="transform: rotate(180deg);">
                         <polyline points="16.502 3 7.498 12 16.502 21" />
-                    </svg>
+                    </svg>                    
                 </span>
             </div>
 
-            <div class="login-page__error-notification" id="errorNotification" style="display: none;">
+            <div class="fixed bottom-[40px] left-1/2 transform -translate-x-1/2 bg-white text-black p-[10px_20px] rounded-[8px] shadow-[0_2px_10px_rgba(0,0,0,0.2)] opacity-100 animate-slideUp animate-stay animate-slideDown" id="errorNotification" style="display: none;">
                 Sai mật khẩu.
             </div>
         </form>
 
         <footer>
-            <div class="login-page__footer-links">
+            <div class="flex flex-col gap-[5px] sm:flex-row justify-center items-center sm:gap-[10px] mt-10 text-[rgba(255,255,255,0.3)]">
                 <span>© 2024</span>
-                <a href="https://help.instagram.com/769983657850450" target="_blank" rel="noopener noreferrer">Điều khoản của Threads</a>
-                <a href="https://help.instagram.com/515230437301944" target="_blank" rel="noopener noreferrer">Chính sách quyền riêng tư</a>
-                <a href="https://privacycenter.instagram.com/policies/cookies/" target="_blank" rel="noopener noreferrer">Chính sách Cookie</a>
-                <a href="#">Báo cáo sự cố</a>
+                <a class="text-[rgba(255,255,255,0.3)] text-[12px] transition-all duration-[100ms] ease-linear hover:underline" href="https://help.instagram.com/769983657850450" target="_blank" rel="noopener noreferrer">Điều khoản của Threads</a>
+                <a class="text-[rgba(255,255,255,0.3)] text-[12px] transition-all duration-[100ms] ease-linear hover:underline" href="https://help.instagram.com/515230437301944" target="_blank" rel="noopener noreferrer">Chính sách quyền riêng tư</a>
+                <a class="text-[rgba(255,255,255,0.3)] text-[12px] transition-all duration-[100ms] ease-linear hover:underline" href="https://privacycenter.instagram.com/policies/cookies/" target="_blank" rel="noopener noreferrer">Chính sách Cookie</a>
+                <a class="text-[rgba(255,255,255,0.3)] text-[12px] transition-all duration-[100ms] ease-linear hover:underline" href="#">Báo cáo sự cố</a>
             </div>
         </footer>
     </div>
@@ -92,12 +89,10 @@
         const errorNotification = document.getElementById('errorNotification');
         const logo = document.getElementById('logo');
 
-        // Hiển thị logo trên màn hình nhỏ
         if (window.innerWidth <= 480) {
             logo.style.display = "block";
         }
 
-        // Kiểm tra để bật/tắt nút đăng nhập
         usernameInput.addEventListener('input', checkButtonState);
         passwordInput.addEventListener('input', checkButtonState);
 
@@ -105,23 +100,10 @@
             submitButton.disabled = !(usernameInput.value && passwordInput.value);
         }
 
-        // Hiển thị/ẩn mật khẩu
-        function toggleShowPassword() {
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text";
-                document.getElementById('togglePassword').innerText = '🙈'; // Đổi icon thành ẩn mắt
-            } else {
-                passwordInput.type = "password";
-                document.getElementById('togglePassword').innerText = '👁️'; // Đổi icon thành mở mắt
-            }
-        }
-
         function handleSubmit(event) {
             event.preventDefault();
             showError("Sai mật khẩu.");
         }
-
-        // Hiển thị thông báo lỗi
         function showError(message) {
             errorNotification.innerText = message;
             errorNotification.style.display = "block";
@@ -129,8 +111,6 @@
                 errorNotification.style.display = "none";
             }, 3000);
         }
-
-        // Xóa thông báo lỗi
         function clearError() {
             errorNotification.style.display = "none";
         }
