@@ -2,40 +2,50 @@
     background-color: transparent;
     overflow-y: auto;
 }
+
 .notification-card {
+    position: relative;
     display: flex;
     padding: 1rem 1.5rem;
-    border-bottom: 1px solid #333333; 
+    border-bottom: 1px solid #333333;
 }
+
 .notification-icon img {
     width: 36px;
     height: 36px;
     border-radius: 50%;
     margin-right: 0.75rem;
 }
+
 .notification-right {
     display: flex;
     flex-direction: column;
     flex: 1;
 }
+
 .notification-header {
     display: flex;
     align-items: center;
     margin-bottom: 0.25rem;
 }
+
 .notification-user-name {
     font-weight: bold;
-    color: rgb(243, 245, 247);;
+    color: rgb(243, 245, 247);
+    ;
     font-size: 1rem;
 }
+
 .notification-time {
     margin-left: 0.5rem;
     color: rgb(119, 119, 119);
 }
+
 .notification-message {
     font-size: 0.95rem;
     line-height: 1.5;
 }
+
 .notification-unread-mark {
     background-color: rgb(99, 188, 218);
     width: 10px;
@@ -43,4 +53,19 @@
     border-radius: 50%;
     margin-left: auto;
     align-self: center;
+}
+
+
+.close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    font-size: 1.5rem;
+    color: #bbb;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close:hover {
+    color: #f00;
 }
