@@ -170,20 +170,22 @@
         .catch(error => console.error(error));
     }
 
-    loadContent('./Feed.html');
+    loadContent('./Profile.html');
         const handleLinkClick = (id) => {
             event.preventDefault();
             const navLinks = document.querySelectorAll('.mainpage__menu a');
             if (id == "home")
               loadContent('./Feed.html');
             else if (id == "notification")  
-            loadContent('./NotificationPage.html');
+              loadContent('./NotificationPage.html');
             else if (id == "personal")
-            loadContent('./Profile.html');
-          else if (id == "find")
-            loadContent('./Search.html');
+              loadContent('./Profile.html');
+            else if (id == "find")
+              loadContent('./Search.html');
+            else if (id == "new") 
+              loadContent('./NewPost.html');
             navLinks.forEach(link => {
-                link.classList.remove('mainpage__selected');
+              link.classList.remove('mainpage__selected');
             });
 
             document.getElementById(id).classList.add('mainpage__selected');
