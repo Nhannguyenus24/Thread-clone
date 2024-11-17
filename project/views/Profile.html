@@ -1,101 +1,511 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <link rel="stylesheet" href="../public/css/Profile.css">
+  </head>
 
-<head>
-  <link rel="stylesheet" href="../public/css/Profile.css">
-</head>
-
-<body>
+  <body>
     <div class="profile">
-      <div class="profile__intro">
-        <div class="profile-name">
+      <div class=".profile__intro flex justify-between px-6 pt-4 pb-2.5">
+        <div class="profile-name flex flex-col justify-center">
           <div class="name__realname">
-            <h1 class="realname">Trần Đức Tùng</h1>
+            <h1
+              class="realname text-gray-100 text-xl font-bold leading-[30px] font-sans cursor-pointer"
+            >
+              Trần Đức Tùng
+            </h1>
           </div>
           <div class="name__nickname">
-            <span class="nickname">__td.tung</span>
+            <span
+              class="nickname text-gray-100 font-normal leading-[21px] font-sans"
+              >__td.tung</span
+            >
           </div>
         </div>
         <div class="profile-avatar">
-          <img src="../public/image/avatar_1.0.jpg" alt="Avatar">
+          <img
+            src="../public/image/avatar_1.0.jpg"
+            alt="Avatar"
+            class="cursor-pointer max-w-[84px] h-auto rounded-full object-cover outline outline-[0.5px] outline-gray-100/15"
+          />
         </div>
       </div>
-      <div class="profile-quote">
+      <div class="profile-quote px-6">
         <span>bed boi.</span>
       </div>
 
-      <div class="follower-panel">
-        <div class="number-follower">
-          <span>12 người theo dõi</span>
+      <div class="follower-panel flex justify-between px-6 pt-4">
+        <div class="number-follower cursor-pointer">
+          <span
+            class="hover:border-b-[1.5px] hover:border-gray-600 text-[15px] font-normal text-gray-600 leading-[21px]"
+            onclick="displayFollowsPanel()"
+            >12 người theo dõi</span
+          >
+
+          <div
+            class="overall-follow-panel w-[90vw] lg:w-1/3  absolute z-10 top-[20%] lg:top-[25%] lg:left-[32.5%]  bg-[rgb(16,16,16)] rounded-lg border border-[rgba(243,245,247,0.15)] hidden"
+          >
+            <div class="column-panel flex flex-row text-center">
+              <div
+                class="list-follower activated flex-1 cursor-pointer "
+                onclick="chooseFollower()"
+              >
+                <span 
+                  class="text-lg font-bold leading-5 font-sans"
+                  >Người theo dõi</span
+                >
+                <br />
+                <span
+                  class="text-sm font-normal leading-4.5 font-sans"
+                  >14</span
+                >
+              </div>
+              <div
+                class="list-following flex-1 cursor-pointer"
+                onclick="chooseFollowing()"
+              >
+                <span
+                  class="text-lg font-bold leading-5 font-sans"
+                  >Đang theo dõi</span
+                >
+                <br />
+                <span
+                  class="text-sm font-normal leading-4.5 font-sans"
+                  >56</span
+                >
+              </div>
+            </div>
+
+            <div class="list-of-follow relative">
+              <ul>
+                <li
+                  class="information-follow flex flex-row justify-between py-4 pl-4"
+                >
+                  <div
+                    class="avatar-follow flex-1 flex items-center justify-center"
+                  >
+                    <img
+                      class="cursor-pointer max-w-[50%] h-auto rounded-full object-cover outline outline-[0.5px] outline-[#F3F5F7]"
+                      src="../public/image/avatar_1.0.jpg"
+                      alt="Avatar"
+                    />
+                  </div>
+                  <div
+                    class="follow-item flex flex-row justify-between flex-grow"
+                  >
+                    <div class="name-container">
+                      <span
+                        class="text-[rgb(243,245,247)] text-[15px] font-[600] leading-5"
+                        >kit_ofoso</span
+                      ><br />
+                      <span
+                        class="text-[rgb(119,119,119)] text-[15px] font-[400] leading-5"
+                        >Cao Anh Khoa</span
+                      >
+                    </div>
+                    <div
+                      class="follow-back-btn text-[rgb(119,119,119)] font-[600] text-[15px] p-[0px_16px] border border-[rgba(243,245,247,0.15)] rounded-[10px] leading-[32.4px] h-[32.4px] mr-[10px]"
+                      onclick="displayUnfollowPanel()"
+                    >
+                      Đang theo dõi
+                    </div>
+
+                    <div
+                      class="modal absolute top-1/2 left-1/2 w-[60vw] lg:w-[26vw] transform -translate-x-1/2 -translate-y-1/2  bg-[rgb(24,24,24)] rounded-lg text-center border border-[rgba(243,245,247,0.15)]"
+                    >
+                      <!-- Hiện lên khi bấm vào follow-back-btn -->
+                      <div class="profile-pic flex justify-center items-center">
+                        <img
+                          class="w-20 h-20 rounded-full object-cover outline outline-[0.5px] outline-gray-100/15"
+                          src="../public/image/perrytheplatipus.jpg"
+                          alt="Avatar"
+                        />
+                      </div>
+                      <div class="modal-text text-[16px] font-[600] mb-[20px]">
+                        Bỏ theo dõi hcmusgang?
+                      </div>
+                      <div
+                        class="modal-actions flex border-t border-[#333] mt-[20px]"
+                      >
+                        <button
+                          class="modal-button cancel flex-1 h-[10%] p-[10px] text-[rgb(243,245,247)] text-[16px] font-[400] border-r-[1px] border-[#333] cursor-pointer hover:bg-[#333]"
+                          onclick="cancelModalBtn()"
+                        >
+                          Hủy
+                        </button>
+                        <button
+                          class="modal-button unfollow flex-1 h-[10%] p-[10px] text-[16px] font-[700] text-[rgb(255,48,64)] cursor-pointer hover:bg-[#333]"
+                        >
+                          Bỏ theo dõi
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+
+              </ul>
+            </div>
+          </div>
         </div>
-        <div class="more-views">
+        <div class="more-views flex items-center">
           <svg viewBox="0 0 24 24" class="svg-icon" width="24" height="24">
-            <rect fill="none" height="20" rx="5" stroke="currentColor" stroke-width="2" width="20" x="2" y="2"></rect>
-            <rect fill="#FFFFFF" height="12" rx="1" width="2" x="11" y="6"></rect>
-            <rect fill="#FFFFFF" height="9" rx="1" width="2" x="15" y="9"></rect>
-            <rect fill="#FFFFFF" height="5" rx="1" width="2" x="7" y="13"></rect>
+            <rect
+              fill="none"
+              height="20"
+              rx="5"
+              stroke="currentColor"
+              stroke-width="2"
+              width="20"
+              x="2"
+              y="2"
+            ></rect>
+            <rect
+              fill="#FFFFFF"
+              height="12"
+              rx="1"
+              width="2"
+              x="11"
+              y="6"
+            ></rect>
+            <rect
+              fill="#FFFFFF"
+              height="9"
+              rx="1"
+              width="2"
+              x="15"
+              y="9"
+            ></rect>
+            <rect
+              fill="#FFFFFF"
+              height="5"
+              rx="1"
+              width="2"
+              x="7"
+              y="13"
+            ></rect>
           </svg>
-          <svg viewBox="0 0 24 24" class="insta-icon" width="24" height="24">
-            <path fill="white"
-              d="M12 2.982c2.937 0 3.285.011 4.445.064a6.087 6.087 0 0 1 2.042.379 3.408 3.408 0 0 1 1.265.823 3.408 3.408 0 0 1 .823 1.265 6.087 6.087 0 0 1 .379 2.042c.053 1.16.064 1.508.064 4.445s-.011 3.285-.064 4.445a6.087 6.087 0 0 1-.379 2.042 3.643 3.643 0 0 1-2.088 2.088 6.087 6.087 0 0 1-2.042.379c-1.16.053-1.508.064-4.445.064s-3.285-.011-4.445-.064a6.087 6.087 0 0 1-2.043-.379 3.408 3.408 0 0 1-1.264-.823 3.408 3.408 0 0 1-.823-1.265 6.087 6.087 0 0 1-.379-2.042c-.053-1.16-.064-1.508-.064-4.445s.011-3.285.064-4.445a6.087 6.087 0 0 1 .379-2.042 3.408 3.408 0 0 1 .823-1.265 3.408 3.408 0 0 1 1.265-.823 6.087 6.087 0 0 1 2.042-.379c1.16-.053 1.508-.064 4.445-.064M12 1c-2.987 0-3.362.013-4.535.066a8.074 8.074 0 0 0-2.67.511 5.392 5.392 0 0 0-1.949 1.27 5.392 5.392 0 0 0-1.269 1.948 8.074 8.074 0 0 0-.51 2.67C1.012 8.638 1 9.013 1 12s.013 3.362.066 4.535a8.074 8.074 0 0 0 .511 2.67 5.392 5.392 0 0 0 1.27 1.949 5.392 5.392 0 0 0 1.948 1.269 8.074 8.074 0 0 0 2.67.51C8.638 22.988 9.013 23 12 23s3.362-.013 4.535-.066a8.074 8.074 0 0 0 2.67-.511 5.625 5.625 0 0 0 3.218-3.218 8.074 8.074 0 0 0 .51-2.67C22.988 15.362 23 14.987 23 12s-.013-3.362-.066-4.535a8.074 8.074 0 0 0-.511-2.67 5.392 5.392 0 0 0-1.27-1.949 5.392 5.392 0 0 0-1.948-1.269 8.074 8.074 0 0 0-2.67-.51C15.362 1.012 14.987 1 12 1Zm0 5.351A5.649 5.649 0 1 0 17.649 12 5.649 5.649 0 0 0 12 6.351Zm0 9.316A3.667 3.667 0 1 1 15.667 12 3.667 3.667 0 0 1 12 15.667Zm5.872-10.859a1.32 1.32 0 1 0 1.32 1.32 1.32 1.32 0 0 0-1.32-1.32Z">
-            </path>
+          <svg
+            viewBox="0 0 24 24"
+            class="insta-icon ml-2.5"
+            width="24"
+            height="24"
+          >
+            <path
+              fill="white"
+              d="M12 2.982c2.937 0 3.285.011 4.445.064a6.087 6.087 0 0 1 2.042.379 3.408 3.408 0 0 1 1.265.823 3.408 3.408 0 0 1 .823 1.265 6.087 6.087 0 0 1 .379 2.042c.053 1.16.064 1.508.064 4.445s-.011 3.285-.064 4.445a6.087 6.087 0 0 1-.379 2.042 3.643 3.643 0 0 1-2.088 2.088 6.087 6.087 0 0 1-2.042.379c-1.16.053-1.508.064-4.445.064s-3.285-.011-4.445-.064a6.087 6.087 0 0 1-2.043-.379 3.408 3.408 0 0 1-1.264-.823 3.408 3.408 0 0 1-.823-1.265 6.087 6.087 0 0 1-.379-2.042c-.053-1.16-.064-1.508-.064-4.445s.011-3.285.064-4.445a6.087 6.087 0 0 1 .379-2.042 3.408 3.408 0 0 1 .823-1.265 3.408 3.408 0 0 1 1.265-.823 6.087 6.087 0 0 1 2.042-.379c1.16-.053 1.508-.064 4.445-.064M12 1c-2.987 0-3.362.013-4.535.066a8.074 8.074 0 0 0-2.67.511 5.392 5.392 0 0 0-1.949 1.27 5.392 5.392 0 0 0-1.269 1.948 8.074 8.074 0 0 0-.51 2.67C1.012 8.638 1 9.013 1 12s.013 3.362.066 4.535a8.074 8.074 0 0 0 .511 2.67 5.392 5.392 0 0 0 1.27 1.949 5.392 5.392 0 0 0 1.948 1.269 8.074 8.074 0 0 0 2.67.51C8.638 22.988 9.013 23 12 23s3.362-.013 4.535-.066a8.074 8.074 0 0 0 2.67-.511 5.625 5.625 0 0 0 3.218-3.218 8.074 8.074 0 0 0 .51-2.67C22.988 15.362 23 14.987 23 12s-.013-3.362-.066-4.535a8.074 8.074 0 0 0-.511-2.67 5.392 5.392 0 0 0-1.27-1.949 5.392 5.392 0 0 0-1.948-1.269 8.074 8.074 0 0 0-2.67-.51C15.362 1.012 14.987 1 12 1Zm0 5.351A5.649 5.649 0 1 0 17.649 12 5.649 5.649 0 0 0 12 6.351Zm0 9.316A3.667 3.667 0 1 1 15.667 12 3.667 3.667 0 0 1 12 15.667Zm5.872-10.859a1.32 1.32 0 1 0 1.32 1.32 1.32 1.32 0 0 0-1.32-1.32Z"
+            ></path>
           </svg>
         </div>
       </div>
     </div>
 
-    <div class="config-profile-btn">
-      <div class="profile-box">
-        <span>Chỉnh sửa trang cá nhân</span>
+    <div class="config-profile-btn px-6 py-3 relative">
+      <div
+        class="profile-box border border-gray-100/15 px-4 py-2 text-center rounded-xl cursor-pointer"
+        onclick="displayConfigProfileBtn()"
+      >
+        <span class="font-semibold leading-[2rem]"
+          >Chỉnh sửa trang cá nhân</span
+        >
       </div>
-      <div class="profile-form"> <!--Sau khi bấm bút box ở trên thì hiện ra form này -->
-        <div class="personal-info">
-          <div class="all-about-name">
-            <span>Tên</span>
-            <div class="name-panel">
+      <div
+        class="profile-form w-[90vw] lg:w-[40vw] lg:h-[60vh] bg-[rgb(16,16,16)] border border-[rgba(243,245,257,0.15)] rounded-xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  hidden"
+      >
+        <!--Sau khi bấm bút box ở trên thì hiện ra form này -->
+        <div class="personal-info mx-6 mt-6 mb-0 flex flex-row justify-between">
+          <div
+            class="all-about-name border-b border-[rgba(243,245,247,0.15)] flex-grow"
+          >
+            <span class="text-gray-100 font-semibold leading-[21px] min-w-0"
+              >Tên</span
+            >
+            <div
+              class="name-panel flex flex-row items-center pb-[14px] pt-[4px]"
+            >
               <svg viewBox="0 0 14 21" width="15" height="15">
-                <path fill="white"
-                  d="M2.43 20.432c-.743 0-1.306-.202-1.69-.606-.384-.397-.576-.996-.576-1.797v-6.924c0-.794.192-1.39.576-1.787.384-.397.948-.595 1.69-.595h9.14c.742 0 1.306.198 1.69.595.384.397.576.993.576 1.787v6.924c0 .801-.192 1.4-.576 1.797-.384.404-.947.606-1.69.606H2.43Zm.273-1.758h8.594c.202 0 .358-.062.469-.186.11-.117.166-.293.166-.527v-6.777c0-.235-.056-.41-.166-.528-.111-.117-.267-.176-.47-.176H2.704a.634.634 0 0 0-.469.176c-.11.117-.166.293-.166.528v6.777c0 .234.056.41.166.527a.615.615 0 0 0 .47.186Zm-.752-9.131V6.438c0-1.205.235-2.21.703-3.018.476-.814 1.097-1.426 1.866-1.836A5.187 5.187 0 0 1 7 .969c.885 0 1.712.205 2.48.615.769.41 1.387 1.022 1.856 1.836.475.807.713 1.813.713 3.018v3.105h-1.826V6.262c0-.762-.15-1.403-.45-1.924a3.019 3.019 0 0 0-1.171-1.201A3.223 3.223 0 0 0 7 2.727c-.58 0-1.113.136-1.602.41a3.019 3.019 0 0 0-1.171 1.2c-.293.522-.44 1.163-.44 1.925v3.281H1.951Z">
-                </path>
+                <path
+                  fill="white"
+                  d="M2.43 20.432c-.743 0-1.306-.202-1.69-.606-.384-.397-.576-.996-.576-1.797v-6.924c0-.794.192-1.39.576-1.787.384-.397.948-.595 1.69-.595h9.14c.742 0 1.306.198 1.69.595.384.397.576.993.576 1.787v6.924c0 .801-.192 1.4-.576 1.797-.384.404-.947.606-1.69.606H2.43Zm.273-1.758h8.594c.202 0 .358-.062.469-.186.11-.117.166-.293.166-.527v-6.777c0-.235-.056-.41-.166-.528-.111-.117-.267-.176-.47-.176H2.704a.634.634 0 0 0-.469.176c-.11.117-.166.293-.166.528v6.777c0 .234.056.41.166.527a.615.615 0 0 0 .47.186Zm-.752-9.131V6.438c0-1.205.235-2.21.703-3.018.476-.814 1.097-1.426 1.866-1.836A5.187 5.187 0 0 1 7 .969c.885 0 1.712.205 2.48.615.769.41 1.387 1.022 1.856 1.836.475.807.713 1.813.713 3.018v3.105h-1.826V6.262c0-.762-.15-1.403-.45-1.924a3.019 3.019 0 0 0-1.171-1.201A3.223 3.223 0 0 0 7 2.727c-.58 0-1.113.136-1.602.41a3.019 3.019 0 0 0-1.171 1.2c-.293.522-.44 1.163-.44 1.925v3.281H1.951Z"
+                ></path>
               </svg>
               <span class="real-name">Trần Đức Tùng</span>
-              <span class="nickname">@(__td.tung)</span>
+              <span class="nickname ml-2.5">(@__td.tung)</span>
             </div>
           </div>
-          <img src="../public/image/avatar_1.0.jpg">
+          <div class="flex items-center pl-2">
+            <img
+            class="cursor-pointer max-w-[40px] max-h-[40px] lg:max-w-[10vh] lg:h-[5vh] rounded-full object-cover "
+            src="../public/image/avatar_1.0.jpg"
+          />
+          </div>
+          
         </div>
-        <div class="all-about-quote">
-          <span>Tiểu sử</span>
-          <div class="profile-quote">
-            <span>bed boi.</span>
+        <div
+          class="all-about-quote mx-6 mt-4 border-b border-[rgba(243,245,247,0.15)] cursor-pointer"
+        >
+          <span
+            class="text-[rgb(243,245,247)] text-[15px] font-[600] leading-[21px]"
+            >Tiểu sử</span
+          >
+          <div
+            class="profile-quote py-1 px-0 cursor-pointer pt-[4px] pb-[14px]"
+          >
+            <span class="text-[rgb(243,245,247)] font-[400] leading-[21px]"
+              >bed boi.</span
+            >
           </div>
         </div>
-        <div class="add-link">
-          <span>Liên kết</span>
-          <div class="add-link-btn">
+        <div
+          class="add-link mt-4 mx-6 mb-0 cursor-pointer border-b border-[rgba(243,245,247,0.15)]"
+        >
+          <span class="text-[rgb(243,245,247)] font-[600] leading-[21px]"
+            >Liên kết</span
+          >
+          <div
+            class="add-link-btn text-[rgb(119,119,119)] font-[400] leading-[21px] pb-[14px] pt-[4px]"
+          >
             <span>+ Thêm liên kết</span>
           </div>
         </div>
-        <div class="icon-on-off">
+        <div class="icon-on-off mx-6 mt-4 flex justify-between">
           <div class="instruction">
-            <span class="note">Hiển thị biểu tượng Instagram </span>
-            <br>
-            <span class="explain">Khi bạn tắt, huy hiệu Threads trên trang cá nhân Instagram cũng sẽ biến mất</span>
+            <span class="note text-[rgb(243,245,247)] text-[15px] font-[600]"
+              >Hiển thị biểu tượng Instagram
+            </span>
+            <br />
+            <span class="explain text-[rgb(119,119,119)] text-[12px] font-[400]"
+              >Khi bạn tắt, huy hiệu Threads trên trang cá nhân Instagram cũng
+              sẽ biến mất</span
+            >
           </div>
 
-          <div class="toggle-switch">
-            <input type="checkbox" id="toggle" />
-            <label for="toggle" class="profile-slider"></label>
-          </div>
+          <!-- <div
+            id="toggle"
+            class="w-[20%] h-[10%] lg:w-[10%] lg:h-[10%] flex items-center bg-gray-700 rounded-full p-1 cursor-pointer duration-300 justify-start"
+            onclick="toggleSwitch()"
+          >
+            <div
+              id="circle"
+              class="bg-black w-6 h-6 rounded-full duration-300" 
+            ></div>
+          </div> -->
         </div>
-        <div class="complete-btn">
-          <span>Xong</span>
+
+        <div
+          class="complete-btn flex items-center justify-center bg-[rgb(255,255,255)] h-[50px] mx-6 mt-4 mb-6 px-4 rounded-lg cursor-pointer"
+          onclick="turnOffConfigProfile()"
+        >
+          <span class="text-[rgb(0,0,0)] font-[600] text-[15px]">Xong</span>
         </div>
       </div>
     </div>
-    <div class="information-bar">
+    <div class="information-bar flex items-center justify-center h-[48px] text-[rgb(243,245,247)] text-[15px] font-[600] border-b-[0.8px] border-b-[rgba(243,245,247,0.15)]">
       <span>Thread của bạn</span>
     </div>
 
-</body>
+
+    <div class="flex sm:py-4 sm:px-6 gap-3 border-b border-[#333333] p-2">
+      <img id="avatar" src="../public/image/avatar_1.0.jpg" class="w-[36px] h-[36px] rounded-full"/>
+      <div class="flex flex-col gap-2 w-full">
+        <div class="flex gap-2 text-[#f3f5f7]">
+          <span>Anh già mãi đỉnh</span>
+          <span class="text-[#777777]">12 giờ</span>
+        </div>
+        <span id="content" class="thread-content"
+          >Sườn dốc của Faker</span
+        >
+        <div class="image-container w-full max-w-full overflow-hidden">
+          <img src="../public/image/anh_troll.jpg" class="max-h-[400px] max-w-full h-auto rounded-[5px]"/>
+        </div>
+
+        <div class="flex items-center gap-5">
+          <div class="p-3 -ml-3 flex items-center h-[18px] gap-1" onclick="handleLike(event)">
+            <svg viewBox="0 0 18 18" width="18" height="18" class="nonactive">
+              <path
+                d="M1.34375 7.53125L1.34375 7.54043C1.34374 8.04211 1.34372 8.76295 1.6611 9.65585C1.9795 10.5516 2.60026 11.5779 3.77681 12.7544C5.59273 14.5704 7.58105 16.0215 8.33387 16.5497C8.73525 16.8313 9.26573 16.8313 9.66705 16.5496C10.4197 16.0213 12.4074 14.5703 14.2232 12.7544C15.3997 11.5779 16.0205 10.5516 16.3389 9.65585C16.6563 8.76296 16.6563 8.04211 16.6562 7.54043V7.53125C16.6562 5.23466 15.0849 3.25 12.6562 3.25C11.5214 3.25 10.6433 3.78244 9.99228 4.45476C9.59009 4.87012 9.26356 5.3491 9 5.81533C8.73645 5.3491 8.40991 4.87012 8.00772 4.45476C7.35672 3.78244 6.47861 3.25 5.34375 3.25C2.9151 3.25 1.34375 5.23466 1.34375 7.53125Z"
+                stroke-width="1.25"
+              ></path>
+            </svg>
+            <span class="flex items-center justify-center text-[13px] font-normal text-[#cccccc] cursor-pointer">6636</span>
+          </div>
+          <div class="p-3 -ml-3 flex items-center h-[18px] gap-1" onClick="showCommentSection()">
+            <svg viewBox="0 0 18 18" width="18" height="18">
+              <path
+                d="M15.376 13.2177L16.2861 16.7955L12.7106 15.8848C12.6781 15.8848 12.6131 15.8848 12.5806 15.8848C11.3779 16.5678 9.94767 16.8931 8.41995 16.7955C4.94194 16.5353 2.08152 13.7381 1.72397 10.2578C1.2689 5.63919 5.13697 1.76863 9.75264 2.22399C13.2307 2.58177 16.0261 5.41151 16.2861 8.92429C16.4161 10.453 16.0586 11.8841 15.376 13.0876C15.376 13.1526 15.376 13.1852 15.376 13.2177Z"
+                stroke-linejoin="round"
+                stroke-width="1.25"
+                stroke="#cccccc"
+                fill="transparent"
+              ></path>
+            </svg>
+            <span class="flex items-center justify-center text-[13px] font-normal text-[#cccccc] cursor-pointer">8386</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="flex sm:py-4 sm:px-6 gap-3 border-b border-[#333333] p-2">
+      <img id="avatar" src="../public/image/avatar_1.0.jpg" class="w-[36px] h-[36px] rounded-full"/>
+      <div class="flex flex-col gap-2 w-full">
+        <div class="flex gap-2 text-[#f3f5f7]">
+          <span>Fan T1</span>
+          <span class="text-[#777777]">12 giờ</span>
+        </div>
+        <span id="content" class="thread-content"
+          >Geng tuổi loz, thế cho nó vuông</span
+        >
+        <div class="image-container w-full max-w-full overflow-hidden">
+          <img src="../public/image/anh_troll.jpg" class="max-h-[400px] max-w-full h-auto rounded-[5px]"/>
+        </div>
+
+        <div class="flex items-center gap-5">
+          <div class="p-3 -ml-3 flex items-center h-[18px] gap-1" onclick="handleLike(event)">
+            <svg viewBox="0 0 18 18" width="18" height="18" class="nonactive">
+              <path
+                d="M1.34375 7.53125L1.34375 7.54043C1.34374 8.04211 1.34372 8.76295 1.6611 9.65585C1.9795 10.5516 2.60026 11.5779 3.77681 12.7544C5.59273 14.5704 7.58105 16.0215 8.33387 16.5497C8.73525 16.8313 9.26573 16.8313 9.66705 16.5496C10.4197 16.0213 12.4074 14.5703 14.2232 12.7544C15.3997 11.5779 16.0205 10.5516 16.3389 9.65585C16.6563 8.76296 16.6563 8.04211 16.6562 7.54043V7.53125C16.6562 5.23466 15.0849 3.25 12.6562 3.25C11.5214 3.25 10.6433 3.78244 9.99228 4.45476C9.59009 4.87012 9.26356 5.3491 9 5.81533C8.73645 5.3491 8.40991 4.87012 8.00772 4.45476C7.35672 3.78244 6.47861 3.25 5.34375 3.25C2.9151 3.25 1.34375 5.23466 1.34375 7.53125Z"
+                stroke-width="1.25"
+              ></path>
+            </svg>
+            <span class="flex items-center justify-center text-[13px] font-normal text-[#cccccc] cursor-pointer">155552</span>
+          </div>
+          <div class="p-3 -ml-3 flex items-center h-[18px] gap-1" onClick="showCommentSection()">
+            <svg viewBox="0 0 18 18" width="18" height="18">
+              <path
+                d="M15.376 13.2177L16.2861 16.7955L12.7106 15.8848C12.6781 15.8848 12.6131 15.8848 12.5806 15.8848C11.3779 16.5678 9.94767 16.8931 8.41995 16.7955C4.94194 16.5353 2.08152 13.7381 1.72397 10.2578C1.2689 5.63919 5.13697 1.76863 9.75264 2.22399C13.2307 2.58177 16.0261 5.41151 16.2861 8.92429C16.4161 10.453 16.0586 11.8841 15.376 13.0876C15.376 13.1526 15.376 13.1852 15.376 13.2177Z"
+                stroke-linejoin="round"
+                stroke-width="1.25"
+                stroke="#cccccc"
+                fill="transparent"
+              ></path>
+            </svg>
+            <span class="flex items-center justify-center text-[13px] font-normal text-[#cccccc] cursor-pointer">2254</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="comment-section" class="w-screen h-screen fixed z-100 top-0 hidden flex-col bg-black sm:bg-[#181818] sm:w-1/2 border border-white">
+      <div class="flex relative h-[50px] items-center">
+        <span class="cursor-pointer ml-6" onClick="quitCommentSection()">Hủy</span>
+        <span class="font-bold absolute left-1/2 transform -translate-x-1/2 text-center">Thread trả lời</span>
+      </div>
+      <hr />
+      <div class="flex-1 overflow-y-auto">
+        <div class="flex gap-3 border-b border-[#333333] p-2">
+          <img id="avatar" src="../public/image/perrytheplatipus.jpg" class="w-[36px] h-[36px] rounded-full"/>
+          <div class="flex flex-col gap-2 w-full">
+            <div class="flex gap-2 text-[#f3f5f7]">
+              <span>user</span>
+              <span class="text-[#777777]">12 giờ</span>
+            </div>
+            <span id="content" class="thread-content"
+              >Vãi loz, Faker già chết mịa, mốt cụt tay rồi sao đánh mà gáy dm</span
+            >
+          </div>
+        </div>
+      </div>
+      <hr/>
+      <div class="h-[80px] rounded-lg p-2 flex items-center bg-black sm:bg-[#181818] w-full gap-2">
+        <img src="../public/image/anonymous-user.jpg" class="w-[40px] h-[40px] rounded-full" />
+        <div class="flex items-center bg-[#333333]  flex-1 rounded-xl">
+          <input type="text" placeholder="Write a comment..." class="flex-1 bg-transparent border-none text-[#ddd] outline-none ml-2"/>
+          <button class="bg-none border-none text-[#777] cursor-pointer p-3 sm: text-[18px]">➤</button>
+        </div>
+      </div>
+    </div>
+
+  
+
+    <script>
+      const displayConfigProfileBtn = () => {
+        const configProfileBtn = document.querySelector(
+          ".config-profile-btn .profile-form"
+        );
+        configProfileBtn.style.display = "block";
+      };
+
+      const turnOffConfigProfile = () => {
+        const turnOffConfigProfileBtn = document.querySelector(
+          ".config-profile-btn .profile-form"
+        );
+        turnOffConfigProfileBtn.style.display = "none";
+      };
+
+      const displayFollowsPanel = () => {
+        const followsPanel = document.querySelector(
+          ".profile .follower-panel .overall-follow-panel"
+        );
+        followsPanel.style.display = "block";
+
+        // Thêm sự kiện `click` với độ trễ ngắn để tránh ẩn panel ngay lập tức
+        setTimeout(() => {
+          document.addEventListener("click", handleClickOutsideFollowsPanel);
+        }, 0);
+      };
+
+      function handleClickOutsideFollowsPanel(event) {
+        const numberFollower = document.querySelector(
+          ".profile .follower-panel .number-follower"
+        );
+        const followsPanel = document.querySelector(
+          ".profile .follower-panel .overall-follow-panel"
+        );
+
+        if (!numberFollower.contains(event.target)) {
+          followsPanel.style.display = "none";
+          document.removeEventListener("click", handleClickOutsideFollowsPanel);
+        }
+      }
+
+      const chooseFollower = () => {
+        const listFollower = document.querySelector(
+          ".column-panel .list-follower"
+        );
+        const listFollowing = document.querySelector(
+          ".column-panel .list-following"
+        );
+        listFollower.classList.add("activated");
+        listFollowing.classList.remove("activated");
+      };
+
+      const chooseFollowing = () => {
+        const listFollowing = document.querySelector(
+          ".column-panel .list-following"
+        );
+        const listFollower = document.querySelector(
+          ".column-panel .list-follower"
+        );
+        listFollower.classList.remove("activated");
+        listFollowing.classList.add("activated");
+      };
+
+      const cancelModalBtn = () => {
+        const modalBtn = document.querySelector(".overall-follow-panel .list-of-follow .modal");
+        modalBtn.style.display = "none";
+      };
+
+      const displayUnfollowPanel = () => {
+        const unfollowPanels = document.querySelector(".overall-follow-panel .list-of-follow .modal");
+        unfollowPanels.style.display = "block";
+      };
+
+
+      let isOn = false; // Khai báo biến isOn ở ngoài hàm toggleSwitch
+
+      function toggleSwitch() {
+        const toggle = document.getElementById("toggle");
+
+        // Đổi trạng thái của isOn
+        isOn = !isOn;
+
+        // Kiểm tra trạng thái và áp dụng các lớp CSS tương ứng
+        if (isOn) {
+          toggle.classList.remove("bg-gray-700", "justify-start");
+          toggle.classList.add("bg-white", "justify-end");
+        } else {
+          toggle.classList.remove("bg-white", "justify-end");
+          toggle.classList.add("bg-gray-700", "justify-start");
+        }
+      }
+    </script>
+  </body>
 </html>
