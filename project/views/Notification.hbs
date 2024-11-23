@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <link rel="stylesheet" href="/css/NotificationPage.css" />
-</head>
-
 <body>
-    <div class="notification-container">
+  <div class="bg-transparent overflow-y-auto">
     {{#each notifications}}
     {{> notification}}
     {{/each}}
-    </div>
+  </div>
 </body>
+
 </html>
