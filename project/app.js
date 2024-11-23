@@ -18,9 +18,6 @@ app.engine(
 );
 app.set("view engine", "hbs");
 
-
-
-
 app.get('/', (req, res) => {
   res.render('Feed', { threads: threads });
 });
@@ -35,6 +32,22 @@ app.get("/notification", (req, res) =>
 );
 app.get("/search", (req, res) =>
   res.render("Search", { infomations: profiles })
+);
+
+app.get("/login", (req, res) => 
+  res.sendFile(__dirname + "/views/LogInPage.html")
+);
+
+app.get("/signup", (req, res) =>
+  res.sendFile(__dirname + "/views/Register.html")
+);
+
+app.get("/resetpassword", (req, res) => 
+  res.sendFile(__dirname + "/views/GetPassword.html")
+);
+
+app.get("/setting", (req, res) =>
+  res.render("Setting")
 );
 app.listen(PORT, HOST, () => {
   console.log(`Listening on http://${HOST}:${PORT}`);

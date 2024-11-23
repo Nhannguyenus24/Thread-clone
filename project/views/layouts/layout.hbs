@@ -123,24 +123,23 @@
                 </div>
             </ul>
         </nav>
-        <div class="fixed w-screen flex justify-center items-center flex-col overflow-x-hidden">
+        <div class="fixed w-screen h-screen flex justify-center items-center flex-col overflow-x-hidden">
           
-            <div class="w-full sm:w-1/2 m-4 font-semibold text-[15px] text-center cursor-pointer flex justify-center items-center gap-2 text-[#f3f5f7]"><span onclick="window.location.reload()">Dành cho bạn</span>
+            <div class="w-full sm:w-1/2 m-4 font-semibold text-[15px] text-center cursor-pointer flex justify-center items-center gap-2 text-[#f3f5f7]">
+            <span onclick="toggleTextAndRotate(this)">Dành cho bạn</span>
               <span class="rounded-full h-6 w-6 border border-[rgba(243,245,247,0.15)] bg-[#181818] flex justify-center items-center transition-transform duration-300 ease-in-out hover:scale-110 ">
               <svg  viewBox="0 0 13 12" height="12" width="12"><path d="m2.5 4.2 4 4 4-4" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
               </svg></span>
-
               <div class=" sm:flex sm:h-full flex-col justify-between sm:fixed sm:top-6 sm:right-6 z-10">
                 <span class="bg-[#f3f5f7] py-2 px-4 border border-[#333333] rounded-lg">
-                  <a href="LogInPage.html" class="text-black no-underline font-semibold text-[15px]">Đăng nhập</a>
+                  <a href="/login" class="text-black no-underline font-semibold text-[15px]">Đăng nhập</a>
                 </span>
               </div>
 
             </div>
-            <div class="w-full sm:w-1/2 h-[90vh] overflow-y-auto flex flex-col sm:rounded-t-3xl sm:bg-[#181818] sm:border sm:border-[#333333]">
+            <div class=" w-full sm:w-1/2 flex-1 overflow-y-auto flex flex-col sm:rounded-t-3xl sm:bg-[#181818] sm:border sm:border-[#333333]">
                 <div class="h-full overflow-y-scroll hide-scrollbar">
                 {{{body}}}
-                
                 <div class="h-[50px] sm:hidden"></div>
                 </div>
             </div>
@@ -148,6 +147,16 @@
     </div>
 
   <script>
+    function toggleTextAndRotate(element) {
+    const textSpan = element.querySelector("span:first-child");
+    const svgIcon = element.querySelector(".arrow-icon");
+
+    if (textSpan.textContent === "Dành cho bạn") {
+        textSpan.textContent = "Đang theo dõi";
+    } else {
+        textSpan.textContent = "Dành cho bạn";
+    }
+}
     window.onload = function () {
     const currentPath = window.location.pathname;
     const navLinks = document.querySelectorAll('a'); // Chọn tất cả các liên kết điều hướng
