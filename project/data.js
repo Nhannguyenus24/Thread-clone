@@ -1,21 +1,23 @@
 const threads = [
     {
+      id: 1,
       avatar: '/image/avatar_1.0.jpg',
       username: 'John Doe',
       time: '2 hours ago',
       content: 'This is a post content!',
       image: '/image/content_1.0.jpg',
       likes: 50,
-      comments: 10
+      comment: 10
     },
     {
+      id: 2,
       avatar: '/image/anonymous-user.jpg',
       username: 'Jane Smith',
       time: '1 day ago',
       content: 'Here is another post without an image.',
       image: null,
       likes: 30,
-      comments: 5
+      comment: 5
     }
   ];
   const profiles = [
@@ -125,7 +127,7 @@ const threads = [
       avatar: "/image/anonymous-user.jpg",
       username: "David Gnộp",
       time: "25 phút trước",
-      content: "Đây là thông báo 6"
+      content: "Đây là David Gnộp"
     },
     {
       avatar: "/image/anonymous-user.jpg",
@@ -152,4 +154,39 @@ const threads = [
       content: "Đây là thông báo 10"
     }
   ];
-  module.exports = { threads, notifications, profiles };
+  const links = [
+    {
+      content: "Trung tâm trợ giúp",
+      link: "https://help.instagram.com/179980294969821/"
+    },
+    {
+      content: "Chính sách quyền riêng tư của Meta",
+      link: "https://www.facebook.com/privacy/policy/"
+    },
+    {
+      content: "Điều khoản sử dụng của Meta",
+      link: "https://help.instagram.com/581066165581870"
+    },
+    {
+      content: "Chính sách quyền riêng tư bổ sung của Threads",
+      link: "https://help.instagram.com/515230437301944"
+    },
+    {
+      content: "Điều khoản sử dụng của Threads",
+      link: "https://help.instagram.com/769983657850450"
+    },
+    {
+      content: "Chính sách cookie",
+      link: "https://privacycenter.instagram.com/policies/cookies/"
+    },
+    {
+      content: "Hướng dẫn về mạng xã hội phi tập trung",
+      link: "https://www.facebook.com/privacy/guide/fediverse/"
+    }
+  ];
+  const comments = [
+    { threadId: 1, username: 'Charlie', content: 'Nice post!', time: '10 phút trước' },
+    { threadId: 2, username: 'Dave', content: 'I agree!', time: '20 phút trước' },
+    { threadId: 1, username: 'Eve', content: 'Well said.', time: '5 phút trước' },
+  ];
+  module.exports = { threads, notifications, profiles, links, comments };

@@ -1,10 +1,31 @@
 const express = require("express");
+const FeedRouter = require("./routes/FeedRouter");
+const SearchRouter = require("./routes/SearchRouter");
+const SettingRouter = require("./routes/SettingRouter");
+const AuthenticationRouter = require("./routes/AuthenticationRouter");
+const ProfileRouter = require("./routes/ProfileRouter");
+const NotificationRouter = require("./routes/NotificationRouter");
+const NewPostRouter = require("./routes/NewThreadRouter");
 const app = express();
-const { threads, notifications, profiles } = require("./data");
 const PORT = 3000;
 const HOST = 'localhost';
 const expressHbs = require("express-handlebars");
+app.use(express.json());
+app.use(express.static(__dirname + "/public"));
+const hbs = expressHbs.create({
+  layoutsDir: __dirname + "/views/layouts",
+  partialsDir: __dirname + "/views/partials",
+  extname: "hbs",
+  defaultLayout: "layout",
+  helpers: {
+    eq: function (a, b) {
+      return a === b;
+    },
+  },
+});
 
+app.engine("hbs", hbs.engine);
+app.set("view engine", "hbs");
 
 const models = require("./models");
 
@@ -72,49 +93,17 @@ app.get('/create', function(req, res) {
   })
 });
 
-app.use(express.static(__dirname + "/public"));
-app.engine(
-  "hbs",
-  expressHbs.engine({
-    layoutsDir: __dirname + "/views/layouts",
-    partialsDir: __dirname + "/views/partials",
-    extname: "hbs",
-    defaultLayout: "layout",
-  })
-);
-app.set("view engine", "hbs");
 
-app.get('/', (req, res) => {
-  res.render('Feed', { threads: threads });
-});
-app.get("/profile", (req, res) =>
-  res.render("Profile")
-);
-app.get("/newpost", (req, res) =>
-  res.render("New")
-);
-app.get("/notification", (req, res) =>
-  res.render("Notification", { notifications: notifications })
-);
-app.get("/search", (req, res) =>
-  res.render("Search", { infomations: profiles })
-);
 
-app.get("/login", (req, res) => 
-  res.sendFile(__dirname + "/views/LogInPage.html")
-);
 
-app.get("/signup", (req, res) =>
-  res.sendFile(__dirname + "/views/Register.html")
-);
+app.use("/", FeedRouter);
+app.use("/search", SearchRouter);
+app.use("/setting", SettingRouter);
+app.use("/", AuthenticationRouter);
+app.use("/profile", ProfileRouter);
+app.use("/notifications", NotificationRouter);
+app.use("/newthread", NewPostRouter);
 
-app.get("/resetpassword", (req, res) => 
-  res.sendFile(__dirname + "/views/GetPassword.html")
-);
-
-app.get("/setting", (req, res) =>
-  res.render("Setting")
-);
 app.listen(PORT, HOST, () => {
   console.log(`Listening on http://${HOST}:${PORT}`);
 });
