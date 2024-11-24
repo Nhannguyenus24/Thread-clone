@@ -8,35 +8,4 @@
     {{#each threads}}
     {{> thread}}
     {{/each}}
-
-    <div id="comment-section" class="w-screen h-screen fixed z-100 top-0 hidden flex-col bg-black sm:bg-[#181818] sm:w-1/2 border border-white">
-      <div class="flex relative h-[50px] items-center">
-        <span class="cursor-pointer ml-6" onClick="quitCommentSection()">Hủy</span>
-        <span class="font-bold absolute left-1/2 transform -translate-x-1/2 text-center">Thread trả lời</span>
-      </div>
-      <hr />
-      <div class="flex-1 overflow-y-auto">
-        <div class="flex gap-3 border-b border-[#333333] p-2">
-          <img id="avatar" src="/image/anonymous-user.jpg" class="w-[36px] h-[36px] rounded-full"/>
-          <div class="flex flex-col gap-2 w-full">
-            <div class="flex gap-2 text-[#f3f5f7]">
-              <span>user</span>
-              <span class="text-[#777777]">12 giờ</span>
-            </div>
-            <span id="content" class="thread-content"
-              >This is our content. Please
-              subcribe!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</span
-            >
-          </div>
-        </div>
-      </div>
-      <hr/>
-      <div class="h-[80px] rounded-lg p-2 flex items-center bg-black sm:bg-[#181818] w-full gap-2">
-        <img src="/image/anonymous-user.jpg" class="w-[40px] h-[40px] rounded-full" />
-        <div class="flex items-center bg-[#333333]  flex-1 rounded-xl">
-          <input type="text" placeholder="Write a comment..." class="flex-1 bg-transparent border-none text-[#ddd] outline-none ml-2"/>
-          <button class="bg-none border-none text-[#777] cursor-pointer p-3 sm: text-[18px]">➤</button>
-        </div>
-      </div>
-    </div>
-  </div>
+</div>
