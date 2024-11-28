@@ -101,8 +101,8 @@ app.use("/search", SearchRouter);
 app.use("/setting", SettingRouter);
 app.use("/", AuthenticationRouter);
 app.use("/profile", ProfileRouter);
-app.use("/notifications", NotificationRouter);
-app.use("/newthread", NewPostRouter);
+app.use("/notification", NotificationRouter);
+app.use("/newpost", NewPostRouter);
 
 app.listen(PORT, HOST, () => {
   console.log(`Listening on http://${HOST}:${PORT}`);
