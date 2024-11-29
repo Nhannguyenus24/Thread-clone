@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const FeedRouter = require("./routes/FeedRouter");
 const SearchRouter = require("./routes/SearchRouter");
 const SettingRouter = require("./routes/SettingRouter");
@@ -11,7 +12,7 @@ const PORT = 3000;
 const HOST = 'localhost';
 const expressHbs = require("express-handlebars");
 app.use(express.json());
-app.use(express.static(__dirname + "/public"));
+app.use(express.static(path.join(__dirname, "public")));
 const hbs = expressHbs.create({
   layoutsDir: __dirname + "/views/layouts",
   partialsDir: __dirname + "/views/partials",
@@ -27,13 +28,7 @@ const hbs = expressHbs.create({
 app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 
-const models = require("./models");
 
-app.get('/sync', (req, res) => {
-  models.sequelize.sync().then( () => {
-    res.send('Database sync completed!');
-  });
-});
 
 
 app.get('/create', function(req, res) {
