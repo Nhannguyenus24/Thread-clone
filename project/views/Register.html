@@ -11,41 +11,39 @@
 </head>
 <body>
     <div class="login-background flex flex-col justify-center items-center w-screen h-screen ">
-        <form method="post" class="w-full max-w-[350px] mt-5 flex flex-col sm:rounded-[10px] sm:mt-[50px] sm:snap-center">
+        <form method="post" class="w-full max-w-[350px] mt-5 flex flex-col sm:rounded-[10px] sm:mt-[50px] sm:snap-center" onsubmit="handleRegister(event)">
             <img src="/image/thread.ico" alt="Logo" class="w-[50px] h-[50px] block mx-auto mb-[10px]" style="display: none;" id="logo" />
             <span>
-                <p class="text-[14px] mb-[10px] relative sm:text-[16px] text-center sm:mb-[20px] font-semibold">Đăng nhập bằng tài khoản Instagram</p>
+                <p class="text-[14px] mb-[10px] relative sm:text-[16px] text-center sm:mb-[20px] font-semibold">Đăng ký tài khoản</p>
             </span>
 
             <div id="input-format" class="flex justify-center items-center">
-                <input class="w-full p-3 h-auto rounded-xl leading-[140%] sm:p-4 border border-transparent my-[5px] bg-[rgba(255,_255,_255,_0.1)] text-white"
+                <input class="w-full p-3 h-auto rounded-xl leading-[140%] sm:p-4 border border-transparent my-[5px] bg-[rgba(255,_255,_255,_0.1)] text-white focus:outline-none"
                     required
                     type="email"
                     placeholder="Email"
+                    name="email"
+                    id="email"
+                />
+            </div>
+
+            <div id="input-format"  class="flex justify-center items-center">
+                <input class="w-full p-3 h-auto rounded-xl leading-[140%] sm:p-4 border border-transparent my-[5px] bg-[rgba(255,_255,_255,_0.1)] text-white focus:outline-none"
+                    required
+                    type="text"
+                    placeholder="Tên người dùng"
                     name="username"
                     id="username"
                 />
             </div>
 
             <div id="input-format"  class="flex justify-center items-center">
-                <input class="w-full p-3 h-auto rounded-xl leading-[140%] sm:p-4 border border-transparent my-[5px] bg-[rgba(255,_255,_255,_0.1)] text-white"
-                    required
-                    type="text"
-                    placeholder="Tên người dùng"
-                    name="password"
-                    id="password"
-                    oninput="clearError()"
-                />
-            </div>
-
-            <div id="input-format"  class="flex justify-center items-center">
-                <input class="w-full p-3 h-auto rounded-xl leading-[140%] sm:p-4 border border-transparent my-[5px] bg-[rgba(255,_255,_255,_0.1)] text-white"
+                <input class="w-full p-3 h-auto rounded-xl leading-[140%] sm:p-4 border border-transparent my-[5px] bg-[rgba(255,_255,_255,_0.1)] text-white focus:outline-none"
                     required
                     type="password"
                     placeholder="Mật khẩu"
                     name="password"
                     id="password"
-                    oninput="clearError()"
                 />
             </div>
 
@@ -55,7 +53,7 @@
                 id="submitButton"
                 disabled
             >
-                Đăng nhập
+                Đăng ký
             </button>
 
             <a href="/resetpassword" class="block text-center mt-[10px] text-[rgba(255,255,255,0.3)]">Bạn quên mật khẩu ư?</a>
@@ -77,6 +75,9 @@
                 </span>
             </div>
         </a>
+        <div class="fixed bottom-[40px] left-1/2 transform -translate-x-1/2 bg-white text-black p-[10px_20px] rounded-[8px] shadow-[0_2px_10px_rgba(0,0,0,0.2)] opacity-100 animate-slideUp animate-stay animate-slideDown" id="errorNotification" style="display: none;">
+            Sai mật khẩu.
+        </div>
         </form>
 
         <footer>
@@ -90,4 +91,61 @@
         </footer>
     </div>
 </body>
+<script>
+    const passwordInput = document.getElementById('password');
+    const usernameInput = document.getElementById('username');
+    const emailInput = document.getElementById('email');
+    const submitButton = document.getElementById('submitButton');
+    const errorNotification = document.getElementById('errorNotification');
+    const logo = document.getElementById('logo');
+
+    if (window.innerWidth <= 480) {
+        logo.style.display = "block";
+    }
+
+    usernameInput.addEventListener('input', checkButtonState);
+    passwordInput.addEventListener('input', checkButtonState);
+
+    function checkButtonState() {
+        submitButton.disabled = !(usernameInput.value && passwordInput.value && emailInput.value);
+    }
+    async function handleRegister(event){
+        event.preventDefault();
+        const username = document.getElementById("username").value;
+        const password = document.getElementById("password").value;
+        const email = document.getElementById("email").value;
+        try {
+        const response = await fetch('http://localhost:3000/api/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                username: username,
+                password: password,
+                email: email
+            })
+        });
+        const data = await response.json();
+        console.log(data);
+        if (!data.success) {
+            showError(data.message);
+        }
+        else {
+            localStorage.setItem('username', username);
+            window.location.href = '/login';
+        }
+        } catch (error) {
+            showError('Có lỗi xảy ra. Vui lòng thử lại!');
+            console.error(error);
+        }
+    }
+    function showError(message) {
+        errorNotification.innerText = message;
+        errorNotification.style.display = "block";
+        setTimeout(() => {
+            errorNotification.style.display = "none";
+        }, 3000);
+    }
+</script>
 </html>
