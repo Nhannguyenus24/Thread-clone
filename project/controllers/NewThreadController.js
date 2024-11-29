@@ -1,5 +1,5 @@
 const newThread = (req, res) => {
-    res.render("New")
+    res.render("New");
 }
 
 const NewThreadController = {

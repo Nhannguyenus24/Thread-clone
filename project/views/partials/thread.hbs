@@ -39,14 +39,14 @@
         <span class="cursor-pointer ml-6" onClick="quitCommentSection()">Hủy</span>
         <span class="font-bold absolute left-1/2 transform -translate-x-1/2 text-center">Thread trả lời</span>
       </div>
-      <hr>
+      <hr class="border-[#333333]">
       <div class="flex-1 overflow-y-auto">
         {{#each comments}}
           {{> comment}}
         {{/each}}
       </div>
       
-      <hr>
+      <hr class="border-[#333333]">
       <div class="h-[80px] rounded-lg p-2 flex items-center bg-black sm:bg-[#181818] w-full gap-2">
         <img src="/image/anonymous-user.jpg" class="w-[40px] h-[40px] rounded-full" />
         <div class="flex items-center bg-[#333333]  flex-1 rounded-xl">

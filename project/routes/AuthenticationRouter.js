@@ -4,8 +4,12 @@ import AuthenticationController from '../controllers/AuthenticationController.js
 
 router.get('/login', AuthenticationController.logIn);
 
-router.get('/signup', AuthenticationController.signUp);
+router.post('/api/login', AuthenticationController.checkLogIn);
+
+router.get('/signup', AuthenticationController.register);
 
 router.get('/resetpassword', AuthenticationController.resetPassword);
+
+router.post('/api/register', AuthenticationController.registerUser);
 
 export default router;
