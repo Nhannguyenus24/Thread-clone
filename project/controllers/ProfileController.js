@@ -6,4 +6,4 @@ const ProfileController = {
     loadProfile: loadProfile,
 };
 
-module.exports = ProfileController;
+export default ProfileController;

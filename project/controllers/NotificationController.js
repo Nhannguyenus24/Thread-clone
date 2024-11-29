@@ -8,4 +8,4 @@ const NotificationController = {
     loadNotifications: loadNotifications,
 }
 
-module.exports = NotificationController;
+export default NotificationController;

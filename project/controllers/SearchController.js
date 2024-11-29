@@ -8,4 +8,4 @@ const SearchController = {
     loadSearch: loadSearch,
 }
 
-module.exports = SearchController;
+export default SearchController;
