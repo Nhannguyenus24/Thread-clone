@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const UserFollowSchema = new mongoose.Schema({
   username: { type: String, required: true },
-  avatar: { type: String, required: true }
+  avatar: { type: String, default: "/image/anonymous-user.jpg" }
 });
 
 const FollowSchema = new mongoose.Schema({
