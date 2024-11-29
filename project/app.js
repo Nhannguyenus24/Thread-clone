@@ -73,6 +73,7 @@ app.get('/create', function(req, res) {
 });
 
 app.use(express.static(__dirname + "/public"));
+
 app.engine(
   "hbs",
   expressHbs.engine({
