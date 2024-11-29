@@ -1,6 +1,7 @@
-const {notifications} = require("../data");
+
 
 const loadNotifications = (req, res) => {
+    const notifications = [];
     res.render("Notification", { notifications: notifications });
 }
 
