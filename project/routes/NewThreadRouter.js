@@ -1,6 +1,7 @@
-const router = require('express').Router();
-const NewThreadController = require('../controllers/NewThreadController');
+import express from 'express';
+const router = express.Router();
+import NewThreadController from '../controllers/NewThreadController.js';
 
 router.get("/", NewThreadController.newThread);
 
-module.exports = router;
+export default router;

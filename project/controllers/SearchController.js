@@ -1,6 +1,7 @@
-const {profiles} = require("../data");
+
 
 const loadSearch = (req, res) => {
+    const profiles = [];
     res.render("Search", { infomations: profiles });
 }
 

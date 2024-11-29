@@ -189,4 +189,4 @@ const threads = [
     { threadId: 2, username: 'Dave', content: 'I agree!', time: '20 phút trước' },
     { threadId: 1, username: 'Eve', content: 'Well said.', time: '5 phút trước' },
   ];
-  module.exports = { threads, notifications, profiles, links, comments };
+  export { threads, profiles, notifications, links, comments };
