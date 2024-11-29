@@ -6,4 +6,4 @@ const NewThreadController = {
     newThread: newThread
 }
 
-module.exports = NewThreadController
+export default NewThreadController;

@@ -12,4 +12,4 @@ const SettingController = {
     help: help
 }
 
-module.exports = SettingController;
+export default SettingController;

@@ -1,4 +1,5 @@
-const path = require("path");
+import path from 'path';
+
 const logIn = (req, res) => {
     res.sendFile(path.join(__dirname, "../views/LogInPage.html"));
 }
@@ -16,4 +17,4 @@ const AuthenticationController = {
     resetPassword: resetPassword
 }
 
-module.exports = AuthenticationController
+export default AuthenticationController;

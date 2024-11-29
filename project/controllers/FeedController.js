@@ -1,4 +1,5 @@
-const { threads, comments } = require("../data");
+import threads from '../data/threads';
+import comments from '../data/comments';
 
 const loadFeed = (req, res) => {
     const threadsWithComments = threads.map(thread => ({
@@ -19,4 +20,4 @@ const FeedController = {
     likeThread: likeThread,
 };
 
-module.exports = FeedController;
+export default FeedController;
