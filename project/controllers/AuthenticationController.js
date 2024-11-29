@@ -1,13 +1,15 @@
+import path from 'path';
+
 const logIn = (req, res) => {
-    res.sendFile(__dirname + "/views/LogInPage.html");
+    res.sendFile(path.join(__dirname, "../views/LogInPage.html"));
 }
 
 const signUp = (req, res) => {
-    res.sendFile(__dirname + "/views/Register.html");
+    res.sendFile(path.join(__dirname, "../views/Register.html"));
 }
 
 const resetPassword = (req, res) => {
-    res.sendFile(__dirname + "/views/GetPassword.html");
+    res.sendFile(path.join(__dirname, "../views/GetPassword.html"));
 }
 const AuthenticationController = {
     logIn: logIn,
@@ -15,4 +17,4 @@ const AuthenticationController = {
     resetPassword: resetPassword
 }
 
-module.exports = AuthenticationController
+export default AuthenticationController;
