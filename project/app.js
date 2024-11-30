@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import cors from "cors";
 import { fileURLToPath } from "url";
 import connectDatabase from "./service/ConnectDatabase.js";
 import FeedRouter from "./routes/FeedRouter.js";
@@ -11,7 +12,6 @@ import NotificationRouter from "./routes/NotificationRouter.js";
 import NewPostRouter from "./routes/NewThreadRouter.js";
 import expressHandlebars from "express-handlebars";
 connectDatabase();
-// Xử lý __dirname trong ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -32,6 +32,14 @@ const hbs = expressHandlebars.create({
   },
 });
 
+
+app.use(cors({
+  origin: '*', 
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
+app.options('*', cors());
+
 app.engine("hbs", hbs.engine);
 app.set("view engine", "hbs");
 
@@ -44,7 +52,7 @@ app.use("/search", SearchRouter);
 app.use("/setting", SettingRouter);
 app.use("/", AuthenticationRouter);
 app.use("/profile", ProfileRouter);
-app.use("/notifications", NotificationRouter);
+app.use("/notification", NotificationRouter);
 app.use("/newthread", NewPostRouter);
 
 
