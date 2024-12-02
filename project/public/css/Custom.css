@@ -14,7 +14,7 @@
     box-sizing: border-box;
   }
   .activated {
-    color: rgb(243, 245, 247);
+    color: rgb(243, 245, 247) !important;
     border-bottom: 0.8px solid rgb(243, 245, 247);
   } 
   .thread-content {
