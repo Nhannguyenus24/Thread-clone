@@ -1,4 +1,4 @@
-const loadFeed = (req, res) => {
+const loadAllFeed = (req, res) => {
     const threads = [
         {
           id: 1,
@@ -31,7 +31,7 @@ const likeThread = (req, res) => {
 }
 
 const FeedController = {
-    loadFeed: loadFeed,
+    loadAllFeed: loadAllFeed,
     likeThread: likeThread,
 };
 
