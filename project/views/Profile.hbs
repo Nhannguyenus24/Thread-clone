@@ -66,17 +66,24 @@
                 <br />
                 <span
                   class="text-sm font-normal leading-4.5 font-sans"
-                  >56</span
+                  >{{followingCount}}</span
                 >
               </div>
             </div>
 
-            <div class="relative list-of-follower">
+            <div class="relative list-of-follower" style="display: block;">
               <ul>
-                {{#each followers}}
-                  {{> follower}}
-                {{/each}}
+                  {{#each followers}}
+                    {{> follower}}
+                  {{/each}}
+              </ul>
+            </div>
 
+            <div class="relative list-of-following" style="display: none;">
+              <ul>  
+                  {{#each followings}}
+                    {{> following}}
+                  {{/each}}
               </ul>
             </div>
           </div>
@@ -391,14 +398,19 @@
       }
 
       const chooseFollower = () => {
-        const listFollower = document.querySelector(
+        const listFollowerBtn = document.querySelector(
           ".column-panel .list-follower"
         );
-        const listFollowing = document.querySelector(
+        const listFollowingBtn = document.querySelector(
           ".column-panel .list-following"
         );
-        listFollower.classList.add("activated");
-        listFollowing.classList.remove("activated");
+        const followers = document.querySelector(".overall-follow-panel .list-of-follower");
+        const followings = document.querySelector(".overall-follow-panel .list-of-following");
+
+        followers.style.display = "block";
+        followings.style.display = "none";
+        listFollowerBtn.classList.add("activated");
+        listFollowingBtn.classList.remove("activated");
       };
 
       const chooseFollowing = () => {
@@ -408,6 +420,12 @@
         const listFollower = document.querySelector(
           ".column-panel .list-follower"
         );
+        const followers = document.querySelector(".overall-follow-panel .list-of-follower");
+        const followings = document.querySelector(".overall-follow-panel .list-of-following");
+
+        followers.style.display = "none";
+        followings.style.display = "block";
+
         listFollower.classList.remove("activated");
         listFollowing.classList.add("activated");
       };
@@ -440,6 +458,9 @@
           toggle.classList.add("bg-gray-700", "justify-start");
         }
       }
+
+
+
     </script>
   </body>
 </html>

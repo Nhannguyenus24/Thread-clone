@@ -22,12 +22,27 @@ const loadProfile = async (req, res) => {
             status: "Đang Theo dõi"
         },
     ];
+    const followings = [
+        {
+            avatar: '/image/avatar_2.0.jpg',
+            username: "TechSavvy",
+            fullname: "Minh Tú",
+            status: "Đang theo dõi"
+        },
+        {
+            avatar: '/image/avatar_2.0.jpg',
+            username: "DesignHub",
+            fullname: "Hà My",
+            status: "Đang theo dõi"
+        },
+    ];
 
     // Tính số lượng followers
     const followerCount = followers.length;
+    const followingCount = followings.length;
 
     // Render view "Profile" với dữ liệu mẫu
-    res.render("Profile", { followers, followerCount });
+    res.render("Profile", { followers, followings, followerCount, followingCount});
 };
 
 const ProfileController = {
