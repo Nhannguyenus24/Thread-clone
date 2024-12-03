@@ -8,7 +8,7 @@ const NotificationSchema = new mongoose.Schema({
 
 const UserNotificationSchema = new mongoose.Schema({
     user: { type: String, required: true },
-    notifications: [NotificationSchema]
+    notifications: { type: [NotificationSchema], default: [] }
 });
 
 const NotificationModel = mongoose.model("Notifications", UserNotificationSchema);

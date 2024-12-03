@@ -1,28 +1,20 @@
-const loadFeed = (req, res) => {
-    const threads = [
-        {
-          id: 1,
-          avatar: '/image/avatar_1.0.jpg',
-          username: 'John Doe',
-          time: '2 hours ago',
-          content: 'This is a post content!',
-          image: '/image/content_1.0.jpg',
-          likes: 50,
-          comment: 10
-        },
-        {
-          id: 2,
-          avatar: '/image/anonymous-user.jpg',
-          username: 'Jane Smith',
-          time: '1 day ago',
-          content: 'Here is another post without an image.',
-          image: null,
-          likes: 30,
-          comment: 5
-        }
-      ];
-    res.render('Feed', { threads: threads});
-}
+import threadModel from '../models/ThreadModel.js';
+
+const loadAllFeed = async (req, res) => {
+  try {
+    const threads = await threadModel.find({}).populate({
+        path: "author", // Trường cần tham chiếu
+        model: "Users", // Model cần liên kết
+        localField: "author", // Trường trong ThreadSchema
+        foreignField: "username", // Trường tương ứng trong UserSchema
+        select: "username avatar", // Lấy các trường cần thiết từ Users
+      });
+      res.render('Feed', {threads: threads });
+  } catch (error) {
+      console.error('Error fetching threads:', error);
+      res.status(500).json({message: 'An error occurred while loading the feed'});
+  }
+};
 
 const likeThread = (req, res) => {
     const { userid, threadid } = req.body;
@@ -31,7 +23,7 @@ const likeThread = (req, res) => {
 }
 
 const FeedController = {
-    loadFeed: loadFeed,
+    loadAllFeed: loadAllFeed,
     likeThread: likeThread,
 };
 

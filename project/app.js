@@ -2,16 +2,16 @@ import express from "express";
 import path from "path";
 import cors from "cors";
 import { fileURLToPath } from "url";
-import connectDatabase from "./service/ConnectDatabase.js";
+import database from "./service/ConnectDatabase.js";
 import FeedRouter from "./routes/FeedRouter.js";
 import SearchRouter from "./routes/SearchRouter.js";
 import SettingRouter from "./routes/SettingRouter.js";
 import AuthenticationRouter from "./routes/AuthenticationRouter.js";
 import ProfileRouter from "./routes/ProfileRouter.js";
 import NotificationRouter from "./routes/NotificationRouter.js";
-import NewPostRouter from "./routes/NewThreadRouter.js";
+import NewThreadRouter from "./routes/NewThreadRouter.js";
 import expressHandlebars from "express-handlebars";
-connectDatabase();
+database.connectDatabase();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -29,7 +29,35 @@ const hbs = expressHandlebars.create({
     eq: function (a, b) {
       return a === b;
     },
+    formatTime: function (dateString) {
+      const now = new Date();
+      const inputDate = new Date(dateString);
+      const diff = Math.floor((now - inputDate) / 1000); // Khoảng thời gian tính bằng giây
+
+      if (diff < 60) {
+        return `${diff} giây`;
+      } else if (diff < 3600) {
+        const minutes = Math.floor(diff / 60);
+        return `${minutes} phút`;
+      } else if (diff < 86400) {
+        const hours = Math.floor(diff / 3600);
+        return `${hours} giờ`;
+      } else if (diff < 2592000) {
+        const days = Math.floor(diff / 86400);
+        return `${days} ngày`;
+      } else if (diff < 31536000) {
+        const months = Math.floor(diff / 2592000);
+        return `${months} tháng`;
+      } else {
+        const years = Math.floor(diff / 31536000);
+        return `${years} năm`;
+      }
+    },
   },
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true
+}
 });
 
 
@@ -53,8 +81,11 @@ app.use("/setting", SettingRouter);
 app.use("/", AuthenticationRouter);
 app.use("/profile", ProfileRouter);
 app.use("/notification", NotificationRouter);
-app.use("/newthread", NewPostRouter);
-
+app.use("/newthread", NewThreadRouter);
+app.post('/upload', (req, res) => {
+  console.log("h");
+  res.status(200).send("OK");
+});
 
 app.listen(PORT, HOST, () => {
   console.log(`Listening on http://${HOST}:${PORT}`);
