@@ -11,12 +11,12 @@ const LikeSchema = new mongoose.Schema({
 });
 
 const ThreadSchema = new mongoose.Schema({
-  author: { type: String, required: true },
+  author: { type: String, ref: "Users", required: true },
   content: { type: String, required: true },
   image: { type: String, default: "" },
   date: { type: Date, default: Date.now },
-  comments: [CommentSchema],
-  likes: [LikeSchema],
+  comments: { type: [CommentSchema], default: [] },
+  likes: { type: [LikeSchema], default: [] }, 
 });
 
 const ThreadModel = mongoose.model("Threads", ThreadSchema);
