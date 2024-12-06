@@ -1,8 +1,9 @@
-const router = require('express').Router();
-const FeedController = require('../controllers/FeedController');
+import express from 'express';
+const router = express.Router();
+import FeedController from '../controllers/FeedController.js';
 
-router.get('/', FeedController.loadFeed);
+router.get('/', FeedController.loadAllFeed);
 
 router.post('/like', FeedController.likeThread);
 
-module.exports = router;
+export default router;

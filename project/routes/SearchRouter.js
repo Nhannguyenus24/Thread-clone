@@ -1,6 +1,7 @@
-const router = require('express').Router();
-const SearchController = require('../controllers/SearchController');
+import express from 'express';
+const router = express.Router();
+import SearchController from '../controllers/SearchController.js';
 
 router.get('/', SearchController.loadSearch);
 
-module.exports = router;
+export default router;

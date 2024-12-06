@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<body>
-    <div id="newThreadModal" class="fixed inset-0 bg-black flex justify-center items-center">
-        <div class="bg-black text-white p-5 rounded-lg w-11/12 sm:w-3/12 border border-gray-600">
-            <div class="flex justify-between items-center mb-4">
-                <button onclick="closeModal()" class="text-[#cccccc] text-base hover:text-gray-200">Hủy</button>
+<div id="newThreadModal" class="fixed inset-0 bg-black flex justify-center items-center">
+    <div class="bg-black text-white p-5 rounded-lg w-11/12 sm:w-4/12 border border-[#333333]">
+        <div class="flex justify-between items-center mb-4">
+                <button class="text-[#777777] text-base hover:text-gray-200">Hủy</button>
                 <h2 class="text-lg font-semibold">Thread mới</h2>
                 <svg viewBox="0 0 24 24" width="24" height="24">
                     <rect height="15" rx="4.5" stroke="currentColor" stroke-width="2" width="15" x="7" y="7"></rect>
@@ -16,16 +12,18 @@
                     <rect fill="currentColor" height="2" rx="1" width="6" x="10" y="15"></rect>
                 </svg>
             </div>
-            <form onsubmit="handleSubmit(event)" class="space-y-4">
+            <form onsubmit="handleSubmit(event)" class="space-y-4" method="post" enctype="multipart/form-data" action="/newthread/upload">
                 <div class="flex items-center space-x-3">
                     <img src="/image/anonymous-user.jpg" alt="User Icon" class="w-10 h-10 rounded-full" />
-                    <span class="font-bold text-gray-300">Hornet Sentinel</span>
+                    <span class="font-bold text-[#f3f5f7]">Hornet Sentinel</span>
                 </div>
                 <textarea id="threadContent" placeholder="Có gì mới?"
-                    class="w-full h-20 p-2 rounded-md bg-gray-800 text-white border border-gray-600 focus:outline-none hide-scrollbar"
-                    style="resize: none;"></textarea>
+                    class="w-full p-2 rounded-md bg-gray-800 text-white border border-[#333333] focus:outline-none hide-scrollbar"
+                    style="height: 100px; resize: none;"></textarea>
 
-                <div class="flex items-center space-x-3">
+                <div class="flex items-center " id="imageContainer">
+                    <input type="file" name="file" accept="image/*" id="file" class="hidden" onchange="displayImage()">
+                    <label for="file" class="cursor-pointer">
                     <svg viewBox="0 0 24 24" width="24" height="24">
                         <g>
                             <path clip-rule="evenodd"
@@ -49,9 +47,11 @@
                             </clipPath>
                         </defs>
                     </svg>
+                    </label>
+                <div id="imagePreview" class="ml-3 flex flex-col space-y-1"></div>
                 </div>
                 <div class="flex justify-between items-center mt-4">
-                    <span class="text-sm text-[#cccccc]">Bất kỳ ai cũng có thể truy cập</span>
+                    <span class="text-sm text-[#777777]">Bất kỳ ai cũng có thể truy cập</span>
                     <button type="submit"
                         class="bg-blue-500 text-white py-2 px-4 rounded font-semibold hover:bg-blue-600">Đăng</button>
                 </div>
@@ -60,6 +60,59 @@
     </div>
 
     <div id="postList" class="mt-5 space-y-4"></div>
-</body>
+<script>
+function displayImage() {
+    const fileInput = document.getElementById('file');
+    const imagePreviewContainer = document.getElementById('imagePreview');
+    imagePreviewContainer.innerHTML = '';
 
-</html>
+    Array.from(fileInput.files).forEach(file => {
+        const fileContainer = document.createElement('div');
+        fileContainer.classList.add('flex', 'items-center', 'justify-between', 'mb-1');
+
+        const fileName = document.createElement('div');
+        fileName.textContent = file.name;
+        fileName.classList.add('text-white', 'mr-2'); 
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'x';
+        deleteButton.classList.add('text-[#777777]', 'ml-2');
+        deleteButton.onclick = function () {
+            const fileList = Array.from(fileInput.files).filter(f => f !== file);
+            fileInput.files = new FileListItems(fileList);
+            fileContainer.remove(); 
+        };
+
+        fileContainer.appendChild(fileName);
+        fileContainer.appendChild(deleteButton);
+
+        imagePreviewContainer.appendChild(fileContainer);
+    });
+}
+
+function FileListItems(files) {
+    let b = new DataTransfer();
+    files.forEach(f => b.items.add(f));
+    return b.files;
+}
+
+async function handleSubmit(event){
+    event.preventDefault();
+    const content = document.getElementById('threadContent').value;
+    const file = document.getElementById('file').files[0];
+    const formData = new FormData();
+    formData.append('content', content);
+    formData.append('username', 'nhan1');
+    if(file) formData.append('file', file);
+    console.log(formData);
+    const response = await fetch('http://localhost:3000/newthread/upload', {
+        method: 'POST',
+        body: formData
+    });
+    const data = await response.json();
+    if (data.success)
+        window.location.href = "http://localhost:3000";
+    else
+        alert(data.message);
+}
+</script>  

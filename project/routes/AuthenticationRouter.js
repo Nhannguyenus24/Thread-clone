@@ -1,10 +1,15 @@
-const router = require('express').Router();
-const AuthenticationController = require('../controllers/AuthenticationController');
+import express from 'express';
+const router = express.Router();
+import AuthenticationController from '../controllers/AuthenticationController.js';
 
 router.get('/login', AuthenticationController.logIn);
 
-router.get('/signup', AuthenticationController.signUp);
+router.post('/api/login', AuthenticationController.checkLogIn);
+
+router.get('/signup', AuthenticationController.register);
 
 router.get('/resetpassword', AuthenticationController.resetPassword);
 
-module.exports = router;
+router.post('/api/register', AuthenticationController.registerUser);
+
+export default router;
