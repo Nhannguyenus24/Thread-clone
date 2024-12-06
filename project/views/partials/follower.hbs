@@ -1,11 +1,14 @@
-<li class="information-follow flex flex-row justify-between py-4 pl-4">
-  <div class="avatar-follow flex-[3] flex items-center justify-center">
-    <img
-      class="cursor-pointer max-w-[50%] h-auto rounded-full object-cover outline outline-[0.5px] outline-[#F3F5F7]"
-      src="{{avatar}}"
-      alt="Avatar"
-    />
-  </div>
+<li class="information-follow flex flex-row justify-between py-4 pl-4 border-b border-[rgba(243,245,247,0.15)]">
+    <div class="avatar-follow flex-[3] flex items-center justify-center">
+      <div class="w-[50%] aspect-square rounded-full overflow-hidden">
+        <img
+         class="cursor-pointer w-full h-full object-cover"
+         src="{{avatar}}"
+         alt="Avatar"
+        />
+      </div>
+    </div>
+
   <div class="follow-item flex-[7] flex flex-row justify-between">
     <div class="name-container">
       <span
