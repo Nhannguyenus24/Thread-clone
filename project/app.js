@@ -82,6 +82,7 @@ app.use("/", AuthenticationRouter);
 app.use("/profile", ProfileRouter);
 app.use("/notification", NotificationRouter);
 app.use("/newthread", NewThreadRouter);
+
 app.post('/upload', (req, res) => {
   console.log("h");
   res.status(200).send("OK");

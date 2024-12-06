@@ -1,0 +1,55 @@
+<li class="information-follow flex flex-row justify-between py-4 pl-4 border-b border-[rgba(243,245,247,0.15)]">
+    <div class="avatar-follow flex-[3] flex items-center justify-center">
+      <div class="w-[50%] aspect-square rounded-full overflow-hidden">
+        <img
+         class="cursor-pointer w-full h-full object-cover"
+         src="{{avatar}}"
+         alt="Avatar"
+        />
+      </div>
+    </div>
+
+  <div class="follow-item flex-[7] flex flex-row justify-between">
+    <div class="name-container">
+      <span
+        class="text-[rgb(243,245,247)] text-[15px] font-[600] leading-5"
+      >{{username}}</span><br />
+      <span class="text-[rgb(119,119,119)] text-[15px] font-[400] leading-5">{{fullname}}</span>
+    </div>
+    <div
+      class="follow-back-btn text-[rgb(119,119,119)] font-[600] text-[15px] p-[0px_16px] border border-[rgba(243,245,247,0.15)] rounded-[10px] leading-[32.4px] h-[32.4px] mr-[10px]"
+      {{!-- onclick="displayUnfollowPanel()" --}}
+    >
+      {{status}}
+    </div>
+
+    {{!-- <!-- Hiện lên khi bấm vào follow-back-btn -->
+    <div
+      class="modal hidden absolute top-1/2 left-1/2 w-[15rem] lg:w-[22vw] transform -translate-x-1/2 -translate-y-1/2 bg-[rgb(24,24,24)] rounded-lg text-center border border-[rgba(243,245,247,0.15)]"
+    >
+      <div class="profile-pic mt-[0.5rem] flex justify-center items-center">
+        <img
+          class="w-[3rem] h-[3rem] rounded-full object-cover outline outline-[0.5px] outline-gray-100/15"
+          src="{{avatar}}"
+          alt="Avatar"
+        />
+      </div>
+      <div class="modal-text text-[16px] font-[600] mb-[20px]">
+        Bỏ theo dõi {{username}}?
+      </div>
+      <div class="modal-actions flex border-t border-[#333] mt-[20px]">
+        <button
+          class="modal-button cancel flex-1 h-[10%] p-[10px] text-[rgb(243,245,247)] text-[16px] font-[400] border-r-[1px] border-[#333] cursor-pointer hover:bg-[#333]"
+          onclick="cancelModalBtn()"
+        >
+          Hủy
+        </button>
+        <button
+          class="modal-button unfollow flex-1 h-[10%] p-[10px] text-[16px] font-[700] text-[rgb(255,48,64)] cursor-pointer hover:bg-[#333]"
+        >
+          Bỏ theo dõi
+        </button>
+      </div>
+    </div> --}}
+  </div>
+</li>
