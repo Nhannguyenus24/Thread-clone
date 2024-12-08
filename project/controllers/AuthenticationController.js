@@ -42,7 +42,7 @@ const checkLogIn = async (req, res) => {
         };
 
         // Ký JWT với một secret key
-        const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }); // Token sẽ hết hạn sau 1 giờ
+        const token = jwt.sign(payload, process.env.JWT_SECRET);
 
         // Gửi token về cho client
         res.status(200).json({
