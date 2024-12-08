@@ -12,4 +12,9 @@ router.get('/resetpassword', AuthenticationController.resetPassword);
 
 router.post('/api/register', AuthenticationController.registerUser);
 
+router.get('/api/verify/:token', AuthenticationController.verifyUser);
+
+router.post('/api/resend-verification-token', AuthenticationController.resendVerificationToken);
+
+
 export default router;
