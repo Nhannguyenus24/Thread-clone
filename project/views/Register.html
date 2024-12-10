@@ -9,84 +9,87 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/css/Custom.css">
 </head>
+
 <body>
     <div class="login-background flex flex-col justify-center items-center w-screen h-screen ">
-        <form method="post" class="w-full max-w-[350px] mt-5 flex flex-col sm:rounded-[10px] sm:mt-[50px] sm:snap-center" onsubmit="handleRegister(event)">
-            <img src="/image/thread.ico" alt="Logo" class="w-[50px] h-[50px] block mx-auto mb-[10px]" style="display: none;" id="logo" />
+        <form method="post"
+            class="w-full max-w-[350px] mt-5 flex flex-col sm:rounded-[10px] sm:mt-[50px] sm:snap-center"
+            onsubmit="handleRegister(event)">
+            <img src="/image/thread.ico" alt="Logo" class="w-[50px] h-[50px] block mx-auto mb-[10px]"
+                style="display: none;" id="logo" />
             <span>
-                <p class="text-[14px] mb-[10px] relative sm:text-[16px] text-center sm:mb-[20px] font-semibold">Đăng ký tài khoản</p>
+                <p class="text-[14px] mb-[10px] relative sm:text-[16px] text-center sm:mb-[20px] font-semibold">Đăng ký
+                    tài khoản</p>
             </span>
 
             <div id="input-format" class="flex justify-center items-center">
-                <input class="w-full p-3 h-auto rounded-xl leading-[140%] sm:p-4 border border-transparent my-[5px] bg-[rgba(255,_255,_255,_0.1)] text-white focus:outline-none"
-                    required
-                    type="email"
-                    placeholder="Email"
-                    name="email"
-                    id="email"
-                />
+                <input
+                    class="w-full p-3 h-auto rounded-xl leading-[140%] sm:p-4 border border-transparent my-[5px] bg-[rgba(255,_255,_255,_0.1)] text-white focus:outline-none"
+                    required type="email" placeholder="Email" name="email" id="email" />
             </div>
 
-            <div id="input-format"  class="flex justify-center items-center">
-                <input class="w-full p-3 h-auto rounded-xl leading-[140%] sm:p-4 border border-transparent my-[5px] bg-[rgba(255,_255,_255,_0.1)] text-white focus:outline-none"
-                    required
-                    type="text"
-                    placeholder="Tên người dùng"
-                    name="username"
-                    id="username"
-                />
+            <div id="input-format" class="flex justify-center items-center">
+                <input
+                    class="w-full p-3 h-auto rounded-xl leading-[140%] sm:p-4 border border-transparent my-[5px] bg-[rgba(255,_255,_255,_0.1)] text-white focus:outline-none"
+                    required type="text" placeholder="Tên người dùng" name="username" id="username" />
             </div>
 
-            <div id="input-format"  class="flex justify-center items-center">
-                <input class="w-full p-3 h-auto rounded-xl leading-[140%] sm:p-4 border border-transparent my-[5px] bg-[rgba(255,_255,_255,_0.1)] text-white focus:outline-none"
-                    required
-                    type="password"
-                    placeholder="Mật khẩu"
-                    name="password"
-                    id="password"
-                />
+            <div id="input-format" class="flex justify-center items-center">
+                <input
+                    class="w-full p-3 h-auto rounded-xl leading-[140%] sm:p-4 border border-transparent my-[5px] bg-[rgba(255,_255,_255,_0.1)] text-white focus:outline-none"
+                    required type="password" placeholder="Mật khẩu" name="password" id="password" />
             </div>
 
-            <button
-                type="submit"
+            <button type="submit"
                 class="w-full sm:p-5 p-4 bg-white h-full text-[rgb(16,16,16)] border-none rounded-xl font-bold my-[5px] cursor-pointer disabled:cursor-not-allowed disabled:text-[rgba(16,16,16,0.4)]"
-                id="submitButton"
-                disabled
-            >
+                id="submitButton" disabled>
                 Đăng ký
             </button>
 
-            <a href="/resetpassword" class="block text-center mt-[10px] text-[rgba(255,255,255,0.3)]">Bạn quên mật khẩu ư?</a>
+            <a href="/resetpassword" class="block text-center mt-[10px] text-[rgba(255,255,255,0.3)]">Bạn quên mật khẩu
+                ư?</a>
 
             <div class="flex items-center justify-center text-[rgba(255,255,255,0.3)] my-5">
-                <hr class="w-full border-t border-t-[rgba(255,255,255,0.3)]"/>
+                <hr class="w-full border-t border-t-[rgba(255,255,255,0.3)]" />
                 <span class="text-[14px] mx-[10px]">hoặc</span>
-                <hr class="w-full border-t border-t-[rgba(255,255,255,0.3)]"/>
+                <hr class="w-full border-t border-t-[rgba(255,255,255,0.3)]" />
             </div>
             <a href="/login">
-            <div class="flex items-center sm:gap-[10px] gap-[5px] p-5 bg-[rgba(255,_255,_255,_0.1)] p-[20px] rounded-[16px] cursor-pointer border border-[rgba(255,_255,_255,_0.3)]">
-                <span class="absolute left-1/2 transform -translate-x-1/2">
-                    <p class="m-[10px] text-[16px]">Đăng nhập</p>
-                </span>
-                <span class="ml-auto">
-                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" style="transform: rotate(180deg);">
-                        <polyline points="16.502 3 7.498 12 16.502 21" />
-                    </svg>                    
-                </span>
+                <div
+                    class="flex items-center sm:gap-[10px] gap-[5px] p-5 bg-[rgba(255,_255,_255,_0.1)] p-[20px] rounded-[16px] cursor-pointer border border-[rgba(255,_255,_255,_0.3)]">
+                    <span class="absolute left-1/2 transform -translate-x-1/2">
+                        <p class="m-[10px] text-[16px]">Đăng nhập</p>
+                    </span>
+                    <span class="ml-auto">
+                        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor"
+                            style="transform: rotate(180deg);">
+                            <polyline points="16.502 3 7.498 12 16.502 21" />
+                        </svg>
+                    </span>
+                </div>
+            </a>
+            <div class="fixed bottom-[40px] left-1/2 transform -translate-x-1/2 bg-white text-black p-[10px_20px] rounded-[8px] shadow-[0_2px_10px_rgba(0,0,0,0.2)] opacity-100 animate-slideUp animate-stay animate-slideDown"
+                id="errorNotification" style="display: none;">
+                Sai mật khẩu.
             </div>
-        </a>
-        <div class="fixed bottom-[40px] left-1/2 transform -translate-x-1/2 bg-white text-black p-[10px_20px] rounded-[8px] shadow-[0_2px_10px_rgba(0,0,0,0.2)] opacity-100 animate-slideUp animate-stay animate-slideDown" id="errorNotification" style="display: none;">
-            Sai mật khẩu.
-        </div>
         </form>
+        <div id="register-notification" class="hidden text-center p-3 rounded-lg text-white"></div>
 
         <footer>
-            <div class="flex flex-col gap-[5px] sm:flex-row justify-center items-center sm:gap-[10px] mt-10 text-[rgba(255,255,255,0.3)]">
+            <div
+                class="flex flex-col gap-[5px] sm:flex-row justify-center items-center sm:gap-[10px] mt-10 text-[rgba(255,255,255,0.3)]">
                 <span>© 2024</span>
-                <a class="text-[rgba(255,255,255,0.3)] text-[12px] transition-all duration-[100ms] ease-linear hover:underline" href="https://help.instagram.com/769983657850450" target="_blank" rel="noopener noreferrer">Điều khoản của Threads</a>
-                <a class="text-[rgba(255,255,255,0.3)] text-[12px] transition-all duration-[100ms] ease-linear hover:underline" href="https://help.instagram.com/515230437301944" target="_blank" rel="noopener noreferrer">Chính sách quyền riêng tư</a>
-                <a class="text-[rgba(255,255,255,0.3)] text-[12px] transition-all duration-[100ms] ease-linear hover:underline" href="https://privacycenter.instagram.com/policies/cookies/" target="_blank" rel="noopener noreferrer">Chính sách Cookie</a>
-                <a class="text-[rgba(255,255,255,0.3)] text-[12px] transition-all duration-[100ms] ease-linear hover:underline" href="#">Báo cáo sự cố</a>
+                <a class="text-[rgba(255,255,255,0.3)] text-[12px] transition-all duration-[100ms] ease-linear hover:underline"
+                    href="https://help.instagram.com/769983657850450" target="_blank" rel="noopener noreferrer">Điều
+                    khoản của Threads</a>
+                <a class="text-[rgba(255,255,255,0.3)] text-[12px] transition-all duration-[100ms] ease-linear hover:underline"
+                    href="https://help.instagram.com/515230437301944" target="_blank" rel="noopener noreferrer">Chính
+                    sách quyền riêng tư</a>
+                <a class="text-[rgba(255,255,255,0.3)] text-[12px] transition-all duration-[100ms] ease-linear hover:underline"
+                    href="https://privacycenter.instagram.com/policies/cookies/" target="_blank"
+                    rel="noopener noreferrer">Chính sách Cookie</a>
+                <a class="text-[rgba(255,255,255,0.3)] text-[12px] transition-all duration-[100ms] ease-linear hover:underline"
+                    href="#">Báo cáo sự cố</a>
             </div>
         </footer>
     </div>
@@ -109,37 +112,52 @@
     function checkButtonState() {
         submitButton.disabled = !(usernameInput.value && passwordInput.value && emailInput.value);
     }
-    async function handleRegister(event){
+    async function handleRegister(event) {
         event.preventDefault();
+
         const username = document.getElementById("username").value;
         const password = document.getElementById("password").value;
         const email = document.getElementById("email").value;
+        const notification = document.getElementById("register-notification");
+        submitButton.disabled = true;
         try {
-        const response = await fetch('http://localhost:3000/api/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                username: username,
-                password: password,
-                email: email
-            })
-        });
-        const data = await response.json();
-        console.log(data);
-        if (!data.success) {
-            showError(data.message);
-        }
-        else {
-            localStorage.setItem('username', username);
-            window.location.href = '/login';
-        }
+            const response = await fetch('http://localhost:3000/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password,
+                    email: email
+                })
+            });
+            const data = await response.json();
+            // Hiển thị thông báo
+            if (data.success) {
+                notification.classList.remove("hidden", "bg-red-500");
+                notification.classList.add("bg-green-500");
+                notification.innerText = "Đăng ký thành công! Vui lòng kiểm tra email để xác minh.";
+            } else {
+                notification.classList.remove("hidden", "bg-green-500");
+                notification.classList.add("bg-red-500");
+                notification.innerText = `Lỗi: ${data.message}`;
+            }
+            submitButton.disabled = false;
         } catch (error) {
-            showError('Có lỗi xảy ra. Vui lòng thử lại!');
+            notification.classList.remove("hidden", "bg-green-500");
+            notification.classList.add("bg-red-500");
+            notification.innerText = "Có lỗi xảy ra. Vui lòng thử lại!";
             console.error(error);
+            submitButton.disabled = false;
         }
+
+        // Ẩn thông báo sau 5 giây
+        setTimeout(() => {
+            notification.classList.add("hidden");
+        }, 5000);
     }
+
     function showError(message) {
         errorNotification.innerText = message;
         errorNotification.style.display = "block";
@@ -148,4 +166,5 @@
         }, 3000);
     }
 </script>
+
 </html>
