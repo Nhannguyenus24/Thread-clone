@@ -42,7 +42,7 @@ const checkLogIn = async (req, res) => {
         };
 
         // Ký JWT với một secret key
-        const token = jwt.sign(payload, process.env.JWT_SECRET);
+        const token = jwt.sign(payload, "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60");
 
         // Gửi token về cho client
         res.status(200).json({
@@ -231,7 +231,72 @@ const verifyUser = async (req, res) => {
 };
 
 
+const requestPasswordReset = async (req, res) => {
+    const { email, password } = req.body;
 
+    try {
+        const user = await UserModel.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: "Không tìm thấy tài khoản với email này." });
+        }
+
+        // Hash mật khẩu mới
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Tạo token reset password và thời gian hết hạn
+        const resetToken = crypto.randomBytes(32).toString('hex');
+        const resetExpires = Date.now() + 3600000; // Token có hiệu lực trong 1 giờ
+
+        // Cập nhật thông tin token vào cơ sở dữ liệu
+        user.verificationToken = resetToken;
+        user.verificationExpires = resetExpires;
+        await user.save();
+
+        // Tạo liên kết với token và mật khẩu đã hash
+        const resetUrl = `http://localhost:3000/api/reset-password/${resetToken}?password=${encodeURIComponent(hashedPassword)}`;
+        await sendMail(
+            email,
+            "Xác nhận đặt lại mật khẩu",
+            `<p>Chào ${user.username},</p>
+             <p>Nhấn vào liên kết bên dưới để xác nhận mật khẩu mới của bạn:</p>
+             <a href="${resetUrl}">Xác nhận đặt lại mật khẩu</a>
+             <p>Liên kết này sẽ hết hạn sau 1 giờ.</p>
+             <p>Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.</p>`
+        );
+
+        res.status(200).json({ success: true, message: "Email xác nhận đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: "Lỗi hệ thống. Vui lòng thử lại sau." });
+    }
+};
+
+const executeResetPassword = async (req, res) => {
+    const { authToken } = req.params;
+    const { password } = req.query; // Lấy mật khẩu từ query
+
+    try {
+        const user = await UserModel.findOne({
+            verificationToken: authToken,
+        });
+
+        if (!user) {
+            return res.status(400).json({ success: false, message: "Token không hợp lệ hoặc đã hết hạn." });
+        }
+
+        // Cập nhật mật khẩu mới
+        user.password = password;
+        user.verificationToken = null;
+        user.verificationExpires = null;
+        await user.save();
+
+        res.status(200).json({ success: true, message: "Mật khẩu đã được đặt lại thành công. Bạn có thể đăng nhập bằng mật khẩu mới." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: "Lỗi hệ thống. Vui lòng thử lại sau." });
+    }
+};
 
 
 const AuthenticationController = {
@@ -242,6 +307,8 @@ const AuthenticationController = {
     registerUser: registerUser,
     verifyUser: verifyUser,
     resendVerificationToken: resendVerificationToken,
+    requestPasswordReset: requestPasswordReset,
+    executeResetPassword: executeResetPassword,
 }
 
 export default AuthenticationController;
