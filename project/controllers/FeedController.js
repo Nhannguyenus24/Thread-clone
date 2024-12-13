@@ -9,6 +9,7 @@ const loadAllFeed = async (req, res) => {
         foreignField: "username", // Trường tương ứng trong UserSchema
         select: "username avatar", // Lấy các trường cần thiết từ Users
       });
+      console.log(threads);
       res.render('Feed', {threads: threads });
   } catch (error) {
       console.error('Error fetching threads:', error);

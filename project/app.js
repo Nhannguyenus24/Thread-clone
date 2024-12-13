@@ -32,7 +32,7 @@ const hbs = expressHandlebars.create({
     formatTime: function (dateString) {
       const now = new Date();
       const inputDate = new Date(dateString);
-      const diff = Math.floor((now - inputDate) / 1000); // Khoảng thời gian tính bằng giây
+      const diff = Math.floor((now - inputDate) / 1000);
 
       if (diff < 60) {
         return `${diff} giây`;
@@ -82,10 +82,6 @@ app.use("/", AuthenticationRouter);
 app.use("/profile", ProfileRouter);
 app.use("/notification", NotificationRouter);
 app.use("/newthread", NewThreadRouter);
-app.post('/upload', (req, res) => {
-  console.log("h");
-  res.status(200).send("OK");
-});
 
 app.listen(PORT, HOST, () => {
   console.log(`Listening on http://${HOST}:${PORT}`);
