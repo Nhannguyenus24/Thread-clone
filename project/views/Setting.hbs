@@ -147,7 +147,7 @@ async function saveField(field) {
     }
     console.log(currentPassword, newPassword);
     const response = await fetch('http://localhost:3000/setting/password', {
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },

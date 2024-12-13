@@ -16,7 +16,6 @@ const uploadThread = async (req, res) => {
             }
 
             const { username, content } = req.body;
-            console.log(username + " " + content);
             if (!username || !content) {
                 return res.status(400).json({ error: 'Username and content are required', success: false });
             }
