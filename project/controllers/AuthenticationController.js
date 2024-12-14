@@ -101,7 +101,7 @@ const registerUser = async (req, res) => {
 
 
         const verificationToken = crypto.randomBytes(32).toString('hex');
-        const verificationExpires = Date.now() + 1000;
+        const verificationExpires = Date.now() + 300000;
 
         const newUser = new UserModel({
             username,
