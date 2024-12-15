@@ -18,41 +18,39 @@
             <img src="/image/thread.ico" alt="Logo" class="w-[50px] h-[50px] block mx-auto mb-[10px]"
                 style="display: none;" id="logo" />
             <span>
-                <p class="text-[14px] mb-[10px] relative sm:text-[16px] text-center sm:mb-[20px] font-semibold">Đăng
-                    nhập bằng tài khoản</p>
+                <p class="text-[14px] mb-[10px] relative sm:text-[16px] text-center sm:mb-[20px] font-semibold">Log in with account</p>
             </span>
 
             <div id="input-format" class="flex justify-center items-center">
                 <input
                     class="w-full p-3 h-auto rounded-xl leading-[140%] sm:p-4 border border-transparent my-[5px] bg-[rgba(255,_255,_255,_0.1)] text-white focus:outline-none"
-                    required type="text" placeholder="Tên người dùng" name="username" id="username" />
+                    required type="text" placeholder="Username" name="username" id="username" />
             </div>
 
             <div id="input-format" class="flex justify-center items-center">
                 <input
                     class="w-full p-3 h-auto rounded-xl leading-[140%] sm:p-4 border border-transparent my-[5px] bg-[rgba(255,_255,_255,_0.1)] text-white focus:outline-none"
-                    required type="password" placeholder="Mật khẩu" name="password" id="password" />
+                    required type="password" placeholder="Password" name="password" id="password" />
             </div>
 
             <button type="submit"
                 class="w-full sm:p-5 p-4 bg-white h-full text-[rgb(16,16,16)] border-none rounded-xl font-bold my-[5px] cursor-pointer disabled:cursor-not-allowed disabled:text-[rgba(16,16,16,0.4)]"
                 id="submitButton" disabled>
-                Đăng nhập
+                Log in
             </button>
 
-            <a href="/resetpassword" class="block text-center mt-[10px] text-[rgba(255,255,255,0.3)]">Bạn quên mật khẩu
-                ư?</a>
+            <a href="/resetpassword" class="block text-center mt-[10px] text-[rgba(255,255,255,0.3)]">Forgot password?</a>
 
             <div class="flex items-center justify-center text-[rgba(255,255,255,0.3)] my-5">
                 <hr class="w-full border-t border-t-[rgba(255,255,255,0.3)]" />
-                <span class="text-[14px] mx-[10px]">hoặc</span>
+                <span class="text-[14px] mx-[10px]">or</span>
                 <hr class="w-full border-t border-t-[rgba(255,255,255,0.3)]" />
             </div>
             <a href="/signup">
                 <div
                     class="flex items-center sm:gap-[10px] gap-[5px] p-5 bg-[rgba(255,_255,_255,_0.1)] p-[20px] rounded-[16px] cursor-pointer border border-[rgba(255,_255,_255,_0.3)]">
                     <span class="absolute left-1/2 transform -translate-x-1/2">
-                        <p class="m-[10px] text-[16px]">Đăng ký</p>
+                        <p class="m-[10px] text-[16px]">Register</p>
                     </span>
                     <span class="ml-auto">
                         <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor"
@@ -64,7 +62,6 @@
             </a>
             <div class="fixed bottom-[40px] left-1/2 transform -translate-x-1/2 bg-white text-black p-[10px_20px] rounded-[8px] shadow-[0_2px_10px_rgba(0,0,0,0.2)] opacity-100 animate-slideUp animate-stay animate-slideDown"
                 id="errorNotification" style="display: none;">
-                Sai mật khẩu.
             </div>
         </form>
 
@@ -73,16 +70,14 @@
                 class="flex flex-col gap-[5px] sm:flex-row justify-center items-center sm:gap-[10px] mt-10 text-[rgba(255,255,255,0.3)]">
                 <span>© 2024</span>
                 <a class="text-[rgba(255,255,255,0.3)] text-[12px] transition-all duration-[100ms] ease-linear hover:underline"
-                    href="https://help.instagram.com/769983657850450" target="_blank" rel="noopener noreferrer">Điều
-                    khoản của Threads</a>
+                    href="https://help.instagram.com/769983657850450" target="_blank" rel="noopener noreferrer">Terms of Threads</a>
                 <a class="text-[rgba(255,255,255,0.3)] text-[12px] transition-all duration-[100ms] ease-linear hover:underline"
-                    href="https://help.instagram.com/515230437301944" target="_blank" rel="noopener noreferrer">Chính
-                    sách quyền riêng tư</a>
+                    href="https://help.instagram.com/515230437301944" target="_blank" rel="noopener noreferrer">Privacy Policy</a>
                 <a class="text-[rgba(255,255,255,0.3)] text-[12px] transition-all duration-[100ms] ease-linear hover:underline"
                     href="https://privacycenter.instagram.com/policies/cookies/" target="_blank"
-                    rel="noopener noreferrer">Chính sách Cookie</a>
+                    rel="noopener noreferrer">Cookie Policy</a>
                 <a class="text-[rgba(255,255,255,0.3)] text-[12px] transition-all duration-[100ms] ease-linear hover:underline"
-                    href="#">Báo cáo sự cố</a>
+                    href="#">Report an issue</a>
             </div>
         </footer>
     </div>
@@ -124,15 +119,12 @@
 
                 const data = await response.json();
 
-                if (response.ok) {
-                    document.cookie = `token=${data.token}; path=/; max-age=2592000; SameSite=Strict`;
+                if (response.ok)
                     window.location.href = '/';
-                } else {
+                else
                     showError(data.message);
-                }
             } catch (error) {
-                showError('Có lỗi xảy ra. Vui lòng thử lại!');
-                console.error(error);
+                showError('An error occurred. Please try again!');
             }
         }
         function showError(message) {

@@ -5,10 +5,8 @@ import { query } from 'express';
 
 const loadSearch = async (req, res) => {
     const token = req.cookies.token;
-    if (!token) {
-      res.redirect("/login");
-      return;
-    }
+    if (!token)
+      return res.redirect("/login");
     const decode = jwt.verify(
       token,
       "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
@@ -18,7 +16,7 @@ const loadSearch = async (req, res) => {
     const searchQuery = req.query.q || '';
     const users = await UserModel.find({ _id: { $ne: userId } });
 
-    const followData = await FollowModel.findOne({ userId });
+    const followData = await FollowModel.findOne({ userId }).lean();
 
     const followingUsernames = followData ? followData.followings.map(follow => follow.username) : [];
 

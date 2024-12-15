@@ -29,8 +29,8 @@ const loadAllThread = async (req, res) => {
           localField: "author",
           foreignField: "username",
           select: "username avatar",
-        })
-        .lean();
+        }).lean();
+      threads.reverse();
       const updatedThreads = threads.map((thread) => {
         const isLike = thread.likes.some(
           (like) => like.userId.toString() === userId
@@ -40,19 +40,15 @@ const loadAllThread = async (req, res) => {
       res.render("Feed", { threads: updatedThreads, avatar: user.avatar, isLogin: true });
     } catch (error) {
       console.error("Error fetching threads:", error);
-      res
-        .status(500)
-        .json({ message: "An error occurred while loading the feed" });
+      res.status(500).json({ message: "An error occurred while loading the feed" });
     }
   }
 };
 
 const likeThread = async (req, res) => {
   const token = req.cookies.token;
-  if (!token) {
-    res.redirect("/login");
-    return;
-  }
+  if (!token)
+    return res.redirect("/login");
   const decode = jwt.verify(
     token,
     "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
@@ -85,13 +81,9 @@ const loadFollowingThread = async (req, res) => {
 
 const addComment = async (req, res) => {
   const {content} = req.body;
-  console.log(content);
-  console.log(req.params.id);
   const token = req.cookies.token;
-  if (!token) {
-    res.redirect("/login");
-    return;
-  }
+  if (!token) 
+    return res.redirect("/login");
   const decode = jwt.verify(
     token,
     "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
@@ -109,10 +101,8 @@ const addComment = async (req, res) => {
 
 const loadThread = async (req, res) => {
   const token = req.cookies.token;
-  if (!token) {
-    res.redirect("/login");
-    return;
-  }
+  if (!token) 
+    return res.redirect("/login");
   const decode = jwt.verify(
     token,
     "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"

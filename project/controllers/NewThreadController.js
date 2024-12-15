@@ -17,7 +17,7 @@ const newThread = async (req, res) => {
     "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
   );
     try {
-        const findUser = await UserModel.findOne({ _id: decode.userId });
+        const findUser = await UserModel.findOne({ _id: decode.userId }).lean();
         if (!findUser) {
             res.status(404).json({ message: "User not found" });
         }
@@ -27,28 +27,28 @@ const newThread = async (req, res) => {
         }
     res.render("New", object);
     } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ message: error.message });
     }
 }
 
 const uploadThread = async (req, res) => {
-      const token = req.cookies.token;
-      if (!token) {
-        res.redirect("/login");
-        return;
-      }
-      const decode = jwt.verify(
-        token,
-        "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-      );
+    const token = req.cookies.token;
+    if (!token) 
+      return res.redirect("/login");
+    const decode = jwt.verify(
+    token,
+    "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
+    );
     try {
         upload.single('file')(req, res, async (err) => {
-            if (err) {
+            if (err) 
                 return res.status(400).json({ error: 'File upload error'});
-            }
+            
             const findUser = await UserModel.findOne({ _id: decode.userId });
-            if (!findUser) {
+            if (!findUser)
                 return res.status(404).json({ message: 'User not found'});
-            }
+
             const {content } = req.body;
 
             let imageUrl = "";

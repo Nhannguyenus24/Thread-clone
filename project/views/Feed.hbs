@@ -10,36 +10,3 @@
     {{> thread}}
     {{/each}}
 </div>
-<script>
-async function handleLike() {
-  try {
-    const postId = event.currentTarget.id;
-    const svg = event.currentTarget.querySelector('svg');
-    const span = event.currentTarget.querySelector('span');
-    let likes = parseInt(span.textContent, 10);
-    
-    const response = await fetch(`http://localhost:3000/like/${postId}`, {
-      method: 'PUT',
-    });
-
-    if (!response.ok) {
-      window.location.href = '/login';
-    }
-    
-      if (svg) {
-        if (svg.classList.contains('active')) {
-          svg.classList.remove('active');
-          svg.classList.add('nonactive');
-          span.textContent = likes - 1;
-        } else {
-          svg.classList.remove('nonactive');
-          svg.classList.add('active');
-          span.textContent = likes + 1;
-        }
-    }
-    
-  } catch (error) {
-    console.error('An error occurred:', error.message);
-  }
-}
-</script>
