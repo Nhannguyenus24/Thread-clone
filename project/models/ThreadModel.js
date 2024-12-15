@@ -2,16 +2,17 @@ import mongoose from "mongoose";
 
 const CommentSchema = new mongoose.Schema({
   comment: { type: String, required: true },
-  author: { type: String, required: true },
+  commentId: { type: mongoose.Schema.Types.ObjectId, required: true},
   date: { type: Date, default: Date.now },
 });
 
 const LikeSchema = new mongoose.Schema({
-  author: { type: String, required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, required: true},
 });
 
 const ThreadSchema = new mongoose.Schema({
-  author: { type: String, ref: "Users", required: true },
+  author: { type: String, required: true },
+  authorId: { type: mongoose.Schema.Types.ObjectId, required: true },
   content: { type: String, required: true },
   image: { type: String, default: "" },
   date: { type: Date, default: Date.now },

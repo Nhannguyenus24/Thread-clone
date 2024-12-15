@@ -1,0 +1,70 @@
+<div>
+    <div id="overlay" class="fixed inset-0 bg-black bg-opacity-80 hidden z-90"></div>
+    {{#each threads}}
+    {{> thread}}
+    {{/each}}
+    <div class="flex py-2 mx-4 sm:py-4 sm:mx-6 border-b border-[#333333]">
+        <span class="font-semibold mr-auto">Reply Thread</span>
+        <span onclick="showCommentSection()">Leave a reply...</span>
+    </div>
+    {{#each comments}}
+    {{> comment}}
+    {{/each}}
+<div id="comment-section" class="fixed z-100 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-[#181818] sm:border sm:border-[#333333] rounded-lg sm:w-2/6 w-full hidden">
+  <div class="flex relative h-[50px] items-center">
+    <span class="cursor-pointer ml-2" onClick="quitCommentSection()">Cancel</span>
+    <span class="font-bold absolute left-1/2 transform -translate-x-1/2 text-center">Reply Thread</span>
+  </div>
+  <hr class="border-[#333333]">
+  <div class="h-[80px] rounded-lg p-2 flex items-center bg-[#181818] w-full gap-2">
+    <img src="{{avatar}}" class="w-[40px] h-[40px] rounded-full" />
+    <input id="commentContent" type="text" placeholder="Write a comment..." class="flex-1 bg-[#181818] border-none text-[#ddd] outline-none ml-2" />
+  </div>
+  <div class="flex w-full mt-10 items-center">
+    <span class="text-sm text-[#777777] m-2">Anyone can see comment</span>
+    <button id="postComment" onclick="sendComment()" class="bg-transparent font-semibold text-[#f3f5f7] border border-[#333333] m-2 ml-auto h-[36px] w-[70px] rounded-lg opacity-30 cursor-not-allowed">Post</button>
+  </div>
+</div>
+
+</div>
+<script>
+    document.getElementById('commentContent').addEventListener('input', function () {
+    const postButton = document.getElementById('postComment');
+    const content = document.getElementById('commentContent').value;
+
+    if (content.trim() === '') {
+        postButton.disabled = true;
+        postButton.classList.add('opacity-30', 'cursor-not-allowed');
+        postButton.classList.remove('opacity-100');
+    } else {
+        postButton.disabled = false;
+        postButton.classList.add('opacity-100');
+        postButton.classList.remove('opacity-30', 'cursor-not-allowed');
+    }
+});
+function showCommentSection() {
+    document.getElementById('overlay').classList.remove('hidden');
+    document.getElementById('comment-section').classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function quitCommentSection() {
+    document.getElementById('overlay').classList.add('hidden');
+    document.getElementById('comment-section').classList.add('hidden');
+    document.body.style.overflow = 'auto';
+}
+async function sendComment(){
+    const content = document.getElementById('commentContent').value;
+    let id = window.location.href.split('/').pop(); 
+    const response = await fetch(`http://localhost:3000/comment/${id}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({content: content})
+    });
+    if (response.ok) {
+        window.location.reload();
+    }
+}
+</script>
