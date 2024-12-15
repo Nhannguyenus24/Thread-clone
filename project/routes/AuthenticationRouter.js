@@ -20,4 +20,6 @@ router.post('/resetpassword', AuthenticationController.requestPasswordReset);
 
 router.get('/api/reset-password/:token', AuthenticationController.executeResetPassword);
 
+router.get('/api/islogin', AuthenticationController.isLoggedIn);
+
 export default router;

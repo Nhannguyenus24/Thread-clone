@@ -119,15 +119,12 @@
 
                 const data = await response.json();
 
-                if (response.ok) {
-                    document.cookie = `token=${data.token}; path=/; max-age=2592000; SameSite=Strict`;
+                if (response.ok)
                     window.location.href = '/';
-                } else {
+                else
                     showError(data.message);
-                }
             } catch (error) {
                 showError('An error occurred. Please try again!');
-                console.error(error);
             }
         }
         function showError(message) {
