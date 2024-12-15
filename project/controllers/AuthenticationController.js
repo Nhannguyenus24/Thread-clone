@@ -22,33 +22,30 @@ const checkLogIn = async (req, res) => {
     try {
         const user = await UserModel.findOne({ username: username });
 
-        if (!user) {
+        if (!user)
             return res.status(404).json({message: "Incorrect username or password." });
-        }
 
-        if (!user.isVerified) {
+        if (!user.isVerified)
             return res.status(403).json({message: "Account not verified. Please check your email." });
-        }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
             return res.status(404).json({message: "Incorrect username or password." });
         }
 
-        // Tạo JWT token sau khi xác thực thành công
         const payload = {
             userId: user._id
         };
 
-        // Ký JWT với một secret key
         const token = jwt.sign(payload, "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60");
-
-        // Gửi token về cho client
-        res.status(200).json({
-            token
+        res.cookie("token", token, {
+            httpOnly: true, // Prevent JavaScript from accessing cookie (XSS protection)
+            secure: false, // Use true in production with HTTPS
+            sameSite: "Strict", // Prevent CSRF attacks
+            maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         });
+        res.status(200).json({ token });
     } catch (error) {
-        console.error(error);
         res.status(500).json({message: "System error! Please try again later." });
     }
 };
@@ -58,7 +55,7 @@ const register = (req, res) => {
 }
 
 const resetPassword = (req, res) => {
-    res.sendFile(path.join(__dirname, "../views/ForgetPassword.html"));
+    res.sendFile(path.join(__dirname, "../views/ForgotPassword.html"));
 }
 
 const validateUsername = (username) => {
@@ -164,9 +161,9 @@ const resendVerificationToken = async (req, res) => {
                 <p>If you did not sign up for an account, please ignore this email.</p>`
             );
 
-            return res.status(200).json({ success: true, message: "A new verification email has been sent. Please check your inbox." });
+            return res.status(200).json({message: "A new verification email has been sent. Please check your inbox." });
         } else {
-            return res.status(400).json({ success: false, message: "The token is still valid. You don't need to request it again." });
+            return res.status(400).json({message: "The token is still valid. You don't need to request it again." });
         }
     } catch (error) {
         console.error(error);
@@ -183,7 +180,7 @@ const verifyUser = async (req, res) => {
         const user = await UserModel.findOne({ verificationToken: token });
 
         if (!user) {
-            return res.status(400).json({ success: false, message: "Token không hợp lệ." });
+            return res.status(400).json({message: "Invalid token." });
         }
 
 
@@ -201,17 +198,15 @@ const verifyUser = async (req, res) => {
             const verifyUrl = `http://localhost:3000/api/verify/${newVerificationToken}`;
             await sendMail(
                 user.email,
-                "Xác nhận email của bạn",
-                `<p>Chào ${user.username},</p>
-                 <p>Nhấn vào liên kết bên dưới để xác minh email:</p>
-                 <a href="${verifyUrl}">Xác minh email</a>
-                 <p>Nếu bạn không đăng ký tài khoản, vui lòng bỏ qua email này.</p>`
+                "Confirm your email",
+                `<p>Hello ${user.username},</p>
+                <p>Click the link below to verify your email:</p>
+                <a href="${verifyUrl}">Verify Email</a>
+                <p>If you did not sign up for an account, please ignore this email.</p>`
             );
 
-
             return res.status(400).json({
-                success: false,
-                message: "Token xác minh đã hết hạn. Một email xác minh mới đã được gửi đến hộp thư của bạn."
+                message: "The verification token has expired. A new verification email has been sent to your inbox."
             });
         }
 
@@ -235,22 +230,18 @@ const requestPasswordReset = async (req, res) => {
         const user = await UserModel.findOne({ email });
 
         if (!user) {
-            return res.status(404).json({ success: false, message: "Không tìm thấy tài khoản với email này." });
+            return res.status(404).json({message: "Không tìm thấy tài khoản với email này." });
         }
 
-        // Hash mật khẩu mới
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Tạo token reset password và thời gian hết hạn
         const resetToken = crypto.randomBytes(32).toString('hex');
-        const resetExpires = Date.now() + 3600000; // Token có hiệu lực trong 1 giờ
+        const resetExpires = Date.now() + 3600000;
 
-        // Cập nhật thông tin token vào cơ sở dữ liệu
         user.verificationToken = resetToken;
         user.verificationExpires = resetExpires;
         await user.save();
 
-        // Tạo liên kết với token và mật khẩu đã hash
         const resetUrl = `http://localhost:3000/api/reset-password/${resetToken}?password=${encodeURIComponent(hashedPassword)}`;
         await sendMail(
             email,
@@ -262,10 +253,10 @@ const requestPasswordReset = async (req, res) => {
              <p>Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.</p>`
         );
 
-        res.status(200).json({ success: true, message: "Email xác nhận đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn." });
+        res.status(200).json({message: "Email xác nhận đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "System error! Please try again later." });
+        res.status(500).json({message: "System error! Please try again later." });
     }
 };
 
@@ -295,7 +286,13 @@ const executeResetPassword = async (req, res) => {
     }
 };
 
-
+const isLoggedIn = (req, res) => {
+    const token = req.cookies.token;
+    if (!token)
+        res.status(200).json({ isLoggedIn: false });
+    else 
+        res.status(200).json({ isLoggedIn: true });
+}
 const AuthenticationController = {
     logIn: logIn,
     register: register,
@@ -306,6 +303,7 @@ const AuthenticationController = {
     resendVerificationToken: resendVerificationToken,
     requestPasswordReset: requestPasswordReset,
     executeResetPassword: executeResetPassword,
+    isLoggedIn: isLoggedIn
 }
 
 export default AuthenticationController;

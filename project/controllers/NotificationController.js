@@ -2,15 +2,15 @@ import NotificationModel from "../models/NotificationModel.js";
 import jwt from 'jsonwebtoken';
 
 const loadNotifications = async (req, res) => {
-    const token = req.cookies.token;
-    if (!token) {
-        res.redirect('/login');
-        return;
-    }
-    
-    const decode = jwt.verify(token, "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60");
+        const token = req.cookies.token;
+        if (!token) 
+          return res.redirect("/login");
+        const decode = jwt.verify(
+        token,
+        "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
+        );
     try {
-    const noti = await NotificationModel.findOne({ userId: decode.userId });
+    const noti = await NotificationModel.findOne({ userId: decode.userId }).lean();
     res.render("Notification", { notifications: noti ? noti.notifications : [] });
     } catch (error) {
         console.log(error);
@@ -20,22 +20,21 @@ const loadNotifications = async (req, res) => {
 
 const markAsRead = async (req, res) => {
     const token = req.cookies.token;
-    if (!token) {
-        res.redirect('/login');
-        return;
-    }
-    const decode = jwt.verify(token, "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60");
+    if (!token) 
+      return res.redirect("/login");
+    const decode = jwt.verify(
+    token,
+    "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
+    );
     try {
         const noti = await NotificationModel.findOne({ userId: decode.userId });
-        if (!noti) {
-            res.status(404).json({ message: "Notification not found" });
-            return;
-        }
+        if (!noti) 
+            return res.status(404).json({ message: "Notification not found" });
+
         const notification = noti.notifications.id(req.params.id);
-        if (!notification) {
-            res.status(404).json({ message: "Notification not found" });
-            return;
-        }
+        if (!notification)
+            return res.status(404).json({ message: "Notification not found" });
+
         notification.isRead = true;
         await noti.save();
         res.status(200).json({ message: "Success" });
@@ -47,7 +46,6 @@ const markAsRead = async (req, res) => {
 const addNotification = async (userId, content, senderAvatar, senderName) => {
     try {
         const userNotification = await NotificationModel.findOne({ userId });
-        console.log(userId, content, senderAvatar, senderName)
         if (!userNotification) {
             const newNotification = new NotificationModel({
                 userId,

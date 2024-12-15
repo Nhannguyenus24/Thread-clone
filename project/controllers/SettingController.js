@@ -7,16 +7,14 @@ const upload = multer({ dest: "temp/" });
 
 const settingAccount = async (req, res) => {
   const token = req.cookies.token;
-  if (!token) {
-    res.redirect("/login");
-    return;
-  }
+  if (!token)
+    return res.redirect("/login");
   const decode = jwt.verify(
     token,
     "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
   );
   try {
-    const findUser = await UserModel.findOne({ _id: decode.userId });
+    const findUser = await UserModel.findOne({ _id: decode.userId }).lean();
     if (!findUser) {
       res.redirect("/login");
     } else {
@@ -36,10 +34,8 @@ const settingAccount = async (req, res) => {
 };
 
 const help = (req, res) => {
-  if (!req.cookies.token) {
-    res.redirect("/login");
-    return;
-  }
+    if (!req.cookies.token)
+      return res.redirect("/login");
   const links = [
     {
       content: "Help Center",
@@ -76,10 +72,8 @@ const help = (req, res) => {
 const changeSetting = async (req, res) => {
   const { field, value } = req.body;
   const token = req.cookies.token;
-  if (!token) {
-    res.redirect("/login");
-    return;
-  }
+  if (!req.cookies.token)
+    return res.redirect("/login");
   const decode = jwt.verify(
     token,
     "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
@@ -113,10 +107,8 @@ const changeSetting = async (req, res) => {
 const changePassword = async (req, res) => {
   const { currentPassword, newPassword } = req.body;
   const token = req.cookies.token;
-  if (!token) {
-    res.redirect("/login");
-    return;
-  }
+  if (!token)
+    return res.redirect("/login");
   const decode = jwt.verify(
     token,
     "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
@@ -139,10 +131,8 @@ const changePassword = async (req, res) => {
 
 const changeAvatar = async (req, res) => {
   const token = req.cookies.token;
-  if (!token) {
-    res.redirect("/login");
-    return;
-  }
+  if (!token)
+    return res.redirect("/login");
   const decode = jwt.verify(
     token,
     "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
@@ -165,7 +155,6 @@ const changeAvatar = async (req, res) => {
       }
     });
   } catch (error) {
-    console.error("Error:", err.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };
