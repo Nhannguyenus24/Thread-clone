@@ -9,26 +9,26 @@
             <h1
               class="realname text-gray-100 text-xl font-bold leading-[30px] font-sans cursor-pointer"
             >
-              Trần Đức Tùng
+              {{user.fullname}}
             </h1>
           </div>
           <div class="name__nickname">
             <span
               class="nickname text-gray-100 font-normal leading-[21px] font-sans"
-              >__td.tung</span
+              >{{user.username}}</span
             >
           </div>
         </div>
         <div class="profile-avatar">
           <img
-            src="./image/avatar_1.0.jpg"
+            src="{{user.avatar}}"
             alt="Avatar"
             class="cursor-pointer max-w-[84px] h-auto rounded-full object-cover outline outline-[0.5px] outline-gray-100/15"
           />
         </div>
       </div>
       <div class="profile-quote px-6">
-        <span>bed boi.</span>
+        <span>{{user.quote}}</span>
       </div>
 
       <div class="follower-panel flex justify-between px-6 pt-4">
@@ -36,7 +36,7 @@
           <span
             class="hover:border-b-[1.5px] hover:border-gray-600 text-[15px] font-normal text-gray-600 leading-[21px]"
             onclick="displayFollowsPanel()"
-            >12 người theo dõi</span>
+            >{{followerCount}} người theo dõi</span>
 
           <div
             class="overall-follow-panel w-[90%] sm:w-[80%] md:w-[80%] lg:w-[33.33%]  absolute z-10 top-[20%] sm:left-[15%] md:left-[10%] lg:top-[25%] lg:left-[32.5%]  bg-[rgb(16,16,16)] rounded-lg border border-[rgba(243,245,247,0.15)] hidden">
@@ -73,17 +73,34 @@
 
             <div class="relative max-h-[30vh] list-of-follower custom-scrollbar overflow-y-auto" style="display: block;">
               <ul>
+                {{#if (isGreaterThanZero followerCount)}}
                   {{#each followers}}
                     {{> follower}}
                   {{/each}}
+                {{else}}
+                  <li>
+                    <div class="flex items-center justify-center mt-[15px] mb-[15px]">
+                      <p class="text-2xl">There is no followers</p>
+                    </div> 
+                  </li>                                
+                {{/if}}
+
               </ul>
             </div>
 
             <div class="relative max-h-[30vh] list-of-following custom-scrollbar overflow-y-auto" style="display: none;">
               <ul>  
+                {{#if (isGreaterThanZero followingCount)}}
                   {{#each followings}}
                     {{> following}}
                   {{/each}}
+                {{else}}
+                  <li>
+                    <div class="flex items-center justify-center mt-[15px] mb-[15px]">
+                      <p class="text-2xl">There is no followings</p>
+                    </div> 
+                  </li>                                
+                {{/if}}
               </ul>
             </div>
           </div>
@@ -324,32 +341,6 @@
         listFollower.classList.remove("activated");
         listFollowing.classList.add("activated");
       };
-
-    const username; // Lấy username từ localStorage
-
-    document.addEventListener('DOMContentLoaded', () => {
-      const username = localStorage.getItem('username');
-      console.log('Username:', username);
-    });
-
-    console.log(username);
-
-    fetch('/profile', {
-      method: 'GET', // Hoặc POST nếu cần
-      headers: {
-        'Content-Type': 'application/json',
-        'username': username, // Gửi username qua headers
-      }
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('Threads:', data);
-    })
-    .catch(error => {
-      console.error('Error fetching threads:', error);
-    });
-
-
 
     </script>
   </body>

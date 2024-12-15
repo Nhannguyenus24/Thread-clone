@@ -28,6 +28,12 @@ const hbs = expressHandlebars.create({
   extname: "hbs",
   defaultLayout: "layout",
   helpers: {
+    isGreaterThanZero: function(value) {
+      if (!value) {
+        return false;
+      }
+      return value > 0;
+    },    
     eq: function (a, b) {
       return a === b;
     },
