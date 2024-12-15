@@ -1,74 +1,81 @@
+import NotificationModel from "../models/NotificationModel.js";
+import jwt from 'jsonwebtoken';
 
-
-const loadNotifications = (req, res) => {
-    
-  const notifications = [
-    {
-      avatar: "/image/anonymous-user.jpg",
-      username: "John Doe",
-      time: "2 phút trước",
-      content: "Đây là thông báo 1"
-    },
-    {
-      avatar: "/image/anonymous-user.jpg",
-      username: "Jane Smith",
-      time: "5 phút trước",
-      content: "Đây là thông báo 2"
-    },
-    {
-      avatar: "/image/anonymous-user.jpg",
-      username: "Alice",
-      time: "10 phút trước",
-      content: "Đây là thông báo 3"
-    },
-    {
-      avatar: "/image/anonymous-user.jpg",
-      username: "Bob",
-      time: "15 phút trước",
-      content: "Đây là thông báo 4"
-    },
-    {
-      avatar: "/image/anonymous-user.jpg",
-      username: "Charlie",
-      time: "20 phút trước",
-      content: "Đây là thông báo 5"
-    },
-    {
-      avatar: "/image/anonymous-user.jpg",
-      username: "David Gnộp",
-      time: "25 phút trước",
-      content: "Đây là David Gnộp"
-    },
-    {
-      avatar: "/image/anonymous-user.jpg",
-      username: "Eve",
-      time: "30 phút trước",
-      content: "Đây là thông báo 7"
-    },
-    {
-      avatar: "/image/anonymous-user.jpg",
-      username: "Frank",
-      time: "35 phút trước",
-      content: "Đây là thông báo 8"
-    },
-    {
-      avatar: "/image/anonymous-user.jpg",
-      username: "Grace",
-      time: "40 phút trước",
-      content: "Đây là thông báo 9"
-    },
-    {
-      avatar: "/image/anonymous-user.jpg",
-      username: "Hank",
-      time: "45 phút trước",
-      content: "Đây là thông báo 10"
+const loadNotifications = async (req, res) => {
+    const token = req.cookies.token;
+    if (!token) {
+        res.redirect('/login');
+        return;
     }
-  ];
-    res.render("Notification", { notifications: notifications });
+    
+    const decode = jwt.verify(token, "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60");
+    try {
+    const noti = await NotificationModel.findOne({ userId: decode.userId });
+    res.render("Notification", { notifications: noti ? noti.notifications : [] });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "Internal server error" });
+    }
+}
+
+const markAsRead = async (req, res) => {
+    const token = req.cookies.token;
+    if (!token) {
+        res.redirect('/login');
+        return;
+    }
+    const decode = jwt.verify(token, "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60");
+    try {
+        const noti = await NotificationModel.findOne({ userId: decode.userId });
+        if (!noti) {
+            res.status(404).json({ message: "Notification not found" });
+            return;
+        }
+        const notification = noti.notifications.id(req.params.id);
+        if (!notification) {
+            res.status(404).json({ message: "Notification not found" });
+            return;
+        }
+        notification.isRead = true;
+        await noti.save();
+        res.status(200).json({ message: "Success" });
+    } catch (error) {
+        res.status(500).json({message: "Internal server error" });
+    }
+}
+
+const addNotification = async (userId, content, senderAvatar, senderName) => {
+    try {
+        const userNotification = await NotificationModel.findOne({ userId });
+        console.log(userId, content, senderAvatar, senderName)
+        if (!userNotification) {
+            const newNotification = new NotificationModel({
+                userId,
+                notifications: [
+                    {
+                        content: content,
+                    },
+                ],
+            });
+
+            await newNotification.save();
+        } else {
+            userNotification.notifications.push({
+                content: content,
+                senderAvatar: senderAvatar,
+                senderName: senderName,
+            });
+            await userNotification.save();
+        }
+    } catch (error) {
+        console.log('Error adding notification:', error);
+    }
 }
 
 const NotificationController = {
     loadNotifications: loadNotifications,
+    markAsRead: markAsRead, 
+    addNotification: addNotification
 }
 
 export default NotificationController;

@@ -11,7 +11,6 @@ const loadUserThreadData = async (req, res, next) => {
         foreignField: "username",
         select: "username avatar",
       });
-      console.log("1");
       req.threads = threads; // Gắn dữ liệu threads vào req
       next(); // Chuyển sang middleware tiếp theo
     } catch (error) {
@@ -45,7 +44,6 @@ const loadUserThreadData = async (req, res, next) => {
 			req.followings = followings; // Gắn dữ liệu followings vào req
 			req.followerCount = followers.length;
 			req.followingCount = followings.length;
-			console.log("2");
 			next(); // Chuyển sang middleware tiếp theo
     }
 		catch(error) {
@@ -57,7 +55,6 @@ const loadUserThreadData = async (req, res, next) => {
 
   const renderProfile = (req, res) => {
     // Tất cả dữ liệu từ các middleware được gắn vào req
-    console.log("3");
     res.render("Profile", {
       threads: req.threads,
       followers: req.followers,
