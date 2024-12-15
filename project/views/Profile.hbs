@@ -325,6 +325,31 @@
         listFollowing.classList.add("activated");
       };
 
+    const username; // Lấy username từ localStorage
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const username = localStorage.getItem('username');
+      console.log('Username:', username);
+    });
+
+    console.log(username);
+
+    fetch('/profile', {
+      method: 'GET', // Hoặc POST nếu cần
+      headers: {
+        'Content-Type': 'application/json',
+        'username': username, // Gửi username qua headers
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Threads:', data);
+    })
+    .catch(error => {
+      console.error('Error fetching threads:', error);
+    });
+
+
 
     </script>
   </body>

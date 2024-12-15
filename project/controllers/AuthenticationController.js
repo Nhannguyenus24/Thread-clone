@@ -146,7 +146,7 @@ const resendVerificationToken = async (req, res) => {
         if (Date.now() > user.verificationExpires) {
 
             const newVerificationToken = crypto.randomBytes(32).toString('hex');
-            const newVerificationExpires = Date.now() + 3600000;
+            const newVerificationExpires = Date.now() + 300000;
 
 
             user.verificationToken = newVerificationToken;
