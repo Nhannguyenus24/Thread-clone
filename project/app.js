@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import { fileURLToPath } from "url";
 import database from "./service/ConnectDatabase.js";
 import FeedRouter from "./routes/FeedRouter.js";
@@ -11,11 +12,12 @@ import ProfileRouter from "./routes/ProfileRouter.js";
 import NotificationRouter from "./routes/NotificationRouter.js";
 import NewThreadRouter from "./routes/NewThreadRouter.js";
 import expressHandlebars from "express-handlebars";
-database.connectDatabase();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
+database.connectDatabase();
 const PORT = 3000;
 const HOST = "localhost";
 
@@ -32,27 +34,47 @@ const hbs = expressHandlebars.create({
     formatTime: function (dateString) {
       const now = new Date();
       const inputDate = new Date(dateString);
-      const diff = Math.floor((now - inputDate) / 1000); // Khoảng thời gian tính bằng giây
-
+      const diff = Math.floor((now - inputDate) / 1000);
+    
+      const pluralize = (value, unit) => `${value} ${unit}${value > 1 ? 's' : ''}`;
+    
       if (diff < 60) {
-        return `${diff} giây`;
+        return pluralize(diff, "second");
       } else if (diff < 3600) {
         const minutes = Math.floor(diff / 60);
-        return `${minutes} phút`;
+        return pluralize(minutes, "minute");
       } else if (diff < 86400) {
         const hours = Math.floor(diff / 3600);
-        return `${hours} giờ`;
+        return pluralize(hours, "hour");
       } else if (diff < 2592000) {
         const days = Math.floor(diff / 86400);
-        return `${days} ngày`;
+        return pluralize(days, "day");
       } else if (diff < 31536000) {
         const months = Math.floor(diff / 2592000);
-        return `${months} tháng`;
+        return pluralize(months, "month");
       } else {
         const years = Math.floor(diff / 31536000);
-        return `${years} năm`;
+        return pluralize(years, "year");
       }
     },
+    formatFollows: function (numFollows) {
+      if (typeof numFollows !== 'number') {
+        return numFollows;
+      }
+    
+      if (numFollows >= 1000000) {
+        const mValue = (numFollows / 1000000).toFixed(1);
+        return `${mValue}M`;
+      }
+      if (numFollows >= 10000) {
+        const kValue = (numFollows / 1000).toFixed(1);
+        return `${kValue}K`;
+      }
+      if (numFollows >= 1000) {
+        return numFollows.toLocaleString('de-DE');
+      }
+      return numFollows.toString();
+    }
   },
   runtimeOptions: {
     allowProtoPropertiesByDefault: true,
@@ -75,6 +97,7 @@ app.set("view engine", "hbs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(cookieParser());
 
 app.use("/", FeedRouter);
 app.use("/search", SearchRouter);
@@ -83,11 +106,6 @@ app.use("/", AuthenticationRouter);
 app.use("/profile", ProfileRouter);
 app.use("/notification", NotificationRouter);
 app.use("/newthread", NewThreadRouter);
-
-app.post('/upload', (req, res) => {
-  console.log("h");
-  res.status(200).send("OK");
-});
 
 app.listen(PORT, HOST, () => {
   console.log(`Listening on http://${HOST}:${PORT}`);

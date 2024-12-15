@@ -1,15 +1,19 @@
-<div class="relative flex py-4 px-6 border-b border-gray-800">
-  <img class="mr-3 w-9 h-9 rounded-full" src="{{avatar}}" alt="icon" />
+<div class="relative flex py-4 px-6 border-b border-[#333333]"   
+{{#unless isRead}} 
+    onclick="markAsRead('{{_id}}', this)"
+  {{/unless}}>
+  <img class="mr-3 w-9 h-9 rounded-full" src="{{senderAvatar}}" alt="icon" />
   <div class="flex flex-col flex-1">
-    <div class="flex items-center mb-1">
-      <div class="font-bold text-gray-300 text-base">{{username}}</div>
-      <div class="ml-2 text-sm text-gray-500">{{time}}</div>
+    <div class="flex gap-2 text-[#f3f5f7] cursor-pointer">
+      <span>{{senderName}}</span>
+      <span class="text-[#777777]">{{formatTime date}}</span>
     </div>
     <p class="text-base text-gray-300">
       {{content}}
     </p>
   </div>
-  <div class="self-center ml-auto w-2.5 h-2.5 rounded-full bg-blue-400"></div>
-  <span
-    class="absolute top-2 right-2 text-2xl text-gray-400 hover:text-red-500 transition-colors cursor-pointer">&times;</span>
+  {{#unless isRead}}
+    <div class="self-center ml-auto w-2.5 h-2.5 rounded-full bg-blue-400"></div>
+  {{/unless}}
+
 </div>

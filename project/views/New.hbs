@@ -1,8 +1,8 @@
 <div id="newThreadModal" class="fixed inset-0 bg-black flex justify-center items-center">
-    <div class="bg-black text-white p-5 rounded-lg w-11/12 sm:w-4/12 border border-[#333333]">
+    <div class="bg-black text-[#777777] p-5 rounded-lg w-11/12 sm:w-4/12 border border-[#333333]">
         <div class="flex justify-between items-center mb-4">
-                <button class="text-[#777777] text-base hover:text-gray-200">Hủy</button>
-                <h2 class="text-lg font-semibold">Thread mới</h2>
+                <button class="text-[#777777] text-base hover:text-gray-200" onclick="window.location.href='/'">Cancel</button>
+                <h2 class="text-lg font-semibold text-[#f3f5f7]">New thread</h2>
                 <svg viewBox="0 0 24 24" width="24" height="24">
                     <rect height="15" rx="4.5" stroke="currentColor" stroke-width="2" width="15" x="7" y="7"></rect>
                     <path clip-rule="evenodd"
@@ -14,11 +14,11 @@
             </div>
             <form onsubmit="handleSubmit(event)" class="space-y-4" method="post" enctype="multipart/form-data" action="/newthread/upload">
                 <div class="flex items-center space-x-3">
-                    <img src="/image/anonymous-user.jpg" alt="User Icon" class="w-10 h-10 rounded-full" />
-                    <span class="font-bold text-[#f3f5f7]">Hornet Sentinel</span>
+                    <img src="{{avatar}}" alt="User Icon" class="w-10 h-10 rounded-full" />
+                    <span class="text-[#f3f5f7]  text-lg">{{username}}</span>
                 </div>
-                <textarea id="threadContent" placeholder="Có gì mới?"
-                    class="w-full p-2 rounded-md bg-gray-800 text-white border border-[#333333] focus:outline-none hide-scrollbar"
+                <textarea id="threadContent" placeholder="What's new?"
+                    class="w-full p-2 rounded-md bg-[#181818] text-[#f3f5f7] border border-[#333333] focus:outline-none hide-scrollbar"
                     style="height: 100px; resize: none;"></textarea>
 
                 <div class="flex items-center " id="imageContainer">
@@ -51,9 +51,8 @@
                 <div id="imagePreview" class="ml-3 flex flex-col space-y-1"></div>
                 </div>
                 <div class="flex justify-between items-center mt-4">
-                    <span class="text-sm text-[#777777]">Bất kỳ ai cũng có thể truy cập</span>
-                    <button type="submit"
-                        class="bg-blue-500 text-white py-2 px-4 rounded font-semibold hover:bg-blue-600">Đăng</button>
+                    <span class="text-sm text-[#777777]">Anyone can see post</span>
+                    <button id="postButton" type="submit" class="bg-transparent font-semibold text-[#f3f5f7] border border-[#333333] p-0 h-[36px] w-[70px] rounded-lg opacity-30 cursor-not-allowed">Post</button>
                 </div>
             </form>
         </div>
@@ -66,29 +65,55 @@ function displayImage() {
     const imagePreviewContainer = document.getElementById('imagePreview');
     imagePreviewContainer.innerHTML = '';
 
-    Array.from(fileInput.files).forEach(file => {
-        const fileContainer = document.createElement('div');
-        fileContainer.classList.add('flex', 'items-center', 'justify-between', 'mb-1');
+    const file = fileInput.files[0];
+    if (!file) return;
 
-        const fileName = document.createElement('div');
-        fileName.textContent = file.name;
-        fileName.classList.add('text-white', 'mr-2'); 
+    const fileReader = new FileReader();
+    fileReader.onload = function (e) {
+        const previewItem = document.createElement('div');
+        previewItem.classList.add(
+            'relative',
+            'max-h-[400px]', 
+            'max-w-full',
+            'h-auto',
+            'rounded-md',
+            'overflow-hidden',
+            'bg-[#333333]'
+        );
+
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.classList.add('w-full', 'h-full', 'object-cover');
 
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'x';
-        deleteButton.classList.add('text-[#777777]', 'ml-2');
+        deleteButton.classList.add(
+            'absolute',
+            'top-1',
+            'right-1',
+            'text-white',
+            'w-5',
+            'h-5',
+            'flex',
+            'items-center',
+            'justify-center',
+            'text-xs',
+            'cursor-pointer'
+        );
+
         deleteButton.onclick = function () {
-            const fileList = Array.from(fileInput.files).filter(f => f !== file);
-            fileInput.files = new FileListItems(fileList);
-            fileContainer.remove(); 
+            fileInput.value = '';
+            imagePreviewContainer.innerHTML = '';
         };
 
-        fileContainer.appendChild(fileName);
-        fileContainer.appendChild(deleteButton);
+        previewItem.appendChild(img);
+        previewItem.appendChild(deleteButton);
+        imagePreviewContainer.appendChild(previewItem);
+    };
 
-        imagePreviewContainer.appendChild(fileContainer);
-    });
+    fileReader.readAsDataURL(file);
 }
+
 
 function FileListItems(files) {
     let b = new DataTransfer();
@@ -104,15 +129,27 @@ async function handleSubmit(event){
     formData.append('content', content);
     formData.append('username', 'nhan1');
     if(file) formData.append('file', file);
-    console.log(formData);
     const response = await fetch('http://localhost:3000/newthread/upload', {
         method: 'POST',
         body: formData
     });
-    const data = await response.json();
-    if (data.success)
-        window.location.href = "http://localhost:3000";
+    if (response.ok)
+        window.location.href = "/";
     else
         alert(data.message);
 }
+document.getElementById('threadContent').addEventListener('input', function () {
+    const postButton = document.getElementById('postButton');
+    const content = document.getElementById('threadContent').value;
+
+    if (content.trim() === '') {
+        postButton.disabled = true;
+        postButton.classList.add('opacity-30', 'cursor-not-allowed');
+        postButton.classList.remove('opacity-100');
+    } else {
+        postButton.disabled = false;
+        postButton.classList.add('opacity-100');
+        postButton.classList.remove('opacity-30', 'cursor-not-allowed');
+    }
+});
 </script>  
