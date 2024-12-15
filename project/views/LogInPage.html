@@ -124,13 +124,11 @@
 
                 const data = await response.json();
 
-                if (!data.success) {
-                    showError(data.message);
+                if (response.ok) {
+                    document.cookie = `token=${data.token}; path=/; max-age=2592000; SameSite=Strict`;
+                    window.location.href = '/';
                 } else {
-                    // Lưu token vào localStorage (hoặc sessionStorage)
-                    localStorage.setItem('authToken', data.token); // Lưu JWT vào localStorage
-                    localStorage.setItem('username', username); // Lưu tên người dùng
-                    window.location.href = '/'; // Chuyển hướng sau khi đăng nhập thành công
+                    showError(data.message);
                 }
             } catch (error) {
                 showError('Có lỗi xảy ra. Vui lòng thử lại!');

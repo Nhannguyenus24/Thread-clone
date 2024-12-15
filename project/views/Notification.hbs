@@ -1,12 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<body>
-  <div class="bg-transparent overflow-y-auto">
+<div class="bg-transparent overflow-y-auto">
     {{#each notifications}}
     {{> notification}}
     {{/each}}
-  </div>
-</body>
+</div>
+<script>
+    async function markAsRead(notificationId, element) {
+        try {
+            const response = await fetch(`http://localhost:3000/notification/${notificationId}`, {
+                method: 'PUT',
+            });
 
-</html>
+            if (response.ok) {
+                const unreadDot = element.querySelector('.bg-blue-400');
+                if (unreadDot) {
+                    unreadDot.style.display = 'none';
+                }
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+</script>

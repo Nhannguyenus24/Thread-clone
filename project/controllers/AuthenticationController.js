@@ -1,6 +1,7 @@
 import path from 'path';
 import { fileURLToPath } from 'url';
 import UserModel from '../models/UserModel.js';
+import NotificationController from './NotificationController.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -22,23 +23,21 @@ const checkLogIn = async (req, res) => {
         const user = await UserModel.findOne({ username: username });
 
         if (!user) {
-            return res.status(404).json({ success: false, message: "Sai tên đăng nhập hoặc mật khẩu." });
+            return res.status(404).json({message: "Incorrect username or password." });
         }
 
         if (!user.isVerified) {
-            return res.status(403).json({ success: false, message: "Tài khoản chưa được xác minh. Vui lòng kiểm tra email." });
+            return res.status(403).json({message: "Account not verified. Please check your email." });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return res.status(404).json({ success: false, message: "Sai tên đăng nhập hoặc mật khẩu." });
+            return res.status(404).json({message: "Incorrect username or password." });
         }
 
         // Tạo JWT token sau khi xác thực thành công
         const payload = {
-            userId: user._id,
-            username: user.username,
-            email: user.email,
+            userId: user._id
         };
 
         // Ký JWT với một secret key
@@ -46,13 +45,11 @@ const checkLogIn = async (req, res) => {
 
         // Gửi token về cho client
         res.status(200).json({
-            success: true,
-            message: "Đăng nhập thành công!",
-            token,  // Trả về token cho frontend
+            token
         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Lỗi hệ thống. Vui lòng thử lại sau." });
+        res.status(500).json({message: "System error! Please try again later." });
     }
 };
 
@@ -74,12 +71,12 @@ const registerUser = async (req, res) => {
 
 
     if (password.length < 6 && password.length > 20) {
-        return res.status(400).json({ success: false, message: "Mật khẩu phải có ít nhất 6 ký tự và ít hơn hoặc bằng 20 ký tự" });
+        return res.status(400).json({message: "Password must be at least 6 characters and no more than 20 characters." });
     }
 
 
     if (!validateUsername(username)) {
-        return res.status(400).json({ success: false, message: "Tên người dùng không hợp lệ. Tên chỉ được chứa chữ cái, số, dấu chấm hoặc gạch dưới, và dài từ 6-20 ký tự." });
+        return res.status(400).json({message: "Invalid username. It must contain only letters, numbers, dots, or underscores and be 6-20 characters long." });
     }
 
     try {
@@ -89,10 +86,10 @@ const registerUser = async (req, res) => {
 
         if (existingUser) {
             if (existingUser.username === username) {
-                return res.status(400).json({ success: false, message: "Tên đăng nhập đã tồn tại." });
+                return res.status(400).json({message: "Username already exists." });
             }
             if (existingUser.email === email) {
-                return res.status(400).json({ success: false, message: "Email đã tồn tại." });
+                return res.status(400).json({message: "Email already exists." });
             }
         }
 
@@ -112,22 +109,22 @@ const registerUser = async (req, res) => {
         });
 
         await newUser.save();
-
-
+        NotificationController.addNotification(newUser._id, "Welcome to Thread! Please update your account information!");
+        
         const verifyUrl = `http://localhost:3000/api/verify/${verificationToken}`;
         await sendMail(
             email,
-            "Xác nhận email của bạn",
-            `<p>Chào ${username},</p>
-             <p>Nhấn vào liên kết bên dưới để xác minh email:</p>
-             <a href="${verifyUrl}">Xác minh email</a>
-             <p>Nếu bạn không đăng ký tài khoản, vui lòng bỏ qua email này.</p>`
+            "Confirm your email",
+            `<p>Hello ${username},</p>
+            <p>Click the link below to verify your email:</p>
+            <a href="${verifyUrl}">Verify Email</a>
+            <p>If you did not sign up for an account, please ignore this email.</p>`
         );
 
-        res.status(200).json({ success: true, message: "Đăng ký thành công! Vui lòng kiểm tra email để xác minh tài khoản." });
+        res.status(200).json({message: "Registration successful! Please check your email to verify your account." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Lỗi hệ thống. Vui lòng thử lại sau." });
+        res.status(500).json({message: "System error! Please try again later." });
     }
 };
 
@@ -138,11 +135,11 @@ const resendVerificationToken = async (req, res) => {
         const user = await UserModel.findOne({ email });
 
         if (!user) {
-            return res.status(404).json({ success: false, message: "Không tìm thấy tài khoản với email này." });
+            return res.status(404).json({ success: false, message: "No account found with this email." });
         }
 
         if (user.isVerified) {
-            return res.status(400).json({ success: false, message: "Tài khoản đã được xác minh." });
+            return res.status(400).json({ success: false, message: "The account has been verified." });
         }
 
 
@@ -160,20 +157,20 @@ const resendVerificationToken = async (req, res) => {
             const verifyUrl = `http://localhost:3000/api/verify/${newVerificationToken}`;
             await sendMail(
                 email,
-                "Xác nhận email của bạn",
-                `<p>Chào ${user.username},</p>
-                 <p>Nhấn vào liên kết bên dưới để xác minh email:</p>
-                 <a href="${verifyUrl}">Xác minh email</a>
-                 <p>Nếu bạn không đăng ký tài khoản, vui lòng bỏ qua email này.</p>`
+                "Confirm your email",
+                `<p>Hello ${username},</p>
+                <p>Click the link below to verify your email:</p>
+                <a href="${verifyUrl}">Verify Email</a>
+                <p>If you did not sign up for an account, please ignore this email.</p>`
             );
 
-            return res.status(200).json({ success: true, message: "Đã gửi lại email xác minh mới. Vui lòng kiểm tra hộp thư của bạn." });
+            return res.status(200).json({ success: true, message: "A new verification email has been sent. Please check your inbox." });
         } else {
-            return res.status(400).json({ success: false, message: "Token vẫn còn hiệu lực. Bạn không cần yêu cầu lại." });
+            return res.status(400).json({ success: false, message: "The token is still valid. You don't need to request it again." });
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Lỗi hệ thống. Vui lòng thử lại sau." });
+        res.status(500).json({ success: false, message: "System error! Please try again later." });
     }
 };
 
@@ -226,7 +223,7 @@ const verifyUser = async (req, res) => {
         res.status(200).send("<a href='http://localhost:3000/login'>Đăng ký thành công, bấm vào đây để quay về trang đăng nhập</a>");
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Lỗi hệ thống. Vui lòng thử lại sau." });
+        res.status(500).json({ success: false, message: "System error! Please try again later." });
     }
 };
 
@@ -268,7 +265,7 @@ const requestPasswordReset = async (req, res) => {
         res.status(200).json({ success: true, message: "Email xác nhận đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Lỗi hệ thống. Vui lòng thử lại sau." });
+        res.status(500).json({ success: false, message: "System error! Please try again later." });
     }
 };
 
@@ -294,7 +291,7 @@ const executeResetPassword = async (req, res) => {
         res.status(200).json({ success: true, message: "Mật khẩu đã được đặt lại thành công. Bạn có thể đăng nhập bằng mật khẩu mới." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Lỗi hệ thống. Vui lòng thử lại sau." });
+        res.status(500).json({ success: false, message: "System error! Please try again later." });
     }
 };
 
