@@ -35,18 +35,13 @@ const checkLogIn = async (req, res) => {
             return res.status(404).json({message: "Incorrect username or password." });
         }
 
-        // Tạo JWT token sau khi xác thực thành công
         const payload = {
             userId: user._id
         };
 
-        // Ký JWT với một secret key
         const token = jwt.sign(payload, "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60");
 
-        // Gửi token về cho client
-        res.status(200).json({
-            token
-        });
+        res.status(200).json({ token });
     } catch (error) {
         console.error(error);
         res.status(500).json({message: "System error! Please try again later." });
@@ -58,7 +53,7 @@ const register = (req, res) => {
 }
 
 const resetPassword = (req, res) => {
-    res.sendFile(path.join(__dirname, "../views/ForgetPassword.html"));
+    res.sendFile(path.join(__dirname, "../views/ForgotPassword.html"));
 }
 
 const validateUsername = (username) => {

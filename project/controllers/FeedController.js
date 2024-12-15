@@ -85,8 +85,6 @@ const loadFollowingThread = async (req, res) => {
 
 const addComment = async (req, res) => {
   const {content} = req.body;
-  console.log(content);
-  console.log(req.params.id);
   const token = req.cookies.token;
   if (!token) {
     res.redirect("/login");

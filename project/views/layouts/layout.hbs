@@ -111,7 +111,7 @@
         class=" w-full sm:w-1/2 flex-1 overflow-y-auto flex flex-col sm:rounded-t-3xl sm:bg-[#181818] sm:border sm:border-[#333333]">
         <div class="h-full overflow-y-scroll hide-scrollbar">
           {{{body}}}
-          <div class="h-[50px] sm:hidden"></div>
+          <div class="h-[70px] sm:hidden"></div>
         </div>
       </div>
     </div>
@@ -119,10 +119,10 @@
 
   <script>
     function toggleTextAndRotate(element) {
-      if (element.textContent === "Dành cho bạn") {
-        element.textContent = "Đang theo dõi";
+      if (element.textContent === "For you") {
+        element.textContent = "Following";
       } else {
-        element.textContent = "Dành cho bạn";
+        element.textContent = "For you";
       }
     }
 
@@ -139,7 +139,37 @@
         }
       });
     };
+    async function handleLike() {
+  try {
+    const postId = event.currentTarget.id;
+    const svg = event.currentTarget.querySelector('svg');
+    const span = event.currentTarget.querySelector('span');
+    let likes = parseInt(span.textContent, 10);
     
+    const response = await fetch(`http://localhost:3000/like/${postId}`, {
+      method: 'PUT',
+    });
+
+    if (!response.ok) {
+      window.location.href = '/login';
+    }
+    
+      if (svg) {
+        if (svg.classList.contains('active')) {
+          svg.classList.remove('active');
+          svg.classList.add('nonactive');
+          span.textContent = likes - 1;
+        } else {
+          svg.classList.remove('nonactive');
+          svg.classList.add('active');
+          span.textContent = likes + 1;
+        }
+    }
+    
+  } catch (error) {
+    console.error('An error occurred:', error.message);
+  }
+}
   </script>
 </body>
 
