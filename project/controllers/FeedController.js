@@ -77,6 +77,42 @@ const likeThread = async (req, res) => {
 };
 
 const loadFollowingThread = async (req, res) => {
+  const token = req.cookies.token;
+    const decode = jwt.verify(
+      token,
+      "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
+    );
+    try {
+      const userId = decode.userId;
+      const user = await userModel.findById(userId);
+      
+      const followData = await FollowModel.findOne({ userId }).lean();
+      const followedUserIds = followData.followings.map(following => following.userId);
+      
+      const threads = await threadModel
+        .find({ author: { $in: followedUserIds } })
+        .populate({
+          path: "author",
+          model: "Users",
+          localField: "author",
+          foreignField: "_id",
+          select: "username avatar",
+        }).lean();
+      
+      threads.reverse();
+      
+      const updatedThreads = threads.map((thread) => {
+        const isLike = thread.likes.some(
+          (like) => like.userId.toString() === userId
+        );
+        return { ...thread, isLike };
+      });
+      
+      res.render("Feed", { threads: updatedThreads, avatar: user.avatar, isLogin: true });
+    } catch (error) {
+      console.error("Error fetching threads:", error);
+      res.status(500).json({ message: "An error occurred while loading the feed" });
+    }
 }
 
 const addComment = async (req, res) => {

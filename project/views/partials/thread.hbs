@@ -1,3 +1,10 @@
+
+<div class="flex sm:py-4 sm:px-6 gap-3 border-b border-[#333333] p-4">
+  <img id="avatar" src="{{author.avatar}}" class="w-[36px] h-[36px] rounded-full"/>
+      <div class="flex flex-col w-full">
+        <div class="flex gap-2 text-[#f3f5f7] cursor-pointer">
+          <span class="hover:underline">{{author.username}}</span>
+          <span class="text-[#777777]" id="uploadTime">{{formatTime date}}</span>
 <div id="threads-container" class="flex sm:py-4 sm:px-6 gap-3 border-b border-[#333333] p-2" data-thread-id="{{_id}}">
   <img id="avatar" src="{{author.avatar}}" class="w-[36px] h-[36px] rounded-full"/>
       <div class="flex flex-col gap-2 w-full">
@@ -29,11 +36,10 @@
 
 
           {{/if}}
-
         </div>
         <span id="content" class="thread-content">{{content}}</span>
-        <div class="image-container w-full max-w-full overflow-hidden" onclick="navigateToPost('{{author.username}}/post/{{_id}}')">
-          <img src="{{image}}" class="max-h-[400px] max-w-full h-auto rounded-[5px]"/>
+        <div class="image-container w-full max-w-full overflow-hidden my-2" >
+          <img src="{{image}}" class="max-h-[400px] max-w-full h-auto rounded-[5px] " onclick="scaleImage(this)"/>
         </div>
 
         <div class="flex items-center gap-5">
@@ -59,16 +65,32 @@
           </div>
         </div>
       </div>
-</div>
-<script>
-  function navigateToPost(url) {
-    const currentURL = window.location.href;
-    if (currentURL.includes('post')) {
-        return;
-    }
-    window.location.href = url;
-  }
-
+  <div id="imageModal" class="fixed inset-0 bg-black flex justify-center items-center hidden z-100 w-screen h-screen">
     
+      <button onclick="closeModal()" class="absolute top-2 right-2 bg-gray-700 bg-opacity-40 text-white rounded-full w-8 h-8 flex items-center justify-center text-10">
+        &times;
+      </button>
+    <div class="relative">
+      <img id="scaledImage" src="{{image}}" class="max-h-screen max-w-screen h-auto w-auto rounded-[5px] object-contain">
+    </div>
+  </div>
+</div>
 
+<script>
+  function scaleImage(img) {
+    const modal = document.getElementById("imageModal");
+    const scaledImage = document.getElementById("scaledImage");
+
+    scaledImage.src = img.src;
+    modal.classList.remove("hidden");
+    modal.onclick = function (e) {
+      if (e.target === modal) {
+        closeModal();
+      }
+    };
+  }
+  function closeModal() {
+    const modal = document.getElementById("imageModal");
+    modal.classList.add("hidden");
+  }
 </script>
