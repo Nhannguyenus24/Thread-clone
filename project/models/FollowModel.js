@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
 
 const UserFollowSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, required: true, unique: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, required: true},
   username: { type: String, required: true },
-  avatar: { type: String, default: "/image/anonymous-user.jpg" }
+  avatar: { type: String, required: true }
 });
 
 const FollowSchema = new mongoose.Schema({
