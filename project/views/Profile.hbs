@@ -172,12 +172,15 @@
       <span>Thread của bạn</span>
     </div>
 
-
-    {{#each threads}}
-      {{> thread}}
-    {{/each}}
-
-  
+    
+      {{#if threads.length}}
+        {{#each threads}}
+          {{> thread}}
+        {{/each}}
+      {{else}}
+        <div class="alert alert-info text-center mt-[20%] font-[600]">You have no threads!</div>
+      {{/if}}
+ 
 
     <script>
 
@@ -252,6 +255,59 @@
         listFollowing.classList.add("activated");
       };
 
+  
+      document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("modal-delete");
+    const confirmDelete = document.getElementById("confirm-delete");
+    const cancelDelete = document.getElementById("cancel-delete");
+    let threadId = null; // Biến lưu ID của thread hiện tại
+
+    // Gắn sự kiện click cho tất cả các SVG
+    document.querySelectorAll("#delete-thread").forEach((deleteSvg, index) => {
+      deleteSvg.addEventListener("click", (e) => {
+        threadId = e.target.closest("[data-thread-id]").getAttribute("data-thread-id"); // Lấy threadId từ attribute
+        modal.classList.remove("hidden");
+      });
+    });
+
+    // Đóng modal khi nhấn "Cancel"
+    cancelDelete.addEventListener("click", () => {
+      modal.classList.add("hidden");
+      threadId = null; // Reset lại threadId
+    });
+
+    
+    // Xóa thread khi nhấn "Delete"
+    confirmDelete.addEventListener("click", () => {
+      //console.log(typeof threadId);
+      if (threadId) {
+        fetch(`http://localhost:3000/profile/delete-thread`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: threadId }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              alert("Thread deleted successfully!");
+              modal.classList.add("hidden");
+              document.querySelector(`[data-thread-id="${threadId}"]`).remove(); // Xóa bài viết khỏi giao diện
+              const result = response.json();
+              if (result.message === "You have no thread") {
+                document.getElementById('threads-container').innerHTML = '<div class="alert alert-info text-center">You have no thread</div>';
+              }
+            } else {
+              alert("Failed to delete the thread. Please try again.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("An error occurred. Please try again.");
+          });
+        }
+      });
+  });
     </script>
   </body>
 </html>

@@ -45,11 +45,9 @@ const loadUserProfileData = async (req, res) => {
       const isLike = thread.likes.some(
         (like) => like.userId.toString() === idOfUser
       );
-      return { ...thread, isLike };
+      const isAuthor = thread.authorId.toString() === idOfUser;
+      return { ...thread, isLike, isAuthor };
     });
-
-    console.log(updatedThreads);
-
 
       // avatar, username, fullname, status
       // Dữ liệu followers và followings (giả sử dữ liệu này có sẵn hoặc có thể truy xuất từ DB)
@@ -79,6 +77,50 @@ const loadUserProfileData = async (req, res) => {
   }
 };
 
+const deleteThread = async (req, res) => {
+  try {
+    const { id } = req.body; // Lấy ID bài viết từ request body
+    // Kiểm tra xem ID có tồn tại không
+    if (!id) {
+      return res.status(400).json({ error: "Thread ID is required." });
+    }
+
+    // Tìm và xóa bài viết trong database
+    const deletedThread = await threadModel.findByIdAndDelete(id);
+
+    // Nếu không tìm thấy bài viết
+    if (!deletedThread) {
+      return res.status(404).json({ error: "Thread not found." });
+    }
+
+    const token = req.cookies.token;
+    if (!token) {
+      res.redirect("/login");
+      return;
+    }
+    const decode = jwt.verify(
+      token,
+      "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
+    );
+    const idOfUser = decode.userId;
+
+    const threads = await threadModel.find({ authorId: idOfUser });
+
+    if (threads.length === 0) {
+      // Nếu không còn thread nào, gửi thông báo về "You have no thread"
+      res.status(200).json({message: 'You have no thread' });
+    } else {
+      // Nếu còn thread, gửi về thông báo
+      res.status(200).json({ message: 'Thread deleted successfully' });
+    }
+  } catch (error) {
+    console.error("Error deleting thread:", error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+}
+
+
+
   
 const redirectToSettings = async (req, res) => {
     res.redirect('/setting/account');
@@ -86,6 +128,7 @@ const redirectToSettings = async (req, res) => {
 
 
 const ProfileController = {
+    deleteThread: deleteThread,
     loadUserProfileData: loadUserProfileData,
     redirectToSettings: redirectToSettings,
 };
