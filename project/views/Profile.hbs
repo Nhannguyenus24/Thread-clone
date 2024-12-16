@@ -9,26 +9,26 @@
             <h1
               class="realname text-gray-100 text-xl font-bold leading-[30px] font-sans cursor-pointer"
             >
-              Trần Đức Tùng
+              {{user.fullname}}
             </h1>
           </div>
           <div class="name__nickname">
             <span
               class="nickname text-gray-100 font-normal leading-[21px] font-sans"
-              >__td.tung</span
+              >{{user.username}}</span
             >
           </div>
         </div>
         <div class="profile-avatar">
           <img
-            src="./image/avatar_1.0.jpg"
+            src="{{user.avatar}}"
             alt="Avatar"
             class="cursor-pointer max-w-[84px] h-auto rounded-full object-cover outline outline-[0.5px] outline-gray-100/15"
           />
         </div>
       </div>
       <div class="profile-quote px-6">
-        <span>bed boi.</span>
+        <span>{{user.quote}}</span>
       </div>
 
       <div class="follower-panel flex justify-between px-6 pt-4">
@@ -36,7 +36,7 @@
           <span
             class="hover:border-b-[1.5px] hover:border-gray-600 text-[15px] font-normal text-gray-600 leading-[21px]"
             onclick="displayFollowsPanel()"
-            >12 người theo dõi</span>
+            >{{followerCount}} người theo dõi</span>
 
           <div
             class="overall-follow-panel w-[90%] sm:w-[80%] md:w-[80%] lg:w-[33.33%]  absolute z-10 top-[20%] sm:left-[15%] md:left-[10%] lg:top-[25%] lg:left-[32.5%]  bg-[rgb(16,16,16)] rounded-lg border border-[rgba(243,245,247,0.15)] hidden">
@@ -73,17 +73,34 @@
 
             <div class="relative max-h-[30vh] list-of-follower custom-scrollbar overflow-y-auto" style="display: block;">
               <ul>
+                {{#if (isGreaterThanZero followerCount)}}
                   {{#each followers}}
                     {{> follower}}
                   {{/each}}
+                {{else}}
+                  <li>
+                    <div class="flex items-center justify-center mt-[15px] mb-[15px]">
+                      <p class="text-2xl">There is no followers</p>
+                    </div> 
+                  </li>                                
+                {{/if}}
+
               </ul>
             </div>
 
             <div class="relative max-h-[30vh] list-of-following custom-scrollbar overflow-y-auto" style="display: none;">
               <ul>  
+                {{#if (isGreaterThanZero followingCount)}}
                   {{#each followings}}
                     {{> following}}
                   {{/each}}
+                {{else}}
+                  <li>
+                    <div class="flex items-center justify-center mt-[15px] mb-[15px]">
+                      <p class="text-2xl">There is no followings</p>
+                    </div> 
+                  </li>                                
+                {{/if}}
               </ul>
             </div>
           </div>
@@ -149,108 +166,21 @@
           >Chỉnh sửa trang cá nhân</span
         >
       </div>
-      {{!-- <div
-        class="profile-form w-[90vw] lg:w-[40vw] lg:h-[60vh] bg-[rgb(16,16,16)] border border-[rgba(243,245,257,0.15)] rounded-xl absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  hidden"
-
-      >
-        <!--Sau khi bấm bút box ở trên thì hiện ra form này -->
-        <div class="personal-info mx-6 mt-6 mb-0 flex flex-row justify-between">
-          <div
-            class="all-about-name border-b border-[rgba(243,245,247,0.15)] flex-grow"
-          >
-            <span class="text-gray-100 font-semibold leading-[21px] min-w-0"
-              >Tên</span
-            >
-            <div
-              class="name-panel flex flex-row items-center pb-[14px] pt-[4px]"
-            >
-              <svg viewBox="0 0 14 21" width="15" height="15">
-                <path
-                  fill="white"
-                  d="M2.43 20.432c-.743 0-1.306-.202-1.69-.606-.384-.397-.576-.996-.576-1.797v-6.924c0-.794.192-1.39.576-1.787.384-.397.948-.595 1.69-.595h9.14c.742 0 1.306.198 1.69.595.384.397.576.993.576 1.787v6.924c0 .801-.192 1.4-.576 1.797-.384.404-.947.606-1.69.606H2.43Zm.273-1.758h8.594c.202 0 .358-.062.469-.186.11-.117.166-.293.166-.527v-6.777c0-.235-.056-.41-.166-.528-.111-.117-.267-.176-.47-.176H2.704a.634.634 0 0 0-.469.176c-.11.117-.166.293-.166.528v6.777c0 .234.056.41.166.527a.615.615 0 0 0 .47.186Zm-.752-9.131V6.438c0-1.205.235-2.21.703-3.018.476-.814 1.097-1.426 1.866-1.836A5.187 5.187 0 0 1 7 .969c.885 0 1.712.205 2.48.615.769.41 1.387 1.022 1.856 1.836.475.807.713 1.813.713 3.018v3.105h-1.826V6.262c0-.762-.15-1.403-.45-1.924a3.019 3.019 0 0 0-1.171-1.201A3.223 3.223 0 0 0 7 2.727c-.58 0-1.113.136-1.602.41a3.019 3.019 0 0 0-1.171 1.2c-.293.522-.44 1.163-.44 1.925v3.281H1.951Z"
-                ></path>
-              </svg>
-              <span class="real-name">Trần Đức Tùng</span>
-              <span class="nickname ml-2.5">(@__td.tung)</span>
-            </div>
-          </div>
-          <div class="flex items-center pl-2">
-            <img
-            class="cursor-pointer max-w-[40px] max-h-[40px] lg:max-w-[10vh] lg:h-[5vh] rounded-full object-cover "
-            src="./image/avatar_1.0.jpg"
-          />
-          </div>
-          
-        </div>
-        <div
-          class="all-about-quote mx-6 mt-4 border-b border-[rgba(243,245,247,0.15)] cursor-pointer"
-        >
-          <span
-            class="text-[rgb(243,245,247)] text-[15px] font-[600] leading-[21px]"
-            >Tiểu sử</span
-          >
-          <div
-            class="profile-quote py-1 px-0 cursor-pointer pt-[4px] pb-[14px]"
-          >
-            <span class="text-[rgb(243,245,247)] font-[400] leading-[21px]"
-              >bed boi.</span
-            >
-          </div>
-        </div>
-        <div
-          class="add-link mt-4 mx-6 mb-0 cursor-pointer border-b border-[rgba(243,245,247,0.15)]"
-        >
-          <span class="text-[rgb(243,245,247)] font-[600] leading-[21px]"
-            >Liên kết</span
-          >
-          <div
-            class="add-link-btn text-[rgb(119,119,119)] font-[400] leading-[21px] pb-[14px] pt-[4px]"
-          >
-            <span>+ Thêm liên kết</span>
-          </div>
-        </div>
-        <div class="icon-on-off mx-6 mt-4 flex justify-between">
-          <div class="instruction">
-            <span class="note text-[rgb(243,245,247)] text-[15px] font-[600]"
-              >Hiển thị biểu tượng Instagram
-            </span>
-            <br />
-            <span class="explain text-[rgb(119,119,119)] text-[12px] font-[400]"
-              >Khi bạn tắt, huy hiệu Threads trên trang cá nhân Instagram cũng
-              sẽ biến mất</span
-            >
-          </div>
-
-          <!-- <div
-            id="toggle"
-            class="w-[20%] h-[10%] lg:w-[10%] lg:h-[10%] flex items-center bg-gray-700 rounded-full p-1 cursor-pointer duration-300 justify-start"
-            onclick="toggleSwitch()"
-          >
-            <div
-              id="circle"
-              class="bg-black w-6 h-6 rounded-full duration-300" 
-            ></div>
-          </div> -->
-        </div>
-
-        <div
-          class="complete-btn flex items-center justify-center bg-[rgb(255,255,255)] h-[50px] mx-6 mt-4 mb-6 px-4 rounded-lg cursor-pointer"
-          onclick="turnOffConfigProfile()"
-        >
-          <span class="text-[rgb(0,0,0)] font-[600] text-[15px]">Xong</span>
-        </div>
-      </div> --}}
+      
     </div>
     <div class="information-bar flex items-center justify-center h-[48px] text-[rgb(243,245,247)] text-[15px] font-[600] border-b-[0.8px] border-b-[rgba(243,245,247,0.15)]">
       <span>Thread của bạn</span>
     </div>
 
-
-    {{#each threads}}
-      {{> thread}}
-    {{/each}}
-
-  
+    
+      {{#if threads.length}}
+        {{#each threads}}
+          {{> thread}}
+        {{/each}}
+      {{else}}
+        <div class="alert alert-info text-center mt-[20%] font-[600]">You have no threads!</div>
+      {{/if}}
+ 
 
     <script>
 
@@ -325,7 +255,59 @@
         listFollowing.classList.add("activated");
       };
 
+  
+      document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("modal-delete");
+    const confirmDelete = document.getElementById("confirm-delete");
+    const cancelDelete = document.getElementById("cancel-delete");
+    let threadId = null; // Biến lưu ID của thread hiện tại
 
+    // Gắn sự kiện click cho tất cả các SVG
+    document.querySelectorAll("#delete-thread").forEach((deleteSvg, index) => {
+      deleteSvg.addEventListener("click", (e) => {
+        threadId = e.target.closest("[data-thread-id]").getAttribute("data-thread-id"); // Lấy threadId từ attribute
+        modal.classList.remove("hidden");
+      });
+    });
+
+    // Đóng modal khi nhấn "Cancel"
+    cancelDelete.addEventListener("click", () => {
+      modal.classList.add("hidden");
+      threadId = null; // Reset lại threadId
+    });
+
+    
+    // Xóa thread khi nhấn "Delete"
+    confirmDelete.addEventListener("click", () => {
+      //console.log(typeof threadId);
+      if (threadId) {
+        fetch(`http://localhost:3000/profile/delete-thread`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ id: threadId }),
+        })
+          .then((response) => {
+            if (response.ok) {
+              alert("Thread deleted successfully!");
+              modal.classList.add("hidden");
+              document.querySelector(`[data-thread-id="${threadId}"]`).remove(); // Xóa bài viết khỏi giao diện
+              const result = response.json();
+              if (result.message === "You have no thread") {
+                document.getElementById('threads-container').innerHTML = '<div class="alert alert-info text-center">You have no thread</div>';
+              }
+            } else {
+              alert("Failed to delete the thread. Please try again.");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            alert("An error occurred. Please try again.");
+          });
+        }
+      });
+  });
     </script>
   </body>
 </html>
