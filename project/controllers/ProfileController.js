@@ -57,6 +57,8 @@ const loadUserProfileData = async (req, res) => {
     // Khởi tạo dữ liệu mặc định
     const followers = followData?.followers || [];
     const followings = followData?.followings || [];
+
+  
     const renderData = {
       user: userData,
       threads: threads,
