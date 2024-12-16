@@ -38,7 +38,7 @@ const loadUserProfileData = async (req, res) => {
       localField: "author",
       foreignField: "username",
       select: "username avatar",
-    });
+    }).lean();
     threads.reverse();
 
     const updatedThreads = threads.map((thread) => {
@@ -47,6 +47,8 @@ const loadUserProfileData = async (req, res) => {
       );
       return { ...thread, isLike };
     });
+
+    console.log(updatedThreads);
 
 
       // avatar, username, fullname, status
