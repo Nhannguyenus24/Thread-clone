@@ -61,7 +61,7 @@ const loadUserProfileData = async (req, res) => {
   
     const renderData = {
       user: userData,
-      threads: threads,
+      threads: updatedThreads,
       followers,
       followings,
       followerCount: followers.length,
