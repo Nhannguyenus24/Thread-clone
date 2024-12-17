@@ -1,20 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-
   <body>
     <div class="profile">
       <div class=".profile__intro flex justify-between px-6 pt-4 pb-2.5">
         <div class="profile-name flex flex-col justify-center">
           <div class="name__realname">
             <h1
-              class="realname text-gray-100 text-xl font-bold leading-[30px] font-sans cursor-pointer"
+              class="realname text-[#f3f5f7] text-xl font-bold leading-[30px] font-sans cursor-pointer"
             >
               {{user.fullname}}
             </h1>
           </div>
           <div class="name__nickname">
             <span
-              class="nickname text-gray-100 font-normal leading-[21px] font-sans"
+              class="nickname text-[#f3f5f7] font-normal leading-[21px] font-sans"
               >{{user.username}}</span
             >
           </div>
@@ -34,9 +31,9 @@
       <div class="follower-panel flex justify-between px-6 pt-4">
         <div class="number-follower cursor-pointer">
           <span
-            class="hover:border-b-[1.5px] hover:border-gray-600 text-[15px] font-normal text-gray-600 leading-[21px]"
+            class="hover:border-b-[1.5px] text-[#777777] text-[15px] font-normal  leading-[21px] hover-underline"
             onclick="displayFollowsPanel()"
-            >{{followerCount}} người theo dõi</span>
+            >{{followerCount}} followers</span>
 
           <div
             class="overall-follow-panel w-[90%] sm:w-[80%] md:w-[80%] lg:w-[33.33%]  absolute z-10 top-[20%] sm:left-[15%] md:left-[10%] lg:top-[25%] lg:left-[32.5%]  bg-[rgb(16,16,16)] rounded-lg border border-[rgba(243,245,247,0.15)] hidden">
@@ -46,12 +43,12 @@
                 onclick="chooseFollower()"
               >
                 <span 
-                  class="text-lg font-bold leading-5 font-sans"
-                  >Người theo dõi</span
+                  class="text-lg font-bold font-sans my-5"
+                  >Followers</span
                 >
                 <br />
                 <span
-                  class="text-sm font-normal leading-4.5 font-sans"
+                  class="text-sm font-normal font-sans"
                   >{{followerCount}}</span
                 >
               </div>
@@ -60,19 +57,18 @@
                 onclick="chooseFollowing()"
               >
                 <span
-                  class="text-lg font-bold leading-5 font-sans"
-                  >Đang theo dõi</span
+                  class="text-lg font-bold font-sans my-5"
+                  >Following</span
                 >
                 <br />
                 <span
-                  class="text-sm font-normal leading-4.5 font-sans"
+                  class="text-sm font-normal font-sans"
                   >{{followingCount}}</span
                 >
               </div>
             </div>
 
-            <div class="relative max-h-[30vh] list-of-follower custom-scrollbar overflow-y-auto" style="display: block;">
-              <ul>
+            <div class="relative max-h-[30vh] list-of-follower overflow-y-auto hide-scrollbar" style="display: block;">
                 {{#if (isGreaterThanZero followerCount)}}
                   {{#each followers}}
                     {{> follower}}
@@ -81,8 +77,7 @@
                   <li>
                     <div class="flex items-center justify-center mt-[15px] mb-[15px]">
                       <p class="text-2xl">There is no followers</p>
-                    </div> 
-                  </li>                                
+                    </div>                             
                 {{/if}}
 
               </ul>
@@ -92,7 +87,7 @@
               <ul>  
                 {{#if (isGreaterThanZero followingCount)}}
                   {{#each followings}}
-                    {{> following}}
+                    {{> follower}}
                   {{/each}}
                 {{else}}
                   <li>
@@ -158,18 +153,21 @@
     </div>
 
     <div class="config-profile-btn px-6 py-3 relative">
-      <div
-        class="profile-box border border-gray-100/15 px-4 py-2 text-center rounded-xl cursor-pointer"
-        onclick="redirectToSettings()"
-      >
-        <span class="font-semibold leading-[2rem]"
-          >Chỉnh sửa trang cá nhân</span
-        >
+      <div class="profile-box border border-gray-100/15 px-4 py-2 text-center rounded-xl cursor-pointer">
+        {{#if isOwnProfile}}
+        <span class="font-semibold leading-[2rem]" onclick="window.location.href = '/profile/configProfile'">Edit profile</span>
+        {{else}}
+        {{#if status}}
+        <span class="font-semibold leading-[2rem] text-[#333333]" id="{{user.id}}" onClick="clickFollow(event)">Following</span>
+        {{else}}
+        <span class="font-semibold leading-[2rem] text-[#F3F5F7]" id="{{user.id}}" onClick="clickFollow(event)">Follow</span>
+        {{/if}}
+        {{/if}}
+
       </div>
-      
     </div>
     <div class="information-bar flex items-center justify-center h-[48px] text-[rgb(243,245,247)] text-[15px] font-[600] border-b-[0.8px] border-b-[rgba(243,245,247,0.15)]">
-      <span>Thread của bạn</span>
+      <span>Threads</span>
     </div>
 
     
@@ -183,18 +181,6 @@
  
 
     <script>
-
-
-    const redirectToSettings = async (req, res) => {
-        try {
-            window.location.href = '/profile/configProfile';
-
-        } catch (error) {
-            console.error('Error fetching /configProfile:', error.message);
-        }
-    };
-
-
 
       const displayFollowsPanel = () => {
         const followsPanel = document.querySelector(
@@ -281,24 +267,17 @@
     confirmDelete.addEventListener("click", () => {
       //console.log(typeof threadId);
       if (threadId) {
-        fetch(`http://localhost:3000/profile/delete-thread`, {
+        fetch(`http://localhost:3000/profile/delete-thread/${threadId}`, {
           method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ id: threadId }),
         })
           .then((response) => {
             if (response.ok) {
-              alert("Thread deleted successfully!");
               modal.classList.add("hidden");
-              document.querySelector(`[data-thread-id="${threadId}"]`).remove(); // Xóa bài viết khỏi giao diện
+              document.querySelector(`[data-thread-id="${threadId}"]`).remove();
               const result = response.json();
               if (result.message === "You have no thread") {
                 document.getElementById('threads-container').innerHTML = '<div class="alert alert-info text-center">You have no thread</div>';
               }
-            } else {
-              alert("Failed to delete the thread. Please try again.");
             }
           })
           .catch((error) => {
@@ -308,6 +287,26 @@
         }
       });
   });
+  async function clickFollow(event) {
+  const id = event.target.id;
+  const response = await fetch(`http://localhost:3000/profile/follow/${id}`, {
+    method: 'PUT',
+  });
+if (response.ok) {
+  const button = event.target;
+
+  if (button.innerHTML === 'Follow') {
+    button.innerHTML = 'Following';
+    button.classList.remove('text-[#F3F5F7]');
+    button.classList.add('text-[#333333]');
+  } else {
+    button.innerHTML = 'Follow';
+    button.classList.remove('text-[#333333]');
+    button.classList.add('text-[#F3F5F7]');;
+  }
+}
+
+}
+
     </script>
   </body>
-</html>

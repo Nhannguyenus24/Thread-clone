@@ -2,7 +2,7 @@
     <img id="avatar" src="{{commentId.avatar}}" class="w-[36px] h-[36px] rounded-full"/>
     <div class="flex flex-col w-full">
         <div class="flex gap-2 text-[#f3f5f7]">
-            <span class="hover:underline">{{commentId.username}}</span>
+            <span class="hover:underline cursor-pointer" onclick="window.location.href='http://localhost:3000/profile/{{commentId.username}}'">{{commentId.username}}</span>
             <span class="text-[#777777]">{{formatTime date}}</span>
         </div>
         <span id="content" class="thread-content">{{comment}}</span>
