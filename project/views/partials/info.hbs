@@ -8,19 +8,19 @@
   <div class="flex flex-col justify-center w-full border-b border-[#333333]">
     <div class="flex items-center h-[36px]">
       <div class="flex flex-col mr-auto">
-        <span class="font-semibold">{{username}}</span>
+        <span class="hover:underline" onclick="window.location.href = 'profile/{{username}}'">{{username}}</span>
         <span class="text-[#777777] font-normal">{{bio}}</span>
       </div>
       {{#if status}}
-      <button onClick="followUser(event)"
+      <button id='{{id}}' onClick="followUser(event)"
         class="bg-transparent font-semibold text-[#333333] border border-[#333333] h-[36px] min-w-[104px] rounded-[0.75rem] mr-6 px-4"
       >Following</button>
       {{else}}
-            <button onClick="followUser(event)"
+            <button id='{{id}}' onClick="followUser(event)"
         class="bg-transparent font-semibold text-[#F3F5F7] border border-[#333333] h-[36px] min-w-[104px] rounded-[0.75rem] mr-6 px-4"
       >Follow</button>
       {{/if}}
     </div>
-    <span class="py-3">{{formatFollows followers}} followers</span>
+    <span class="py-3" id="follow-number-{{id}}">{{formatFollows followers}} followers</span>
   </div>
 </div>

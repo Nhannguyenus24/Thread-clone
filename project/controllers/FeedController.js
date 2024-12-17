@@ -37,7 +37,7 @@ const loadAllThread = async (req, res) => {
         );
         return { ...thread, isLike };
       });
-      res.render("Feed", { threads: updatedThreads, avatar: user.avatar, isLogin: true });
+      res.render("Feed", { threads: updatedThreads, avatar: user.avatar, isLogin: true});
     } catch (error) {
       console.error("Error fetching threads:", error);
       res.status(500).json({ message: "An error occurred while loading the feed" });
