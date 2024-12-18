@@ -16,7 +16,7 @@ const logIn = (req, res) => {
     res.sendFile(path.join(__dirname, "../views/LogInPage.html"));
 }
 
-const resetPasswordForm = (req,res) =>{
+const resetPasswordForm = (req, res) => {
     res.sendFile(path.join(__dirname, "../views/ResetPassword.html"));
 }
 
@@ -269,10 +269,8 @@ const requestPasswordReset = async (req, res) => {
     }
 };
 
-
 const executeResetPassword = async (req, res) => {
-    const { token } = req.params;
-    const { password } = req.body; // Mật khẩu mới được gửi từ form
+    const { token, password } = req.body;
 
     try {
         const user = await UserModel.findOne({
