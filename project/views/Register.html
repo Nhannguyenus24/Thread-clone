@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div class="login-background flex flex-col justify-center items-center w-screen h-screen ">
+    <div class="login-background flex flex-col justify-center items-center w-screen h-screen">
         <form method="post"
             class="w-full max-w-[350px] mt-5 flex flex-col sm:rounded-[10px] sm:mt-[50px] sm:snap-center"
             onsubmit="handleRegister(event)">
@@ -70,7 +70,6 @@
                 id="errorNotification" style="display: none;">
             </div>
         </form>
-        <div id="register-notification" class="hidden text-center p-3 rounded-lg text-white"></div>
 
         <footer>
             <div
@@ -107,13 +106,14 @@
     function checkButtonState() {
         submitButton.disabled = !(usernameInput.value && passwordInput.value && emailInput.value);
     }
+
     async function handleRegister(event) {
         event.preventDefault();
 
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
-        const email = document.getElementById("email").value;
-        const notification = document.getElementById("register-notification");
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+        const email = emailInput.value;
+
         submitButton.disabled = true;
         try {
             const response = await fetch('http://localhost:3000/api/register', {
@@ -121,35 +121,21 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    username: username,
-                    password: password,
-                    email: email
-                })
+                body: JSON.stringify({ username, password, email })
             });
             const data = await response.json();
+
             if (response.ok) {
-                notification.classList.remove("hidden", "bg-red-500");
-                notification.classList.add("bg-green-500");
-                notification.innerText = "Registration successful! Please check your email to verify.";
+                showError("Registration successful! Please check your email to verify.");
             } else {
-                notification.classList.remove("hidden", "bg-green-500");
-                notification.classList.add("bg-red-500");
-                notification.innerText = `Lỗi: ${data.message}`;
+                showError(`Lỗi: ${data.message}`);
             }
-            submitButton.disabled = false;
         } catch (error) {
-            notification.classList.remove("hidden", "bg-green-500");
-            notification.classList.add("bg-red-500");
-            notification.innerText = "An error occurred. Please try again!";
             console.error(error);
+            showError("An error occurred. Please try again!");
+        } finally {
             submitButton.disabled = false;
         }
-
-        // Ẩn thông báo sau 5 giây
-        setTimeout(() => {
-            notification.classList.add("hidden");
-        }, 5000);
     }
 
     function showError(message) {

@@ -16,6 +16,10 @@ const logIn = (req, res) => {
     res.sendFile(path.join(__dirname, "../views/LogInPage.html"));
 }
 
+const resetPasswordForm = (req,res) =>{
+    res.sendFile(path.join(__dirname, "../views/ResetPassword.html"));
+}
+
 const checkLogIn = async (req, res) => {
     const { username, password } = req.body;
 
@@ -132,7 +136,7 @@ const resendVerificationToken = async (req, res) => {
     const { email } = req.body;
 
     try {
-        const user = await UserModel.findOne({ email });
+        const user = await UserModel.findOne({ email: email });
 
         if (!user) {
             return res.status(404).json({ success: false, message: "No account found with this email." });
@@ -229,17 +233,13 @@ const verifyUser = async (req, res) => {
 
 
 const requestPasswordReset = async (req, res) => {
-    const { email, password } = req.body;
-
+    const { email } = req.body;
     try {
-        const user = await UserModel.findOne({ email });
+        const user = await UserModel.findOne({ email: email });
 
         if (!user) {
             return res.status(404).json({ success: false, message: "Không tìm thấy tài khoản với email này." });
         }
-
-        // Hash mật khẩu mới
-        const hashedPassword = await bcrypt.hash(password, 10);
 
         // Tạo token reset password và thời gian hết hạn
         const resetToken = crypto.randomBytes(32).toString('hex');
@@ -250,40 +250,45 @@ const requestPasswordReset = async (req, res) => {
         user.verificationExpires = resetExpires;
         await user.save();
 
-        // Tạo liên kết với token và mật khẩu đã hash
-        const resetUrl = `http://localhost:3000/api/reset-password/${resetToken}?password=${encodeURIComponent(hashedPassword)}`;
+        // Tạo liên kết reset mật khẩu
+        const resetUrl = `http://localhost:3000/reset-password-form?token=${resetToken}`;
         await sendMail(
             email,
-            "Xác nhận đặt lại mật khẩu",
+            "Đặt lại mật khẩu của bạn",
             `<p>Chào ${user.username},</p>
-             <p>Nhấn vào liên kết bên dưới để xác nhận mật khẩu mới của bạn:</p>
-             <a href="${resetUrl}">Xác nhận đặt lại mật khẩu</a>
+             <p>Nhấn vào liên kết bên dưới để đặt lại mật khẩu của bạn:</p>
+             <a href="${resetUrl}">Đặt lại mật khẩu</a>
              <p>Liên kết này sẽ hết hạn sau 1 giờ.</p>
              <p>Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.</p>`
         );
 
-        res.status(200).json({ success: true, message: "Email xác nhận đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn." });
+        res.status(200).json({ success: true, message: "Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "System error! Please try again later." });
+        res.status(500).json({ success: false, message: "Hệ thống gặp lỗi! Vui lòng thử lại sau." });
     }
 };
 
+
 const executeResetPassword = async (req, res) => {
-    const { authToken } = req.params;
-    const { password } = req.query; // Lấy mật khẩu từ query
+    const { token } = req.params;
+    const { password } = req.body; // Mật khẩu mới được gửi từ form
 
     try {
         const user = await UserModel.findOne({
-            verificationToken: authToken,
+            verificationToken: token,
+            verificationExpires: { $gt: Date.now() }, // Kiểm tra token còn hiệu lực
         });
 
         if (!user) {
             return res.status(400).json({ success: false, message: "Token không hợp lệ hoặc đã hết hạn." });
         }
 
+        // Hash mật khẩu mới
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         // Cập nhật mật khẩu mới
-        user.password = password;
+        user.password = hashedPassword;
         user.verificationToken = null;
         user.verificationExpires = null;
         await user.save();
@@ -291,9 +296,10 @@ const executeResetPassword = async (req, res) => {
         res.status(200).json({ success: true, message: "Mật khẩu đã được đặt lại thành công. Bạn có thể đăng nhập bằng mật khẩu mới." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "System error! Please try again later." });
+        res.status(500).json({ success: false, message: "Hệ thống gặp lỗi! Vui lòng thử lại sau." });
     }
 };
+
 
 
 const AuthenticationController = {
@@ -306,6 +312,7 @@ const AuthenticationController = {
     resendVerificationToken: resendVerificationToken,
     requestPasswordReset: requestPasswordReset,
     executeResetPassword: executeResetPassword,
+    resetPasswordForm: resetPasswordForm,
 }
 
 export default AuthenticationController;

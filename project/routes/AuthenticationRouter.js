@@ -18,6 +18,8 @@ router.post('/api/resend-verification-token', AuthenticationController.resendVer
 
 router.post('/resetpassword', AuthenticationController.requestPasswordReset);
 
-router.get('/api/reset-password/:token', AuthenticationController.executeResetPassword);
+router.post('/api/execute-reset-password', AuthenticationController.executeResetPassword);
+
+router.get('/reset-password-form', AuthenticationController.resetPasswordForm);
 
 export default router;
