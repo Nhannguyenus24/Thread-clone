@@ -23,16 +23,16 @@ const checkLogIn = async (req, res) => {
         const user = await UserModel.findOne({ username: username });
 
         if (!user) {
-            return res.status(404).json({message: "Incorrect username or password." });
+            return res.status(404).json({ message: "Incorrect username or password." });
         }
 
         if (!user.isVerified) {
-            return res.status(403).json({message: "Account not verified. Please check your email." });
+            return res.status(403).json({ message: "Account not verified. Please check your email." });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return res.status(404).json({message: "Incorrect username or password." });
+            return res.status(404).json({ message: "Incorrect username or password." });
         }
 
         // Tạo JWT token sau khi xác thực thành công
@@ -49,7 +49,7 @@ const checkLogIn = async (req, res) => {
         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({message: "System error! Please try again later." });
+        res.status(500).json({ message: "System error! Please try again later." });
     }
 };
 
@@ -71,12 +71,12 @@ const registerUser = async (req, res) => {
 
 
     if (password.length < 6 && password.length > 20) {
-        return res.status(400).json({message: "Password must be at least 6 characters and no more than 20 characters." });
+        return res.status(400).json({ message: "Password must be at least 6 characters and no more than 20 characters." });
     }
 
 
     if (!validateUsername(username)) {
-        return res.status(400).json({message: "Invalid username. It must contain only letters, numbers, dots, or underscores and be 6-20 characters long." });
+        return res.status(400).json({ message: "Invalid username. It must contain only letters, numbers, dots, or underscores and be 6-20 characters long." });
     }
 
     try {
@@ -86,10 +86,10 @@ const registerUser = async (req, res) => {
 
         if (existingUser) {
             if (existingUser.username === username) {
-                return res.status(400).json({message: "Username already exists." });
+                return res.status(400).json({ message: "Username already exists." });
             }
             if (existingUser.email === email) {
-                return res.status(400).json({message: "Email already exists." });
+                return res.status(400).json({ message: "Email already exists." });
             }
         }
 
@@ -110,7 +110,7 @@ const registerUser = async (req, res) => {
 
         await newUser.save();
         NotificationController.addNotification(newUser._id, "Welcome to Thread! Please update your account information!");
-        
+
         const verifyUrl = `http://localhost:3000/api/verify/${verificationToken}`;
         await sendMail(
             email,
@@ -121,10 +121,10 @@ const registerUser = async (req, res) => {
             <p>If you did not sign up for an account, please ignore this email.</p>`
         );
 
-        res.status(200).json({message: "Registration successful! Please check your email to verify your account." });
+        res.status(200).json({ message: "Registration successful! Please check your email to verify your account." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({message: "System error! Please try again later." });
+        res.status(500).json({ message: "System error! Please try again later." });
     }
 };
 
