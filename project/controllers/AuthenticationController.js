@@ -58,7 +58,7 @@ const register = (req, res) => {
 }
 
 const resetPassword = (req, res) => {
-    res.sendFile(path.join(__dirname, "../views/ForgetPassword.html"));
+    res.sendFile(path.join(__dirname, "../views/ForgotPassword.html"));
 }
 
 const validateUsername = (username) => {
