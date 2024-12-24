@@ -2,11 +2,9 @@ import express from 'express';
 const router = express.Router();
 import ProfileController from '../controllers/ProfileController.js';
 
-// Để theo thứ tự vì các hàm sẽ chạy theo thứ tự
-router.get("/", ProfileController.loadUserThreadData, 
-                ProfileController.loadFollowsData, 
-                ProfileController.renderProfile);
-
+router.put('/follow/:id', ProfileController.FollowUser);
 router.get('/configProfile', ProfileController.redirectToSettings);
-
+router.get('/:username', ProfileController.loadOtherProfileData);
+router.get("/", ProfileController.loadUserProfileData);
+router.delete("/delete-thread/:id", ProfileController.deleteThread);
 export default router;

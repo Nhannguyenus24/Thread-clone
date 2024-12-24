@@ -31,5 +31,30 @@
     {{/each}}
 </div>
 <script>
+document.getElementById('searchInput').focus();
+async function followUser(event) {
+  const id = event.target.id;
+  const response = await fetch(`http://localhost:3000/profile/follow/${id}`, {
+    method: 'PUT',
+  });
+if (response.ok) {
+  const button = document.getElementById(id);
+  const num_follow = document.getElementById('follow-number-' + id);
 
+  const currentFollowCount = parseInt(num_follow.innerHTML.split(' ')[0]); 
+
+  if (button.innerHTML === 'Follow') {
+    button.innerHTML = 'Following';
+    button.classList.remove('text-[#F3F5F7]');
+    button.classList.add('text-[#333333]');
+    num_follow.innerHTML = `${currentFollowCount + 1} followers`;
+  } else {
+    button.innerHTML = 'Follow';
+    button.classList.remove('text-[#333333]');
+    button.classList.add('text-[#F3F5F7]');
+    num_follow.innerHTML = `${currentFollowCount - 1} followers`;
+  }
+}
+
+}
 </script>

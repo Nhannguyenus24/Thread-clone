@@ -89,11 +89,19 @@
     </div>
 </body>
 <script>
+    function showError(message, color = "") {
+        errorNotification.innerText = message;
+        errorNotification.style.display = "block";
+        if (color)
+            errorNotification.style.backgroundColor = color;
+        setTimeout(() => {
+                errorNotification.style.display = "none";
+        }, 3000);
+    }
     const passwordInput = document.getElementById('password');
     const usernameInput = document.getElementById('username');
     const emailInput = document.getElementById('email');
     const submitButton = document.getElementById('submitButton');
-    const errorNotification = document.getElementById('errorNotification');
     const logo = document.getElementById('logo');
 
     if (window.innerWidth <= 480) {
@@ -113,7 +121,6 @@
         const username = usernameInput.value;
         const password = passwordInput.value;
         const email = emailInput.value;
-
         submitButton.disabled = true;
         try {
             const response = await fetch('http://localhost:3000/api/register', {
@@ -124,6 +131,7 @@
                 body: JSON.stringify({ username, password, email })
             });
             const data = await response.json();
+
 
             if (response.ok) {
                 showError("Registration successful! Please check your email to verify.");
@@ -144,6 +152,17 @@
         setTimeout(() => {
             errorNotification.style.display = "none";
         }, 3000);
+
+//             if (response.ok)
+//                 showError("Registration successful! Please check your email to verify", "#22C55E");
+//             else
+//                 showError(data.message, "#EF4444");
+//             submitButton.disabled = false;
+//         } catch (error) {
+//             showError("An error occurred. Please try again!", "#EF4444");
+//             submitButton.disabled = false;
+//         }
+
     }
 </script>
 

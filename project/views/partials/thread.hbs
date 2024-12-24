@@ -1,13 +1,45 @@
-<div class="flex sm:py-4 sm:px-6 gap-3 border-b border-[#333333] p-2">
+{{!-- 
+<div class="flex sm:py-4 sm:px-6 gap-3 border-b border-[#333333] p-4">
   <img id="avatar" src="{{author.avatar}}" class="w-[36px] h-[36px] rounded-full"/>
       <div class="flex flex-col w-full">
         <div class="flex gap-2 text-[#f3f5f7] cursor-pointer">
           <span class="hover:underline">{{author.username}}</span>
-          <span class="text-[#777777]" id="uploadTime">{{formatTime date}}</span>
+          <span class="text-[#777777]" id="uploadTime">{{formatTime date}}</span> --}}
+<div id="threads-container" class="flex sm:py-4 sm:px-6 gap-3 border-b border-[#333333] p-2" data-thread-id="{{_id}}">
+  <img id="avatar" src="{{author.avatar}}" class="w-[36px] h-[36px] rounded-full"/>
+      <div class="flex flex-col gap-2 w-full">
+        <div class="flex gap-2 text-[#f3f5f7] cursor-pointer justify-between">
+          <div>
+            <span class="hover:underline cursor-pointer" onclick="window.location.href = 'http://localhost:3000/profile/{{author.username}}'">{{author.username}}</span>
+            <span class="text-[#777777]" id="uploadTime">{{formatTime date}}</span>
+          </div>
+          {{#if isAuthor}}
+          <svg id="delete-thread" aria-label="Xem thêm" role="img" viewBox="0 0 24 24" width="18" height="18" fill="white">
+              <title>Xem thêm</title>
+              <circle cx="12" cy="12" r="1.5"></circle>
+              <circle cx="6" cy="12" r="1.5"></circle>
+              <circle cx="18" cy="12" r="1.5"></circle>
+          </svg>
+          <div id="modal-delete" class="absolute bg-[rgb(10,10,10)] flex justify-center items-center hidden">
+            <div class="rounded-lg p-6 shadow-lg w-80">
+              <p class="text-lg font-semibold text-[rgb(243,245,247)] mb-4">Are you sure you want to delete this thread?</p>
+              <div class="flex justify-end space-x-4">
+                <button id="cancel-delete" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
+                  Cancel
+                </button>
+                <button id="confirm-delete" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+
+
+          {{/if}}
         </div>
         <span id="content" class="thread-content">{{content}}</span>
-        <div class="image-container w-full max-w-full overflow-hidden my-2" onclick="window.location.href='{{author.username}}/post/{{_id}}'">
-          <img src="{{image}}" class="max-h-[400px] max-w-full h-auto rounded-[5px]"/>
+        <div class="image-container w-full max-w-full overflow-hidden my-2" >
+          <img src="{{image}}" class="max-h-[400px] max-w-full h-auto rounded-[5px] " onclick="scaleImage(this)"/>
         </div>
 
         <div class="flex items-center gap-5">
@@ -19,7 +51,7 @@
             </svg>
             <span class="flex items-center justify-center text-[12px] font-normal text-[#cccccc] cursor-pointer">{{likes.length}}</span>
           </div>
-          <div class="p-3 -ml-3 flex items-center h-[18px] gap-1" onclick="window.location.href='{{author.username}}/post/{{_id}}'">
+          <div class="p-3 -ml-3 flex items-center h-[18px] gap-1" onclick="navigateToPost('{{author.username}}/post/{{_id}}')">
             <svg viewBox="0 0 18 18" width="18" height="18">
               <path
                 d="M15.376 13.2177L16.2861 16.7955L12.7106 15.8848C12.6781 15.8848 12.6131 15.8848 12.5806 15.8848C11.3779 16.5678 9.94767 16.8931 8.41995 16.7955C4.94194 16.5353 2.08152 13.7381 1.72397 10.2578C1.2689 5.63919 5.13697 1.76863 9.75264 2.22399C13.2307 2.58177 16.0261 5.41151 16.2861 8.92429C16.4161 10.453 16.0586 11.8841 15.376 13.0876C15.376 13.1526 15.376 13.1852 15.376 13.2177Z"
@@ -33,4 +65,32 @@
           </div>
         </div>
       </div>
+  <div id="imageModal" class="fixed inset-0 bg-black flex justify-center items-center hidden z-100 w-screen h-screen">
+    
+      <button onclick="closeModal()" class="absolute top-2 right-2 bg-gray-700 bg-opacity-40 text-white rounded-full w-8 h-8 flex items-center justify-center text-10">
+        &times;
+      </button>
+    <div class="relative">
+      <img id="scaledImage" src="{{image}}" class="max-h-screen max-w-screen h-auto w-auto rounded-[5px] object-contain">
+    </div>
+  </div>
 </div>
+
+<script>
+  function scaleImage(img) {
+    const modal = document.getElementById("imageModal");
+    const scaledImage = document.getElementById("scaledImage");
+
+    scaledImage.src = img.src;
+    modal.classList.remove("hidden");
+    modal.onclick = function (e) {
+      if (e.target === modal) {
+        closeModal();
+      }
+    };
+  }
+  function closeModal() {
+    const modal = document.getElementById("imageModal");
+    modal.classList.add("hidden");
+  }
+</script>

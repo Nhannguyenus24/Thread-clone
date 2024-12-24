@@ -1,6 +1,6 @@
 <div>
   {{#if isLogin}}
-    <div class="hidden sm:flex p-6 pb-3 gap-3 items-center border-b border-[#333333] ">
+    <div class="hidden sm:flex p-6 pb-3 gap-3 items-center border-b border-[#333333] cursor-pointer" onclick="window.location.href='/newthread'">
       <img src="{{avatar}}" class="w-[36px] h-[36px] rounded-full"/>
       <span class="mr-auto text-[#777777]">What's new?</span>
       <button class="bg-transparent font-semibold text-[#f3f5f7] border border-[#333333] p-0 h-[36px] w-[70px] rounded-lg">Post</button>
@@ -10,36 +10,3 @@
     {{> thread}}
     {{/each}}
 </div>
-<script>
-async function handleLike() {
-  try {
-    const postId = event.currentTarget.id;
-    const svg = event.currentTarget.querySelector('svg');
-    const span = event.currentTarget.querySelector('span');
-    let likes = parseInt(span.textContent, 10);
-    
-    const response = await fetch(`http://localhost:3000/like/${postId}`, {
-      method: 'PUT',
-    });
-
-    if (!response.ok) {
-      window.location.href = '/login';
-    }
-    
-      if (svg) {
-        if (svg.classList.contains('active')) {
-          svg.classList.remove('active');
-          svg.classList.add('nonactive');
-          span.textContent = likes - 1;
-        } else {
-          svg.classList.remove('nonactive');
-          svg.classList.add('active');
-          span.textContent = likes + 1;
-        }
-    }
-    
-  } catch (error) {
-    console.error('An error occurred:', error.message);
-  }
-}
-</script>
