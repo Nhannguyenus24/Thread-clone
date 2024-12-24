@@ -28,7 +28,7 @@ const resetPasswordForm = (req, res) => {
 
 const checkLogIn = async (req, res) => {
     const { username, password } = req.body;
-    console.log(password);
+    
     try {
         const user = await UserModel.findOne({ username: username });
 

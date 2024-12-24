@@ -20,6 +20,7 @@
     let isProcessing = false;
 
     async function markAsRead(notificationId, element) {
+        
         if (isProcessing) return;
 
         isProcessing = true;
@@ -49,18 +50,17 @@
 
         try {
             const response = await fetch(`http://localhost:3000/notification/delete/${notiId}`, {
-                method: 'PUT',
+                method: 'DELETE',
             });
 
             if (response.ok) {
-                //console.log('haha');
                 const deletedThread = document.querySelector(`[data-id='${notiId}']`);
-                //console.log(deletedThread);
+                
                 if (deletedThread) {
                     deletedThread.style.display = 'none';
                 }
                 const data = await response.json();
-                console.log(data.message);
+                
                 showInfoBox(data.message);
             }
         } catch(error) {
