@@ -5,12 +5,19 @@
   <img class="mr-3 w-9 h-9 rounded-full" src="{{senderAvatar}}" alt="icon" />
   <div class="flex flex-col flex-1">
     <div class="flex gap-2 text-[#f3f5f7] cursor-pointer">
-      <span>{{senderName}}</span>
+      
+      <span class="hover:underline" onclick="window.location.href = 'profile/{{senderName}}'">{{senderName}}</span>
       <span class="text-[#777777]">{{formatTime date}}</span>
     </div>
-    <p class="text-base text-gray-300">
+    <p class="text-base text-[#f3f5f7]">
       {{content}}
     </p>
+    
+    {{#if linkThread}}
+      <span>
+      <a href="{{linkThread}}" class="text-blue-500">View thread</a>
+      </span>
+    {{/if}}
   </div>
   {{#unless isRead}}
     <div class="self-center ml-auto w-2.5 h-2.5 rounded-full bg-blue-400"></div>

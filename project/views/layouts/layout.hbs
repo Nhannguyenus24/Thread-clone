@@ -120,9 +120,9 @@
   <script>
     function toggleTextAndRotate(element) {
       if (element.textContent === "For you") {
-        element.textContent = "Following";
+        window.location.href = '/following';
       } else {
-        element.textContent = "For you";
+        window.location.href = '/';
       }
     }
 
@@ -136,6 +136,9 @@
         document.getElementById('forYou').textContent = 'Home page';
         document.getElementById('forYou').onclick = null;
     }
+      else {
+        document.getElementById('forYou').textContent = window.location.pathname.includes('following') ? "Following" : "For you";
+      }
       const currentPath = window.location.pathname;
       const navLinks = document.querySelectorAll('a');
       navLinks.forEach(link => {

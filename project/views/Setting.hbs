@@ -5,6 +5,7 @@
   </div>
   {{#if (eq currentPage 'account')}}
 <div class="flex flex-col">
+  
   <div class="mb-6 p-3 w-full">
     <label for="username" class="block mb-2">Username</label>
     <div id="username-section" class="flex items-center space-x-4">
@@ -106,12 +107,28 @@
     {{/each}}
   {{/if}}
 </div>
+  <div class="fixed bottom-[40px] left-1/2 transform -translate-x-1/2 bg-white text-black p-[10px_20px] rounded-[8px] shadow-[0_2px_10px_rgba(0,0,0,0.2)] opacity-100 animate-slideUp animate-stay animate-slideDown" id="errorNotification" style="display: none;">
+  </div>
+</div>
 <script>
-  function logOut(e){
-    e.preventDefault();
-    document.cookie = 'token=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=Strict';
-    window.location.href = '/login';
+  function showError(message) {
+    const errorNotification = document.getElementById('errorNotification');
+    errorNotification.innerText = message;
+    errorNotification.style.display = "block";
+    setTimeout(() => {
+      errorNotification.style.display = "none";
+    }, 3000);
   }
+  async function logOut(e){
+    e.preventDefault();
+    const response = await fetch('http://localhost:3000/logout', {
+      method: 'GET',
+    });
+    if (response.ok){
+      window.location.href = '/';
+    }
+  }
+
   function editField(field) {
   const valueElement = document.getElementById(`${field}-value`);
   const editSection = document.getElementById(`${field}-edit`);
@@ -149,13 +166,13 @@ async function saveField(event, field) {
       method: 'POST',
       body: formData,
     })
+    const data = await response.json();
     if (response.ok){
-      const data = await response.json();
       document.getElementById('avatar-preview').src = data.link;
       cancelEdit(field);
     }
     else {
-      alert('Có lỗi xảy ra');
+      showError(data.message);
       return cancelEdit(field);
     }
   } 
@@ -164,15 +181,15 @@ async function saveField(event, field) {
     const newPassword = document.getElementById('new-password').value;
     const confirmPassword = document.getElementById('confirm-password').value;
     if (newPassword !== confirmPassword) {
-      alert('The new password does not match!');
+      showError('The new password does not match!');
       return;
     }
     else if (newPassword == '' || confirmPassword == '') {
-      alert('Please fill in all the information!');
+      showError('Please fill in all the information!');
       return;
     }
     else if (newPassword == currentPassword) {
-      alert('The new password cannot be the same as the old password!');
+      showError('The new password cannot be the same as the old password!');
       return;
     }
     const response = await fetch('http://localhost:3000/setting/password', {
@@ -191,7 +208,7 @@ async function saveField(event, field) {
       cancelEdit(field);
     }
     else {
-      alert(data.message);
+      showError(data.message);
       return cancelEdit(field);
     }
   }
@@ -224,7 +241,7 @@ async function saveField(event, field) {
         editSection.classList.add('hidden');
       }
       else {
-        alert(data.message);
+        showError(data.message);
         return cancelEdit(field);
       }
     }

@@ -84,23 +84,20 @@ const changeSetting = async (req, res) => {
     else if (field == "quote") findUser.quote = value;
     else if (field == "username") {
       const checkUser = await UserModel.findOne({ username: value });
-      if (checkUser)
-        res
-          .status(400)
-          .json({ success: false, message: "Username already exists" });
+      if (checkUser){
+        return res.status(400).json({ message: "Username already exists" });
+      }
       else findUser.username = value;
     } else if (field == "email") {
       const checkEmail = await UserModel.findOne({ email: value });
-      if (checkEmail)
-        res
-          .status(400)
-          .json({ success: false, message: "Email already exists" });
+      if (checkEmail){
+        return res.status(400).json({message: "Email already exists" });}
       else findUser.email = value;
     }
     await findUser.save();
-    res.status(200).json({ success: true });
+    res.status(200).json({message: "Change successfully" });
   } catch (error) {
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res.status(500).json({message: "Internal server error" });
   }
 };
 
@@ -118,14 +115,14 @@ const changePassword = async (req, res) => {
     if (findUser.password != currentPassword)
       res
         .status(400)
-        .json({ success: false, message: "Old password is incorrect" });
+        .json({message: "Old password is incorrect" });
     else {
       findUser.password = newPassword;
       await findUser.save();
-      res.status(200).json({ success: true });
+      res.status(200).json({ message: "Change password successfully" });
     }
   } catch (error) {
-    res.status(500).json({ success: false, message: "Internal server error" });
+    res.status(500).json({ message: "Internal server error" });
   }
 };
 

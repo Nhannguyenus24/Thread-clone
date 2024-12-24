@@ -4,6 +4,8 @@ import AuthenticationController from '../controllers/AuthenticationController.js
 
 router.get('/login', AuthenticationController.logIn);
 
+router.get('/logout', AuthenticationController.logOut);
+
 router.post('/api/login', AuthenticationController.checkLogIn);
 
 router.get('/signup', AuthenticationController.register);
