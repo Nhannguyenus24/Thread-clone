@@ -2,6 +2,7 @@ import FollowModel from '../models/FollowModel.js';
 import UserModel from '../models/UserModel.js';
 import threadModel from '../models/ThreadModel.js';
 import jwt from "jsonwebtoken";
+import NotificationController from './NotificationController.js';
 
 const loadUserProfileData = async (req, res) => {
 
@@ -122,9 +123,6 @@ const deleteThread = async (req, res) => {
   }
 }
 
-
-
-  
 const redirectToSettings = async (req, res) => {
     res.redirect('/setting/account');
 };
@@ -142,7 +140,7 @@ const FollowUser = async (req, res) => {
   try {
     const userId = decode.userId;
     const followId = req.params.id;
-    followUser(userId, followId);
+    followOther(userId, followId);
     follower(userId, followId);
     res.status(200).json({ message: "Follow user successfully" });
   } catch (error) {
@@ -151,8 +149,9 @@ const FollowUser = async (req, res) => {
   }
 };
 
-const followUser = async (followerId, followingId) => {
+const followOther = async (followerId, followingId) => {
   const user = await FollowModel.findOne({ userId: followerId });
+  const userFollow = await UserModel.findById(followerId);
   if (!user) {
     await FollowModel.create({ userId: followerId, followings: [followingId], followers: [] });
   }
@@ -163,6 +162,7 @@ const followUser = async (followerId, followingId) => {
         { $pull: { followings: followingId } }
       );
     } else {
+      NotificationController.addNotification(followingId, "started following you", userFollow.avatar, userFollow.username);
       await FollowModel.findOneAndUpdate(
         { userId: followerId },
         { $push: { followings: followingId } }
@@ -201,6 +201,9 @@ const loadOtherProfileData = async (req, res) => {
   );
   try {
     const idOfUser = decode.userId;
+    if (req.params.username == 'Threads'){
+      return res.redirect('/');
+    }
     const findUser = await UserModel.findOne({ username: req.params.username }).lean();
     const ownFollowData = await FollowModel.findOne({ userId: idOfUser });
     if (findUser._id == idOfUser) {
@@ -241,19 +244,21 @@ const loadOtherProfileData = async (req, res) => {
     })
     .lean();
 
-  const followers = followData?.followers || [];
-  const followings = followData?.followings || [];
-  const updatedFollowings = followings.map(following => ({
-    ...following,
-    isFollowing: true
-  }));
-  const followingIds = followings.map(following => following._id.toString());
+    const followers = followData?.followers || [];
+    const followings = followData?.followings || [];
+    const updatedFollowings = followings.map(following => ({
+      ...following,
+      isFollowing: true,
+      isMe: following._id == idOfUser
+    }));
+    const followingIds = followings.map(following => following._id.toString());
 
 
-const updatedFollowers = followers.map(follower => ({
-  ...follower,
-  isFollowing: followingIds.includes(follower._id.toString()),
-}));
+    const updatedFollowers = followers.map(follower => ({
+      ...follower,
+      isFollowing: followingIds.includes(follower._id.toString()),
+      isMe: follower._id == idOfUser
+    }));
     const renderData = {
       user: userData,
       threads: updatedThreads,

@@ -11,6 +11,7 @@ const loadNotifications = async (req, res) => {
         );
     try {
     const noti = await NotificationModel.findOne({ userId: decode.userId }).lean();
+    noti.notifications.reverse();
     res.render("Notification", { notifications: noti ? noti.notifications : [] });
     } catch (error) {
         console.log(error);
@@ -43,7 +44,7 @@ const markAsRead = async (req, res) => {
     }
 }
 
-const addNotification = async (userId, content, senderAvatar, senderName) => {
+const addNotification = async (userId, content, senderAvatar, senderName, link) => {
     try {
         const userNotification = await NotificationModel.findOne({ userId });
         if (!userNotification) {
@@ -62,6 +63,7 @@ const addNotification = async (userId, content, senderAvatar, senderName) => {
                 content: content,
                 senderAvatar: senderAvatar,
                 senderName: senderName,
+                linkThread: link,
             });
             await userNotification.save();
         }

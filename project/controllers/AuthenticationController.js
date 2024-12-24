@@ -13,16 +13,22 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const logIn = (req, res) => {
+    if (req.cookies.token) {
+        return res.redirect("/");
+    }
     res.sendFile(path.join(__dirname, "../views/LogInPage.html"));
 }
 
 const resetPasswordForm = (req, res) => {
+    if (req.cookies.token) {
+        return res.redirect("/");
+    }
     res.sendFile(path.join(__dirname, "../views/ResetPassword.html"));
 }
 
 const checkLogIn = async (req, res) => {
     const { username, password } = req.body;
-
+    console.log(password);
     try {
         const user = await UserModel.findOne({ username: username });
 
@@ -55,10 +61,16 @@ const checkLogIn = async (req, res) => {
 };
 
 const register = (req, res) => {
+    if (req.cookies.token) {
+        return res.redirect("/");
+    }
     res.sendFile(path.join(__dirname, "../views/Register.html"));
 }
 
 const resetPassword = (req, res) => {
+    if (req.cookies.token) {
+        return res.redirect("/");
+    }
     res.sendFile(path.join(__dirname, "../views/ForgotPassword.html"));
 }
 
@@ -219,7 +231,7 @@ const verifyUser = async (req, res) => {
         user.verificationToken = null;
         await user.save();
 
-        res.status(200).send("<a href='http://localhost:3000/login'>Đăng ký thành công, bấm vào đây để quay về trang đăng nhập</a>");
+        res.status(200).send("<a href='http://localhost:3000/login'>Registration successful. Click here to return to the login page.</a>");
     } catch (error) {
         console.error(error);
         res.status(500).json({ success: false, message: "System error! Please try again later." });
@@ -233,7 +245,7 @@ const requestPasswordReset = async (req, res) => {
         const user = await UserModel.findOne({ email: email });
 
         if (!user) {
-            return res.status(404).json({message: "Không tìm thấy tài khoản với email này." });
+            return res.status(404).json({message: "No account found with this email." });
         }
 
         // Tạo token reset password và thời gian hết hạn
@@ -247,24 +259,23 @@ const requestPasswordReset = async (req, res) => {
         user.verificationExpires = resetExpires;
         await user.save();
 
-        // Tạo liên kết reset mật khẩu
         const resetUrl = `http://localhost:3000/reset-password-form?token=${resetToken}`;
 //         const resetUrl = `http://localhost:3000/api/reset-password/${resetToken}?password=${encodeURIComponent(hashedPassword)}`;
 
         await sendMail(
             email,
-            "Đặt lại mật khẩu của bạn",
-            `<p>Chào ${user.username},</p>
-             <p>Nhấn vào liên kết bên dưới để đặt lại mật khẩu của bạn:</p>
-             <a href="${resetUrl}">Đặt lại mật khẩu</a>
-             <p>Liên kết này sẽ hết hạn sau 1 giờ.</p>
-             <p>Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.</p>`
+            "Reset your password",
+            `<p>Hello ${user.username},</p>
+             <p>Click the link below to reset your password:</p>
+             <a href="${resetUrl}">reset password</a>
+             <p>This link will expire in 1 hour.</p>
+             <p>If you did not request a password reset, please ignore this email.</p>`
         );
 
-        res.status(200).json({ success: true, message: "Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn." });
+        res.status(200).json({ success: true, message: "A password reset email has been sent. Please check your inbox." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Hệ thống gặp lỗi! Vui lòng thử lại sau." });
+        res.status(500).json({ success: false, message: "The system encountered an error! Please try again later." });
 //         res.status(200).json({message: "Email xác nhận đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn." });
 //     } catch (error) {
 //         console.error(error);
@@ -278,36 +289,44 @@ const executeResetPassword = async (req, res) => {
     try {
         const user = await UserModel.findOne({
             verificationToken: token,
-            verificationExpires: { $gt: Date.now() }, // Kiểm tra token còn hiệu lực
+            verificationExpires: { $gt: Date.now() },
         });
-
         if (!user) {
-            return res.status(400).json({ success: false, message: "Token không hợp lệ hoặc đã hết hạn." });
+            return res.status(400).json({message: "Invalid or expired token." });
         }
 
         // Hash mật khẩu mới
         const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Cập nhật mật khẩu mới
         user.password = hashedPassword;
         user.verificationToken = null;
         user.verificationExpires = null;
         await user.save();
-
-        res.status(200).json({ success: true, message: "Mật khẩu đã được đặt lại thành công. Bạn có thể đăng nhập bằng mật khẩu mới." });
+        res.status(200).json({message: "Your password has been successfully reset. You can now log in with your new password." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "Hệ thống gặp lỗi! Vui lòng thử lại sau." });
+        res.status(500).json({message: "The system encountered an error! Please try again later." });
     }
 };
 
-// const isLoggedIn = (req, res) => {
-//     const token = req.cookies.token;
-//     if (!token)
-//         res.status(200).json({ isLoggedIn: false });
-//     else 
-//         res.status(200).json({ isLoggedIn: true });
-// }
+const isLoggedIn = (req, res) => {
+    const token = req.cookies.token;
+    if (!token)
+        res.status(200).json({ isLoggedIn: false });
+    else 
+        res.status(200).json({ isLoggedIn: true });
+}
+
+const logOut = (req, res) => {
+    res.clearCookie("token", {
+        httpOnly: true,
+        sameSite: "Strict",
+        secure: false,
+        path: "/",
+    });
+    res.status(200).json({ message: "Log out successfully" });
+};
+
+
 const AuthenticationController = {
     logIn: logIn,
     register: register,
@@ -319,6 +338,8 @@ const AuthenticationController = {
     requestPasswordReset: requestPasswordReset,
     executeResetPassword: executeResetPassword,
     resetPasswordForm: resetPasswordForm,
+    isLoggedIn: isLoggedIn,
+    logOut: logOut
 }
 
 export default AuthenticationController;

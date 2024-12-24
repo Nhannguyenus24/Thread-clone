@@ -5,12 +5,13 @@ const NotificationSchema = new mongoose.Schema({
     senderAvatar: { type: String, required: true, default: "/image/thread.ico" },
     senderName: { type: String, required: true, default: "Threads" },
     date: { type: Date, default: Date.now },
-    isRead: { type: Boolean, default: false }
+    isRead: { type: Boolean, default: false },
+    linkThread: { type: String, default: "" }
 });
 
 const UserNotificationSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, required: true },
-    notifications: { type: [NotificationSchema], default: [] }
+    notifications: { type: [NotificationSchema], default: [] },
 });
 
 const NotificationModel = mongoose.model("Notifications", UserNotificationSchema);

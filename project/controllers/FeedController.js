@@ -1,17 +1,23 @@
 import threadModel from "../models/ThreadModel.js";
 import userModel from "../models/UserModel.js";
+import FollowModel from "../models/FollowModel.js";
+import NotificationController from "./NotificationController.js";
 import jwt from "jsonwebtoken";
 
 const loadAllThread = async (req, res) => {
   const token = req.cookies.token;
   if (!token) {
-    const threads = await threadModel.find({}).populate({
-      path: "author",
-      model: "Users",
-      localField: "author",
-      foreignField: "username",
-      select: "username avatar",
-    }).lean();
+    const threads = await threadModel
+      .find({})
+      .populate({
+        path: "author",
+        model: "Users",
+        localField: "author",
+        foreignField: "username",
+        select: "username avatar",
+      })
+      .lean();
+      threads.reverse();
     res.render("Feed", { threads: threads, isLogin: false });
   } else {
     const decode = jwt.verify(
@@ -29,7 +35,8 @@ const loadAllThread = async (req, res) => {
           localField: "author",
           foreignField: "username",
           select: "username avatar",
-        }).lean();
+        })
+        .lean();
       threads.reverse();
       const updatedThreads = threads.map((thread) => {
         const isLike = thread.likes.some(
@@ -37,7 +44,11 @@ const loadAllThread = async (req, res) => {
         );
         return { ...thread, isLike };
       });
-      res.render("Feed", { threads: updatedThreads, avatar: user.avatar, isLogin: true});
+      res.render("Feed", {
+        threads: updatedThreads,
+        avatar: user.avatar,
+        isLogin: true,
+      });
     } catch (error) {
       console.error("Error fetching threads:", error);
       res.status(500).json({ message: "An error occurred while loading the feed" });
@@ -47,14 +58,13 @@ const loadAllThread = async (req, res) => {
 
 const likeThread = async (req, res) => {
   const token = req.cookies.token;
-  if (!token)
-    return res.redirect("/login");
+  if (!token) return res.redirect("/login");
   const decode = jwt.verify(
     token,
     "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
   );
   const thread = await threadModel.findById(req.params.id);
-
+  const user = await userModel.findById(decode.userId);
   if (!thread) {
     return res.status(404).json({ message: "Thread not found" });
   }
@@ -69,6 +79,7 @@ const likeThread = async (req, res) => {
     );
   } else {
     thread.likes.push({ userId: decode.userId });
+    NotificationController.addNotification(thread.authorId, "liked your thread", user.avatar, user.username, `/${thread.author}/post/${thread._id}`);
   }
 
   await thread.save();
@@ -78,96 +89,120 @@ const likeThread = async (req, res) => {
 
 const loadFollowingThread = async (req, res) => {
   const token = req.cookies.token;
-    const decode = jwt.verify(
-      token,
-      "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-    );
-    try {
-      const userId = decode.userId;
-      const user = await userModel.findById(userId);
-      
-      const followData = await FollowModel.findOne({ userId }).lean();
-      const followedUserIds = followData.followings.map(following => following.userId);
-      
-      const threads = await threadModel
-        .find({ author: { $in: followedUserIds } })
-        .populate({
-          path: "author",
-          model: "Users",
-          localField: "author",
-          foreignField: "_id",
-          select: "username avatar",
-        }).lean();
-      
-      threads.reverse();
-      
-      const updatedThreads = threads.map((thread) => {
-        const isLike = thread.likes.some(
-          (like) => like.userId.toString() === userId
-        );
-        return { ...thread, isLike };
+  const decode = jwt.verify(
+    token,
+    "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
+  );
+  try {
+    const userId = decode.userId;
+    const user = await userModel.findById(userId);
+    const followData = await FollowModel.findOne({ userId }).lean();
+    if (
+      !followData ||
+      !followData.followings ||
+      followData.followings.length === 0
+    ) {
+      return res.render("Feed", {
+        threads: [],
+        avatar: user.avatar,
+        isLogin: true,
+        message: "You are not following anyone yet!",
       });
-      
-      res.render("Feed", { threads: updatedThreads, avatar: user.avatar, isLogin: true });
-    } catch (error) {
-      console.error("Error fetching threads:", error);
-      res.status(500).json({ message: "An error occurred while loading the feed" });
     }
-}
+
+    const followedUserIds = followData.followings;
+    const threads = await threadModel
+      .find({ authorId: { $in: followedUserIds } })
+      .populate({
+        path: "author",
+        model: "Users",
+        localField: "author",
+        foreignField: "username",
+        select: "username avatar",
+      }).lean();
+
+    threads.reverse();
+
+    const updatedThreads = threads.map((thread) => {
+      const isLike = thread.likes.some(
+        (like) => like.userId.toString() === userId
+      );
+      return { ...thread, isLike };
+    });
+
+    // Render kết quả
+    res.render("Feed", {
+      threads: updatedThreads,
+      avatar: user.avatar,
+      isLogin: true,
+    });
+  } catch (error) {
+    console.error("Error fetching threads:", error);
+    res.status(500).json({ message: "An error occurred while loading the feed" });
+  }
+};
 
 const addComment = async (req, res) => {
-  const {content} = req.body;
+  const { content } = req.body;
   const token = req.cookies.token;
-  if (!token) 
-    return res.redirect("/login");
+  if (!token) return res.redirect("/login");
   const decode = jwt.verify(
     token,
     "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
   );
   try {
     const thread = await threadModel.findById(req.params.id);
+    const user = await userModel.findById(decode.userId);
     thread.comments.push({ commentId: decode.userId, comment: content });
     await thread.save();
+    NotificationController.addNotification(thread.authorId, "commented on your thread", user.avatar, user.username, `/${thread.author}/post/${thread._id}`);
     res.status(200).json({ message: "Comment added successfully" });
-  } catch(error) {
+  } catch (error) {
     console.error("Error adding comment:", error);
     res.status(500).json({ message: "An error occurred while adding the comment" });
   }
-}
+};
 
 const loadThread = async (req, res) => {
   const token = req.cookies.token;
-  if (!token) 
-    return res.redirect("/login");
+  if (!token) return res.redirect("/login");
   const decode = jwt.verify(
     token,
     "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
   );
-  try{
-    const thread = await threadModel.findById(req.params.id).populate({
-      path: "author",
-      model: "Users",
-      localField: "author",
-      foreignField: "username",
-      select: "username avatar",
-    }).populate({
-      path: "comments.commentId",
-      localField: "comments.commentId",
-      foreignField: "_id",
-      model: "Users",
-      select: "username avatar"
-    }).lean();
+  try {
+    const thread = await threadModel
+      .findById(req.params.id)
+      .populate({
+        path: "author",
+        model: "Users",
+        localField: "author",
+        foreignField: "username",
+        select: "username avatar",
+      })
+      .populate({
+        path: "comments.commentId",
+        localField: "comments.commentId",
+        foreignField: "_id",
+        model: "Users",
+        select: "username avatar",
+      })
+      .lean();
     const isLike = thread.likes.some(
       (like) => like.userId.toString() === decode.userId
     );
     const user = await userModel.findById(decode.userId).lean();
     const updatedThread = { ...thread, isLike };
-    res.render("Post", { threads: [updatedThread], comments: updatedThread.comments, avatar: user.avatar});
-} catch (error) {
-  console.error("Error fetching thread:", error);
-  res.status(500).json({ message: "An error occurred while loading the thread" });
-}
-}
+    res.render("Post", {
+      threads: [updatedThread],
+      comments: updatedThread.comments,
+      avatar: user.avatar,
+    });
+  } catch (error) {
+    console.error("Error fetching thread:", error);
+    res.status(500).json({ message: "An error occurred while loading the thread" });
+  }
+};
 
 const FeedController = {
   loadAllThread: loadAllThread,
