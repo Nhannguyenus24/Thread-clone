@@ -2,7 +2,9 @@ import threadModel from "../models/ThreadModel.js";
 import userModel from "../models/UserModel.js";
 import FollowModel from "../models/FollowModel.js";
 import NotificationController from "./NotificationController.js";
+import dotenv from 'dotenv';
 import jwt from "jsonwebtoken";
+dotenv.config();
 
 const loadAllThread = async (req, res) => {
   const token = req.cookies.token;
@@ -20,10 +22,7 @@ const loadAllThread = async (req, res) => {
       threads.reverse();
     res.render("Feed", { threads: threads, isLogin: false });
   } else {
-    const decode = jwt.verify(
-      token,
-      "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-    );
+    const decode = jwt.verify(token, process.env.JWT_SECRET);
     try {
       const userId = decode.userId;
       const user = await userModel.findById(userId);
@@ -59,10 +58,7 @@ const loadAllThread = async (req, res) => {
 const likeThread = async (req, res) => {
   const token = req.cookies.token;
   if (!token) return res.redirect("/login");
-  const decode = jwt.verify(
-    token,
-    "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-  );
+  const decode = jwt.verify(token, process.env.JWT_SECRET);
   const thread = await threadModel.findById(req.params.id);
   const user = await userModel.findById(decode.userId);
   if (!thread) {
@@ -89,10 +85,7 @@ const likeThread = async (req, res) => {
 
 const loadFollowingThread = async (req, res) => {
   const token = req.cookies.token;
-  const decode = jwt.verify(
-    token,
-    "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-  );
+  const decode = jwt.verify(token, process.env.JWT_SECRET);
   try {
     const userId = decode.userId;
     const user = await userModel.findById(userId);
@@ -146,10 +139,7 @@ const addComment = async (req, res) => {
   const { content } = req.body;
   const token = req.cookies.token;
   if (!token) return res.redirect("/login");
-  const decode = jwt.verify(
-    token,
-    "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-  );
+  const decode = jwt.verify(token, process.env.JWT_SECRET);
   try {
     const thread = await threadModel.findById(req.params.id);
     const user = await userModel.findById(decode.userId);
@@ -166,10 +156,7 @@ const addComment = async (req, res) => {
 const loadThread = async (req, res) => {
   const token = req.cookies.token;
   if (!token) return res.redirect("/login");
-  const decode = jwt.verify(
-    token,
-    "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-  );
+  const decode = jwt.verify(token, process.env.JWT_SECRET);
   try {
     const thread = await threadModel
       .findById(req.params.id)

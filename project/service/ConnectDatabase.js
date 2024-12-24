@@ -1,16 +1,19 @@
 import mongoose from 'mongoose';
 import { v2 as cloudinary } from 'cloudinary';
+import dotenv from 'dotenv';
+dotenv.config();
+
 
 cloudinary.config({
-    cloud_name: 'drddzd0eh',
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     secure: true,
-    api_key: "513136425836428",
-    api_secret: "b0HFLf-ESI9q8ZChQFIYESVBvZU",
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 async function connectDatabase() {
     try {
-        await mongoose.connect('mongodb+srv://ntnhan223:7ITLgLkjbGVn5A29@thread.vcjq5.mongodb.net/');
+        await mongoose.connect(process.env.MONGO_URL);
         console.log('Connect database success');
     } catch (error) {  
         console.log('Connect database fail: ', error);

@@ -47,7 +47,7 @@ const checkLogIn = async (req, res) => {
             userId: user._id
         };
 
-        const token = jwt.sign(payload, "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60");
+        const token = jwt.sign(payload, process.env.JWT_SECRET);
         res.cookie("token", token, {
             httpOnly: true, // Prevent JavaScript from accessing cookie (XSS protection)
             secure: false, // Use true in production with HTTPS

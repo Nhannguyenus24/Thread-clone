@@ -3,6 +3,8 @@ import UserModel from '../models/UserModel.js';
 import threadModel from '../models/ThreadModel.js';
 import jwt from "jsonwebtoken";
 import NotificationController from './NotificationController.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const loadUserProfileData = async (req, res) => {
 
@@ -10,10 +12,7 @@ const loadUserProfileData = async (req, res) => {
   if (!token) {
     return res.redirect("/login");
   }
-  const decode = jwt.verify(
-    token,
-    "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-  );
+  const decode = jwt.verify(token, process.env.JWT_SECRET);
 
   try {
     const idOfUser = decode.userId;
@@ -102,10 +101,7 @@ const deleteThread = async (req, res) => {
     if (!token) {
       return res.redirect("/login");
     }
-    const decode = jwt.verify(
-      token,
-      "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-    );
+    const decode = jwt.verify(token, process.env.JWT_SECRET);
     const idOfUser = decode.userId;
 
     const threads = await threadModel.find({ authorId: idOfUser });
@@ -132,10 +128,7 @@ const FollowUser = async (req, res) => {
   if (!token) {
     return res.redirect("/login");
   }
-  const decode = jwt.verify(
-    token,
-    "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-  );
+  const decode = jwt.verify(token, process.env.JWT_SECRET);
 
   try {
     const userId = decode.userId;
@@ -195,10 +188,7 @@ const loadOtherProfileData = async (req, res) => {
   if (!token) {
     return res.redirect("/login");
   }
-  const decode = jwt.verify(
-    token,
-    "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-  );
+  const decode = jwt.verify(token, process.env.JWT_SECRET);
   try {
     const idOfUser = decode.userId;
     if (req.params.username == 'Threads'){

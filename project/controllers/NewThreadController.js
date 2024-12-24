@@ -3,6 +3,8 @@ import ThreadModel from '../models/ThreadModel.js';
 import UserModel from '../models/UserModel.js';
 import multer from 'multer';
 import jwt from "jsonwebtoken";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const upload = multer({ dest: 'temp/' });
 
@@ -12,10 +14,7 @@ const newThread = async (req, res) => {
     res.redirect("/login");
     return;
   }
-  const decode = jwt.verify(
-    token,
-    "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-  );
+  const decode = jwt.verify(token, process.env.JWT_SECRET);
     try {
         const findUser = await UserModel.findOne({ _id: decode.userId }).lean();
         if (!findUser) {
@@ -36,10 +35,7 @@ const uploadThread = async (req, res) => {
     const token = req.cookies.token;
     if (!token) 
       return res.redirect("/login");
-    const decode = jwt.verify(
-    token,
-    "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-    );
+    const decode = jwt.verify(token, process.env.JWT_SECRET);
     try {
         upload.single('file')(req, res, async (err) => {
             if (err) 
