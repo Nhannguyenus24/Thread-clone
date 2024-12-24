@@ -16,6 +16,10 @@ const logIn = (req, res) => {
     res.sendFile(path.join(__dirname, "../views/LogInPage.html"));
 }
 
+const resetPasswordForm = (req, res) => {
+    res.sendFile(path.join(__dirname, "../views/ResetPassword.html"));
+}
+
 const checkLogIn = async (req, res) => {
     const { username, password } = req.body;
 
@@ -30,7 +34,7 @@ const checkLogIn = async (req, res) => {
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return res.status(404).json({message: "Incorrect username or password." });
+            return res.status(404).json({ message: "Incorrect username or password." });
         }
 
         const payload = {
@@ -68,12 +72,12 @@ const registerUser = async (req, res) => {
 
 
     if (password.length < 6 && password.length > 20) {
-        return res.status(400).json({message: "Password must be at least 6 characters and no more than 20 characters." });
+        return res.status(400).json({ message: "Password must be at least 6 characters and no more than 20 characters." });
     }
 
 
     if (!validateUsername(username)) {
-        return res.status(400).json({message: "Invalid username. It must contain only letters, numbers, dots, or underscores and be 6-20 characters long." });
+        return res.status(400).json({ message: "Invalid username. It must contain only letters, numbers, dots, or underscores and be 6-20 characters long." });
     }
 
     try {
@@ -83,10 +87,10 @@ const registerUser = async (req, res) => {
 
         if (existingUser) {
             if (existingUser.username === username) {
-                return res.status(400).json({message: "Username already exists." });
+                return res.status(400).json({ message: "Username already exists." });
             }
             if (existingUser.email === email) {
-                return res.status(400).json({message: "Email already exists." });
+                return res.status(400).json({ message: "Email already exists." });
             }
         }
 
@@ -107,7 +111,7 @@ const registerUser = async (req, res) => {
 
         await newUser.save();
         NotificationController.addNotification(newUser._id, "Welcome to Thread! Please update your account information!");
-        
+
         const verifyUrl = `http://localhost:3000/api/verify/${verificationToken}`;
         await sendMail(
             email,
@@ -118,10 +122,10 @@ const registerUser = async (req, res) => {
             <p>If you did not sign up for an account, please ignore this email.</p>`
         );
 
-        res.status(200).json({message: "Registration successful! Please check your email to verify your account." });
+        res.status(200).json({ message: "Registration successful! Please check your email to verify your account." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({message: "System error! Please try again later." });
+        res.status(500).json({ message: "System error! Please try again later." });
     }
 };
 
@@ -129,7 +133,7 @@ const resendVerificationToken = async (req, res) => {
     const { email } = req.body;
 
     try {
-        const user = await UserModel.findOne({ email });
+        const user = await UserModel.findOne({ email: email });
 
         if (!user) {
             return res.status(404).json({ success: false, message: "No account found with this email." });
@@ -224,16 +228,17 @@ const verifyUser = async (req, res) => {
 
 
 const requestPasswordReset = async (req, res) => {
-    const { email, password } = req.body;
-
+    const { email } = req.body;
     try {
-        const user = await UserModel.findOne({ email });
+        const user = await UserModel.findOne({ email: email });
 
         if (!user) {
             return res.status(404).json({message: "Không tìm thấy tài khoản với email này." });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+        // Tạo token reset password và thời gian hết hạn
+
+//         const hashedPassword = await bcrypt.hash(password, 10);
 
         const resetToken = crypto.randomBytes(32).toString('hex');
         const resetExpires = Date.now() + 3600000;
@@ -242,39 +247,49 @@ const requestPasswordReset = async (req, res) => {
         user.verificationExpires = resetExpires;
         await user.save();
 
-        const resetUrl = `http://localhost:3000/api/reset-password/${resetToken}?password=${encodeURIComponent(hashedPassword)}`;
+        // Tạo liên kết reset mật khẩu
+        const resetUrl = `http://localhost:3000/reset-password-form?token=${resetToken}`;
+//         const resetUrl = `http://localhost:3000/api/reset-password/${resetToken}?password=${encodeURIComponent(hashedPassword)}`;
+
         await sendMail(
             email,
-            "Xác nhận đặt lại mật khẩu",
+            "Đặt lại mật khẩu của bạn",
             `<p>Chào ${user.username},</p>
-             <p>Nhấn vào liên kết bên dưới để xác nhận mật khẩu mới của bạn:</p>
-             <a href="${resetUrl}">Xác nhận đặt lại mật khẩu</a>
+             <p>Nhấn vào liên kết bên dưới để đặt lại mật khẩu của bạn:</p>
+             <a href="${resetUrl}">Đặt lại mật khẩu</a>
              <p>Liên kết này sẽ hết hạn sau 1 giờ.</p>
              <p>Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.</p>`
         );
 
-        res.status(200).json({message: "Email xác nhận đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn." });
+        res.status(200).json({ success: true, message: "Email đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({message: "System error! Please try again later." });
+        res.status(500).json({ success: false, message: "Hệ thống gặp lỗi! Vui lòng thử lại sau." });
+//         res.status(200).json({message: "Email xác nhận đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra hộp thư của bạn." });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({message: "System error! Please try again later." });
     }
 };
 
 const executeResetPassword = async (req, res) => {
-    const { authToken } = req.params;
-    const { password } = req.query; // Lấy mật khẩu từ query
+    const { token, password } = req.body;
 
     try {
         const user = await UserModel.findOne({
-            verificationToken: authToken,
+            verificationToken: token,
+            verificationExpires: { $gt: Date.now() }, // Kiểm tra token còn hiệu lực
         });
 
         if (!user) {
             return res.status(400).json({ success: false, message: "Token không hợp lệ hoặc đã hết hạn." });
         }
 
+        // Hash mật khẩu mới
+        const hashedPassword = await bcrypt.hash(password, 10);
+
         // Cập nhật mật khẩu mới
-        user.password = password;
+        user.password = hashedPassword;
         user.verificationToken = null;
         user.verificationExpires = null;
         await user.save();
@@ -282,17 +297,17 @@ const executeResetPassword = async (req, res) => {
         res.status(200).json({ success: true, message: "Mật khẩu đã được đặt lại thành công. Bạn có thể đăng nhập bằng mật khẩu mới." });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: "System error! Please try again later." });
+        res.status(500).json({ success: false, message: "Hệ thống gặp lỗi! Vui lòng thử lại sau." });
     }
 };
 
-const isLoggedIn = (req, res) => {
-    const token = req.cookies.token;
-    if (!token)
-        res.status(200).json({ isLoggedIn: false });
-    else 
-        res.status(200).json({ isLoggedIn: true });
-}
+// const isLoggedIn = (req, res) => {
+//     const token = req.cookies.token;
+//     if (!token)
+//         res.status(200).json({ isLoggedIn: false });
+//     else 
+//         res.status(200).json({ isLoggedIn: true });
+// }
 const AuthenticationController = {
     logIn: logIn,
     register: register,
@@ -303,7 +318,7 @@ const AuthenticationController = {
     resendVerificationToken: resendVerificationToken,
     requestPasswordReset: requestPasswordReset,
     executeResetPassword: executeResetPassword,
-    isLoggedIn: isLoggedIn
+    resetPasswordForm: resetPasswordForm,
 }
 
 export default AuthenticationController;

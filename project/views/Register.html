@@ -11,7 +11,7 @@
 </head>
 
 <body>
-    <div class="login-background flex flex-col justify-center items-center w-screen h-screen ">
+    <div class="login-background flex flex-col justify-center items-center w-screen h-screen">
         <form method="post"
             class="w-full max-w-[350px] mt-5 flex flex-col sm:rounded-[10px] sm:mt-[50px] sm:snap-center"
             onsubmit="handleRegister(event)">
@@ -114,12 +114,13 @@
     function checkButtonState() {
         submitButton.disabled = !(usernameInput.value && passwordInput.value && emailInput.value);
     }
+
     async function handleRegister(event) {
         event.preventDefault();
 
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
-        const email = document.getElementById("email").value;
+        const username = usernameInput.value;
+        const password = passwordInput.value;
+        const email = emailInput.value;
         submitButton.disabled = true;
         try {
             const response = await fetch('http://localhost:3000/api/register', {
@@ -127,22 +128,41 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    username: username,
-                    password: password,
-                    email: email
-                })
+                body: JSON.stringify({ username, password, email })
             });
             const data = await response.json();
-            if (response.ok)
-                showError("Registration successful! Please check your email to verify", "#22C55E");
-            else
-                showError(data.message, "#EF4444");
-            submitButton.disabled = false;
+
+
+            if (response.ok) {
+                showError("Registration successful! Please check your email to verify.");
+            } else {
+                showError(`Lỗi: ${data.message}`);
+            }
         } catch (error) {
-            showError("An error occurred. Please try again!", "#EF4444");
+            console.error(error);
+            showError("An error occurred. Please try again!");
+        } finally {
             submitButton.disabled = false;
         }
+    }
+
+    function showError(message) {
+        errorNotification.innerText = message;
+        errorNotification.style.display = "block";
+        setTimeout(() => {
+            errorNotification.style.display = "none";
+        }, 3000);
+
+//             if (response.ok)
+//                 showError("Registration successful! Please check your email to verify", "#22C55E");
+//             else
+//                 showError(data.message, "#EF4444");
+//             submitButton.disabled = false;
+//         } catch (error) {
+//             showError("An error occurred. Please try again!", "#EF4444");
+//             submitButton.disabled = false;
+//         }
+
     }
 </script>
 
