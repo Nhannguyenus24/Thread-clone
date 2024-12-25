@@ -151,6 +151,11 @@
   }
 }
 
+const validateUsername = (username) => {
+    const usernameRegex = /^[a-zA-Z0-9.-_]{1,30}$/;
+    return usernameRegex.test(username);
+};
+
 async function saveField(event, field) {
   event.preventDefault();
   const inputElement = document.getElementById(`${field}-input`);
@@ -216,6 +221,10 @@ async function saveField(event, field) {
     const oldValue = valueElement?.textContent.trim() || "";
     let newValue = inputElement?.value.trim();
     if (field === 'username') {
+      if (!validateUsername(newValue)) {
+        showError("Invalid username. Username should be alpha digit with dash, hyphen or dot only and limit in length (30 characters).");
+        return cancelEdit(field);
+      }
       newValue = newValue.replace(/\s+/g, ' ').trim();
     }
     if (oldValue === newValue) {

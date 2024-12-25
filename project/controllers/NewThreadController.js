@@ -69,8 +69,8 @@ const uploadThread = async (req, res) => {
             });
 
             try {
-                await newThread.save();
-                res.status(201).json({ message: 'Thread created successfully'});
+                const savedThread = await newThread.save();
+                res.status(201).json({ message: 'Thread created successfully', author: savedThread.author, threadId: savedThread._id });
             } catch (saveErr) {
                 console.error('Error saving thread:', saveErr);
                 res.status(500).json({ error: 'Failed to save thread'});

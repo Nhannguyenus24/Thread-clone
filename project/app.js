@@ -19,7 +19,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 database.connectDatabase();
 const PORT = 3000;
-const HOST = "localhost";
+const HOST = "localhost"; //localhost
 
 // Cài đặt handlebars
 const hbs = expressHandlebars.create({
