@@ -8,7 +8,7 @@
   <div class="flex flex-col flex-1">
     <div class="flex gap-2 text-[#f3f5f7]">
       
-      <span class="hover:underline cursor-pointer" onclick="window.location.href = 'profile/{{senderName}}'">{{senderName}}</span>
+      <span class="hover:underline cursor-pointer" onclick="window.location.href = 'profile/{{senderName}}'">{{{formatName senderName 15}}}</span>
       <span class="text-[#777777]">{{formatTime date}}</span>
     </div>
     <p class="text-base text-[#f3f5f7]">

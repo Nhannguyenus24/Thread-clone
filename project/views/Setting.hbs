@@ -107,7 +107,7 @@
     {{/each}}
   {{/if}}
 </div>
-  <div class="fixed bottom-[40px] left-1/2 transform -translate-x-1/2 bg-white text-black p-[10px_20px] rounded-[8px] shadow-[0_2px_10px_rgba(0,0,0,0.2)] opacity-100 animate-slideUp animate-stay animate-slideDown" id="errorNotification" style="display: none;">
+  <div class="fixed bottom-[20%] left-1/2 transform -translate-x-1/2 bg-white text-black p-[10px_20px] rounded-[8px] shadow-[0_2px_10px_rgba(0,0,0,0.2)] opacity-100 animate-slideUp animate-stay animate-slideDown" id="errorNotification" style="display: none;">
   </div>
 </div>
 <script>
@@ -226,6 +226,12 @@ async function saveField(event, field) {
         return cancelEdit(field);
       }
       newValue = newValue.replace(/\s+/g, ' ').trim();
+    }
+    if (field === 'quote') {
+      if (newValue.length > 18) {
+        showError("Bio should not be more than 18 characters");
+        return cancelEdit(field);
+      }
     }
     if (oldValue === newValue) {
       return cancelEdit(field);
