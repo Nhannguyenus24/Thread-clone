@@ -9,10 +9,10 @@
     <span
       class="hover:underline text-[#f3f5f7] font-bold"
       onclick="window.location.href = 'profile/{{username}}'"
-    >{{username}}</span>
+    >{{{formatName username 10}}}</span>
     <span
       class="text-[rgb(119,119,119)] text-[15px] font-[400]"
-    >{{fullname}}</span>
+    >{{{formatName fullname 10}}}</span>
   </div>
   {{#unless isMe}}
     {{#if isFollowing}}
