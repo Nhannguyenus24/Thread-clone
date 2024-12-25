@@ -6,13 +6,13 @@
             <h1
               class="realname text-[#f3f5f7] text-xl font-bold leading-[30px] font-sans cursor-pointer"
             >
-              {{user.fullname}}
+              {{{formatName user.fullname 18}}}
             </h1>
           </div>
           <div class="name__nickname">
             <span
               class="nickname text-[#f3f5f7] font-normal leading-[21px] font-sans"
-              >{{user.username}}</span
+              >{{{formatName user.username 18}}}</span
             >
           </div>
         </div>
@@ -36,7 +36,7 @@
             >{{followerCount}} followers</span>
 
           <div
-            class="overall-follow-panel w-[90%] sm:w-[80%] md:w-[80%] lg:w-[33.33%]  absolute z-10 top-[20%] sm:left-[15%] md:left-[10%] lg:top-[25%] lg:left-[32.5%]  bg-[rgb(16,16,16)] rounded-lg border border-[rgba(243,245,247,0.15)] hidden">
+            class="overall-follow-panel absolute z-10 left-[4%] sm:left-[27.5%] md:left-[27.5%] lg:left-[30%] xl:left-[30%] top-[20%] lg:top-[25%] w-[90%] sm:w-[45%] md:w-[45%] lg:w-[40%] xl:w-[40%] bg-[rgb(16,16,16)] rounded-lg border border-[rgba(243,245,247,0.15)] hidden">
             <div class="column-panel flex flex-row text-center border-b border-[rgba(243,245,247,0.15)]">
               <div
                 class="list-follower text-[#777777] activated flex-1 cursor-pointer "
@@ -74,7 +74,6 @@
                     {{> follower}}
                   {{/each}}
                 {{else}}
-                  <li>
                     <div class="flex items-center justify-center mt-[15px] mb-[15px]">
                       <p class="text-2xl">There is no followers</p>
                     </div>                             

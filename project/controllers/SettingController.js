@@ -2,6 +2,8 @@ import UserModel from "../models/UserModel.js";
 import database from '../service/ConnectDatabase.js';
 import jwt from "jsonwebtoken";
 import multer from "multer";
+import dotenv from 'dotenv';
+dotenv.config();
 
 const upload = multer({ dest: "temp/" });
 
@@ -9,10 +11,7 @@ const settingAccount = async (req, res) => {
   const token = req.cookies.token;
   if (!token)
     return res.redirect("/login");
-  const decode = jwt.verify(
-    token,
-    "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-  );
+  const decode = jwt.verify(token, process.env.JWT_SECRET);
   try {
     const findUser = await UserModel.findOne({ _id: decode.userId }).lean();
     if (!findUser) {
@@ -74,10 +73,7 @@ const changeSetting = async (req, res) => {
   const token = req.cookies.token;
   if (!req.cookies.token)
     return res.redirect("/login");
-  const decode = jwt.verify(
-    token,
-    "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-  );
+  const decode = jwt.verify(token, process.env.JWT_SECRET);
   try {
     const findUser = await UserModel.findOne({ _id: decode.userId });
     if (field == "fullname") findUser.fullname = value;
@@ -106,10 +102,7 @@ const changePassword = async (req, res) => {
   const token = req.cookies.token;
   if (!token)
     return res.redirect("/login");
-  const decode = jwt.verify(
-    token,
-    "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-  );
+  const decode = jwt.verify(token, process.env.JWT_SECRET);
   try {
     const findUser = await UserModel.findOne({ _id: decode.userId });
     if (findUser.password != currentPassword)
@@ -130,10 +123,7 @@ const changeAvatar = async (req, res) => {
   const token = req.cookies.token;
   if (!token)
     return res.redirect("/login");
-  const decode = jwt.verify(
-    token,
-    "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60"
-  );
+  const decode = jwt.verify(token, process.env.JWT_SECRET);
   try {
     upload.single("file")(req, res, async (err) => {
       if (err) {

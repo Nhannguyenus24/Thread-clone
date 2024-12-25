@@ -19,7 +19,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 database.connectDatabase();
 const PORT = 3000;
-const HOST = "localhost";
+const HOST = "localhost"; //localhost
 
 // Cài đặt handlebars
 const hbs = expressHandlebars.create({
@@ -28,6 +28,27 @@ const hbs = expressHandlebars.create({
   extname: "hbs",
   defaultLayout: "layout",
   helpers: {
+    formatName: function (username, maxLineLength) {
+      let formattedUsername = "";
+      let currentLine = "";
+    
+      for (let i = 0; i < username.length; i++) {
+        const char = username[i];
+    
+        currentLine += char;
+    
+        if (currentLine.length === maxLineLength) {
+          formattedUsername += currentLine + "<br>";
+          currentLine = ""; 
+        }
+      }
+    
+      if (currentLine.length > 0) {
+        formattedUsername += currentLine;
+      }
+    
+      return formattedUsername;
+    },
     isGreaterThanZero: function(value) {
       if (!value) {
         return false;

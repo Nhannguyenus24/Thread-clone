@@ -15,7 +15,7 @@
             <form onsubmit="handleSubmit(event)" class="space-y-4" method="post" enctype="multipart/form-data" action="/newthread/upload">
                 <div class="flex items-center space-x-3">
                     <img src="{{avatar}}" alt="User Icon" class="w-10 h-10 rounded-full" />
-                    <span class="text-[#f3f5f7]  text-lg">{{username}}</span>
+                    <span class="text-[#f3f5f7]  text-lg">{{{formatName username 10}}}</span>
                 </div>
                 <textarea id="threadContent" placeholder="What's new?"
                     class="w-full p-2 rounded-md bg-[#181818] text-[#f3f5f7] border border-[#333333] focus:outline-none hide-scrollbar"
@@ -135,8 +135,13 @@ async function handleSubmit(event){
         method: 'POST',
         body: formData
     });
-    if (response.ok)
-        window.location.href = "/";
+    
+    if (response.ok) {
+        //window.location.href = "/";
+        //'{{author.username}}/post/{{_id}}'
+        const data = await response.json();
+        navigateToPost(`${data.author}/post/${data.threadId}`);
+    }
     else
         alert(data.message);
 }

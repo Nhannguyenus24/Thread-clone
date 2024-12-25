@@ -28,7 +28,7 @@ const resetPasswordForm = (req, res) => {
 
 const checkLogIn = async (req, res) => {
     const { username, password } = req.body;
-    console.log(password);
+    
     try {
         const user = await UserModel.findOne({ username: username });
 
@@ -47,7 +47,7 @@ const checkLogIn = async (req, res) => {
             userId: user._id
         };
 
-        const token = jwt.sign(payload, "741017f64f83c6884e275312409462130e6b4ad31a651a1d66bf7ca08ef64ca4377e229b4aa54757dfefc268d6dbca0f075bda7a23ea913666e4a78102896f60");
+        const token = jwt.sign(payload, process.env.JWT_SECRET);
         res.cookie("token", token, {
             httpOnly: true, // Prevent JavaScript from accessing cookie (XSS protection)
             secure: false, // Use true in production with HTTPS
@@ -75,21 +75,33 @@ const resetPassword = (req, res) => {
 }
 
 const validateUsername = (username) => {
-    const usernameRegex = /^[a-zA-Z0-9._]{6,20}$/;
+    const usernameRegex = /^[a-zA-Z0-9.-_]{1,30}$/;
     return usernameRegex.test(username);
+};
+
+const validatePassword = (pass) => {
+    const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,24}$/;
+    return passRegex.test(pass);
+};
+
+const validateEmail = (email) => {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    return emailRegex.test(email);
 };
 
 const registerUser = async (req, res) => {
     const { username, password, email } = req.body;
 
-
-    if (password.length < 6 && password.length > 20) {
-        return res.status(400).json({ message: "Password must be at least 6 characters and no more than 20 characters." });
+    if (!validateUsername(username)) {
+        return res.status(400).json({ message: "Invalid username. Username should be alpha digit with dash, hyphen or dot only and limit in length (30 characters)." });
     }
 
+    if (!validatePassword(password)) {
+        return res.status(400).json({ message: "Password must be 8 to 24 characters, and include lowercase, uppercase, number, and special character." });
+    }
 
-    if (!validateUsername(username)) {
-        return res.status(400).json({ message: "Invalid username. It must contain only letters, numbers, dots, or underscores and be 6-20 characters long." });
+    if (!validateEmail(email)) {
+        return res.status(400).json({ message: "Invalid email format." });
     }
 
     try {
