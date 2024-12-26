@@ -53,7 +53,6 @@ const deleteNotification = async (req, res) => {
             return res.status(404).json({ message: "Notification not found" });
 
         const notification = noti.notifications.id(req.params.id);
-        //console.log(req.params.id);
         if (!notification)
             return res.status(404).json({ message: "Notification not found" });
 

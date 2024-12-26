@@ -68,6 +68,11 @@ const help = (req, res) => {
   res.render("Setting", { currentPage: "help", externals: links });
 };
 
+const validateUsername = (username) => {
+  const usernameRegex = /^[a-zA-Z0-9.-_]{1,20}$/;
+  return usernameRegex.test(username);
+};
+
 const changeSetting = async (req, res) => {
   const { field, value } = req.body;
   const token = req.cookies.token;
@@ -82,6 +87,9 @@ const changeSetting = async (req, res) => {
       const checkUser = await UserModel.findOne({ username: value });
       if (checkUser){
         return res.status(400).json({ message: "Username already exists" });
+      }
+      else if (!validateUsername(value)){
+        return res.status(400).json({ message: "Invalid username" });
       }
       else findUser.username = value;
     } else if (field == "email") {

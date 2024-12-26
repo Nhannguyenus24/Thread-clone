@@ -28,11 +28,11 @@ const loadUserProfileData = async (req, res) => {
       username: findUser.username
     };
   
-    const threads = await threadModel.find({author: userData.username}).populate({
-      path: "author", 
+    const threads = await threadModel.find({authorId: idOfUser}).populate({
+      path: "authorId", 
       model: "Users",
-      localField: "author",
-      foreignField: "username",
+      localField: "authorId",
+      foreignField: "_id",
       select: "username avatar",
     }).lean();
     threads.reverse();
@@ -206,11 +206,11 @@ const loadOtherProfileData = async (req, res) => {
       fullname: findUser.fullname == "" ?  "No fullname available" : findUser.fullname,
       username: findUser.username
     };
-    const threads = await threadModel.find({author: userData.username}).populate({
-      path: "author", 
+    const threads = await threadModel.find({authorId: userData.id}).populate({
+      path: "authorId", 
       model: "Users",
-      localField: "author",
-      foreignField: "username",
+      localField: "authorId",
+      foreignField: "_id",
       select: "username avatar",
     }).lean();
     threads.reverse();

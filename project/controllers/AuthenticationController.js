@@ -75,7 +75,7 @@ const resetPassword = (req, res) => {
 }
 
 const validateUsername = (username) => {
-    const usernameRegex = /^[a-zA-Z0-9.-_]{1,30}$/;
+    const usernameRegex = /^[a-zA-Z0-9.-_]{1,20}$/;
     return usernameRegex.test(username);
 };
 
@@ -93,7 +93,7 @@ const registerUser = async (req, res) => {
     const { username, password, email } = req.body;
 
     if (!validateUsername(username)) {
-        return res.status(400).json({ message: "Invalid username. Username should be alpha digit with dash, hyphen or dot only and limit in length (30 characters)." });
+        return res.status(400).json({ message: "Invalid username. Username should be alpha digit with dash, hyphen or dot only and limit in length (20 characters)." });
     }
 
     if (!validatePassword(password)) {
