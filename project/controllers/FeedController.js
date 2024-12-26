@@ -12,10 +12,10 @@ const loadAllThread = async (req, res) => {
     const threads = await threadModel
       .find({})
       .populate({
-        path: "author",
+        path: "authorId",
         model: "Users",
-        localField: "author",
-        foreignField: "username",
+        localField: "authorId",
+        foreignField: "_id",
         select: "username avatar",
       })
       .lean();
@@ -29,10 +29,10 @@ const loadAllThread = async (req, res) => {
       const threads = await threadModel
         .find({})
         .populate({
-          path: "author",
+          path: "authorId",
           model: "Users",
-          localField: "author",
-          foreignField: "username",
+          localField: "authorId",
+          foreignField: "_id",
           select: "username avatar",
         })
         .lean();
@@ -75,7 +75,8 @@ const likeThread = async (req, res) => {
     );
   } else {
     thread.likes.push({ userId: decode.userId });
-    NotificationController.addNotification(thread.authorId, "liked your thread", user.avatar, user.username, `/${thread.author}/post/${thread._id}`);
+    if (decode.userId != thread.authorId)
+      NotificationController.addNotification(thread.authorId, "liked your thread", user.avatar, user.username, `/${thread.author}/post/${thread._id}`);
   }
 
   await thread.save();
@@ -107,10 +108,10 @@ const loadFollowingThread = async (req, res) => {
     const threads = await threadModel
       .find({ authorId: { $in: followedUserIds } })
       .populate({
-        path: "author",
+        path: "authorId",
         model: "Users",
-        localField: "author",
-        foreignField: "username",
+        localField: "authorId",
+        foreignField: "_id",
         select: "username avatar",
       }).lean();
 
@@ -145,7 +146,8 @@ const addComment = async (req, res) => {
     const user = await userModel.findById(decode.userId);
     thread.comments.push({ commentId: decode.userId, comment: content });
     await thread.save();
-    NotificationController.addNotification(thread.authorId, "commented on your thread", user.avatar, user.username, `/${thread.author}/post/${thread._id}`);
+    if (decode.userId != thread.authorId)
+      NotificationController.addNotification(thread.authorId, "commented on your thread", user.avatar, user.username, `/${thread.author}/post/${thread._id}`);
     res.status(200).json({ message: "Comment added successfully" });
   } catch (error) {
     console.error("Error adding comment:", error);
@@ -161,10 +163,10 @@ const loadThread = async (req, res) => {
     const thread = await threadModel
       .findById(req.params.id)
       .populate({
-        path: "author",
+        path: "authorId",
         model: "Users",
-        localField: "author",
-        foreignField: "username",
+        localField: "authorId",
+        foreignField: "_id",
         select: "username avatar",
       })
       .populate({
